@@ -3,7 +3,7 @@ import { supabase } from '@/utils/db';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'POST') {
-    const { content, is_public } = req.body;
+    const { content, is_public, mood } = req.body; // Destructure mood
 
     if (!content) {
       return res.status(400).json({ error: 'Thought content cannot be empty.' });
@@ -12,7 +12,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const { data, error } = await supabase
       .from('thoughts')
       .insert([
-        { content, is_public: is_public || false }
+        { content, is_public: is_public || false, mood } // Store mood
       ])
       .select();
 
@@ -23,13 +23,22 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     return res.status(201).json(data[0]);
   } else if (req.method === 'GET') {
-    // For now, return a placeholder for GET requests
-    // We will implement actual fetching later
-    const { data, error } = await supabase
+    const { mood } = req.query; // Get mood from query parameter
+
+    let query = supabase
       .from('thoughts')
       .select('*')
-      .eq('is_public', true) // Only fetch public thoughts
-      .order('created_at', { ascending: false });
+      .eq('is_public', true); // Always fetch public thoughts
+
+    if (mood && mood !== 'All') {
+      if (mood === 'None') {
+        query = query.is('mood', null); // Filter for thoughts with no mood
+      } else {
+        query = query.eq('mood', mood); // Filter by specific mood
+      }
+    }
+
+    const { data, error } = await query.order('created_at', { ascending: false });
 
     if (error) {
       console.error('Error fetching thoughts:', error);

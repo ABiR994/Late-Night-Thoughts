@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 
+const moods = ['None', 'Happy', 'Sad', 'Contemplative', 'Anxious', 'Hopeful', 'Angry', 'Calm'];
+
 const PostForm = () => {
   const [content, setContent] = useState('');
   const [isPublic, setIsPublic] = useState(false);
+  const [mood, setMood] = useState(moods[0]);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
 
@@ -23,7 +26,7 @@ const PostForm = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ content, is_public: isPublic }),
+        body: JSON.stringify({ content, is_public: isPublic, mood: mood === 'None' ? null : mood }),
       });
 
       if (response.ok) {
@@ -31,6 +34,7 @@ const PostForm = () => {
         setMessage('Thought posted successfully!');
         setContent(''); // Clear the form
         setIsPublic(false);
+        setMood(moods[0]);
         console.log('New thought:', data);
       } else {
         const errorData = await response.json();
@@ -47,23 +51,39 @@ const PostForm = () => {
   return (
     <form onSubmit={handleSubmit} className="p-4 bg-white shadow-md rounded-lg max-w-md w-full">
       <textarea
-        className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+        className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus="
         rows={4}
         placeholder="Share your late night thoughts..."
         value={content}
         onChange={(e) => setContent(e.target.value)}
         disabled={loading}
       ></textarea>
-      <div className="mt-2 flex items-center">
-        <input
-          type="checkbox"
-          id="isPublic"
-          className="mr-2"
-          checked={isPublic}
-          onChange={(e) => setIsPublic(e.target.checked)}
-          disabled={loading}
-        />
-        <label htmlFor="isPublic" className="text-gray-700">Make Public</label>
+      <div className="mt-2 flex items-center justify-between">
+        <div className="flex items-center">
+          <input
+            type="checkbox"
+            id="isPublic"
+            className="mr-2"
+            checked={isPublic}
+            onChange={(e) => setIsPublic(e.target.checked)}
+            disabled={loading}
+          />
+          <label htmlFor="isPublic" className="text-gray-700">Make Public</label>
+        </div>
+        <div className="flex items-center">
+          <label htmlFor="moodSelect" className="text-gray-700 mr-2">Mood:</label>
+          <select
+            id="moodSelect"
+            className="p-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            value={mood}
+            onChange={(e) => setMood(e.target.value)}
+            disabled={loading}
+          >
+            {moods.map((m) => (
+              <option key={m} value={m}>{m}</option>
+            ))}
+          </select>
+        </div>
       </div>
       <button
         type="submit"
