@@ -49,9 +49,9 @@ const PostForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="p-4 bg-white shadow-md rounded-lg max-w-md w-full">
+    <form onSubmit={handleSubmit} className="p-4 bg-[var(--color-bg-secondary)] shadow-md rounded-lg max-w-md w-full border border-[var(--color-border)]">
       <textarea
-        className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus="
+        className="w-full p-2 border border-[var(--color-border)] rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] bg-[var(--color-bg-primary)] text-[var(--color-text-primary)]"
         rows={4}
         placeholder="Share your late night thoughts..."
         value={content}
@@ -63,18 +63,18 @@ const PostForm = () => {
           <input
             type="checkbox"
             id="isPublic"
-            className="mr-2"
+            className="mr-2 accent-[var(--color-accent)]"
             checked={isPublic}
             onChange={(e) => setIsPublic(e.target.checked)}
             disabled={loading}
           />
-          <label htmlFor="isPublic" className="text-gray-700">Make Public</label>
+          <label htmlFor="isPublic" className="text-[var(--color-text-primary)]">Make Public</label>
         </div>
         <div className="flex items-center">
-          <label htmlFor="moodSelect" className="text-gray-700 mr-2">Mood:</label>
+          <label htmlFor="moodSelect" className="text-[var(--color-text-primary)] mr-2">Mood:</label>
           <select
             id="moodSelect"
-            className="p-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="p-1 border border-[var(--color-border)] rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] bg-[var(--color-bg-primary)] text-[var(--color-text-primary)]"
             value={mood}
             onChange={(e) => setMood(e.target.value)}
             disabled={loading}
@@ -87,7 +87,7 @@ const PostForm = () => {
       </div>
       <button
         type="submit"
-        className="mt-4 w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50"
+        className="mt-4 w-full bg-[var(--color-accent)] text-white py-2 px-4 rounded-md hover:brightness-110 focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] focus:ring-offset-2 disabled:opacity-50 transition-all duration-200"
         disabled={loading}
       >
         {loading ? 'Posting...' : 'Post Thought'}

@@ -2,7 +2,7 @@ import Head from 'next/head';
 import Layout from '../components/Layout';
 import PostForm from '../components/PostForm';
 import ThoughtCard from '../components/ThoughtCard';
-import MoodFilter from '../components/MoodFilter'; // Import MoodFilter
+import MoodFilter from '../components/MoodFilter';
 import React, { useState, useEffect, useCallback } from 'react';
 
 interface Thought {
@@ -17,7 +17,7 @@ export default function Home() {
   const [thoughts, setThoughts] = useState<Thought[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [selectedMood, setSelectedMood] = useState('All'); // New state for mood filter
+  const [selectedMood, setSelectedMood] = useState('All');
 
   const fetchThoughts = useCallback(async () => {
     setLoading(true);
@@ -35,11 +35,11 @@ export default function Home() {
     } finally {
       setLoading(false);
     }
-  }, [selectedMood]); // Add selectedMood to dependencies
+  }, [selectedMood]);
 
   useEffect(() => {
     fetchThoughts();
-  }, [fetchThoughts]); // fetchThoughts is now stable due to useCallback
+  }, [fetchThoughts]);
 
   return (
     <Layout>
@@ -48,8 +48,8 @@ export default function Home() {
         <meta name="description" content="Anonymous thought journal" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="flex min-h-screen flex-col items-center py-8 space-y-8 bg-gray-100">
-        <h1 className="text-4xl font-bold text-gray-800">
+      <main className="flex min-h-screen flex-col items-center py-8 space-y-8"> {/* Removed bg-gray-100 */}
+        <h1 className="text-4xl font-bold"> {/* Removed text-gray-800 */}
           Late Night Thoughts
         </h1>
         
@@ -57,7 +57,7 @@ export default function Home() {
 
         <section className="w-full max-w-md space-y-4">
           <div className="flex justify-between items-center">
-            <h2 className="text-2xl font-semibold text-gray-700">Recent Thoughts</h2>
+            <h2 className="text-2xl font-semibold">Recent Thoughts</h2> {/* Removed text-gray-700 */}
             <MoodFilter onSelectMood={setSelectedMood} currentMood={selectedMood} />
           </div>
           {loading && <p>Loading thoughts...</p>}

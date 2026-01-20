@@ -16,11 +16,11 @@ const ThoughtCard: React.FC<ThoughtCardProps> = ({ thought }) => {
   const formattedDate = new Date(thought.created_at).toLocaleString();
 
   return (
-    <div className="bg-white p-4 rounded-lg shadow-md border border-gray-200">
-      <p className="text-gray-800 text-lg mb-2">{thought.content}</p>
-      <div className="flex justify-between items-center text-sm text-gray-500">
+    <div className="bg-[var(--color-bg-secondary)] p-4 rounded-lg shadow-md border border-[var(--color-border)]">
+      <p className="text-[var(--color-text-primary)] text-lg mb-2">{thought.content}</p>
+      <div className="flex justify-between items-center text-sm text-[var(--color-text-secondary)]">
         <span>{formattedDate}</span>
-        {thought.mood && <span className="px-2 py-1 bg-blue-100 text-blue-800 rounded-full">{thought.mood}</span>}
+        {thought.mood && <span className="px-2 py-1 bg-[var(--color-accent)]/20 text-[var(--color-accent)] rounded-full">{thought.mood}</span>}
       </div>
     </div>
   );

@@ -10,10 +10,10 @@ const moods = ['All', 'None', 'Happy', 'Sad', 'Contemplative', 'Anxious', 'Hopef
 const MoodFilter: React.FC<MoodFilterProps> = ({ onSelectMood, currentMood }) => {
   return (
     <div className="flex items-center space-x-2">
-      <label htmlFor="moodFilter" className="text-gray-700 font-medium">Filter by Mood:</label>
+      <label htmlFor="moodFilter" className="text-[var(--color-text-primary)] font-medium">Filter by Mood:</label>
       <select
         id="moodFilter"
-        className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+        className="p-2 border border-[var(--color-border)] rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] bg-[var(--color-bg-primary)] text-[var(--color-text-primary)]"
         value={currentMood}
         onChange={(e) => onSelectMood(e.target.value)}
       >

@@ -2,12 +2,34 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --color-text-primary: #1f2937; /* Gray 800 */
+  --color-text-secondary: #4b5563; /* Gray 600 */
+  --color-bg-primary: #f3f4f6; /* Gray 100 */
+  --color-bg-secondary: #ffffff; /* White */
+  --color-border: #e5e7eb; /* Gray 200 */
+  --color-accent: #2563eb; /* Blue 600 */
+}
+
+html.dark {
+  --color-text-primary: #f3f4f6; /* Gray 100 */
+  --color-text-secondary: #9ca3af; /* Gray 400 */
+  --color-bg-primary: #111827; /* Gray 900 */
+  --color-bg-secondary: #1f2937; /* Gray 800 */
+  --color-border: #374151; /* Gray 700 */
+  --color-accent: #60a5fa; /* Blue 400 */
+}
+
 html,
 body {
   padding: 0;
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  
+  background-color: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 a {
