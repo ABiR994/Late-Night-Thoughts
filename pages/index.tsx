@@ -1,8 +1,9 @@
 import Head from 'next/head'
+import Layout from '../components/Layout';
 
 export default function Home() {
   return (
-    <>
+    <Layout>
       <Head>
         <title>Late Night Thoughts</title>
         <meta name="description" content="Anonymous thought journal" />
@@ -13,6 +14,6 @@ export default function Home() {
           Welcome to <a className="text-blue-600" href="https://nextjs.org">Late Night Thoughts!</a>
         </h1>
       </main>
-    </>
+    </Layout>
   )
 }
