@@ -3,30 +3,36 @@
 @tailwind utilities;
 
 :root {
-  --color-text-primary: #333333; /* Darker gray for readability */
-  --color-text-secondary: #6B7280; /* Muted gray */
-  --color-bg-primary: #FDF9F5; /* Soft, warm off-white */
-  --color-bg-primary-darker: #F7F2ED; /* Slightly darker primary for gradient */
-  --color-bg-secondary: #FFFFFF; /* Clean white for cards */
-  --color-border: #E0E0E0; /* Lighter, soft border */
-  --color-accent: #AECAD6; /* Muted pastel blue */
-  --color-mood-happy: #FDE68A; /* Pale yellow */
-  --color-mood-sad: #BFDBFE;   /* Pale blue */
-  --color-mood-contemplative: #D1C4E9; /* Light lavender */
-  --color-mood-anxious: #FBCFE8; /* Soft pink */
-  --color-mood-hopeful: #CCEECC; /* Soft green */
-  --color-mood-angry: #FCA5A5; /* Soft red */
-  --color-mood-calm: #BBDEFB; /* Muted light blue */
+  /* Light Mode - Zen-inspired, soft, modern */
+  --color-text-primary: #2C3E50; /* Dark blue-gray for main text */
+  --color-text-secondary: #6D7F91; /* Muted gray for secondary text */
+  --color-bg-primary: #F5F7F8; /* Very light, cool off-white for main background */
+  --color-bg-primary-darker: #E5E9EC; /* Slightly darker for subtle gradient */
+  --color-bg-secondary: #FFFFFF; /* Pure white for cards */
+  --color-border: #E0E6EB; /* Light, subtle border */
+  --color-accent: #73C6B6; /* Muted turquoise for accents */
+
+  /* Muted mood colors for light mode */
+  --color-mood-happy: #F8F4DF; /* Soft cream */
+  --color-mood-sad: #D6E8F8;   /* Soft pale blue */
+  --color-mood-contemplative: #E0DFF5; /* Soft lavender */
+  --color-mood-anxious: #F8D6E1; /* Soft rose */
+  --color-mood-hopeful: #DCF2DD; /* Soft mint */
+  --color-mood-angry: #F8D6D6; /* Soft peach */
+  --color-mood-calm: #DDEBF7; /* Soft sky blue */
 }
 
 html.dark {
-  --color-text-primary: #E5E7EB; /* Lighter gray for readability */
-  --color-text-secondary: #9CA3AF; /* Muted gray */
-  --color-bg-primary: #1A202C; /* Dark, soft blue-gray */
-  --color-bg-primary-darker: #151921; /* Slightly darker primary for gradient */
-  --color-bg-secondary: #2D3748; /* Slightly lighter dark gray for cards */
+  /* Dark Mode - Dark, soft gradient, subtle depth */
+  --color-text-primary: #EBEBEB; /* Light gray for main text */
+  --color-text-secondary: #A0AEC0; /* Muted light gray */
+  --color-bg-primary: #1A202C; /* Deep charcoal for main background */
+  --color-bg-primary-darker: #10151C; /* Even darker for subtle gradient */
+  --color-bg-secondary: #2D3748; /* Dark blue-gray for cards */
   --color-border: #4A5568; /* Darker border */
-  --color-accent: #63B3ED; /* Vibrant blue */
+  --color-accent: #63B3ED; /* Vibrant blue for accents */
+
+  /* Richer mood colors for dark mode */
   --color-mood-happy: #F6E05E; /* Yellow */
   --color-mood-sad: #667EEA;   /* Blue */
   --color-mood-contemplative: #9F7AEA; /* Purple */
