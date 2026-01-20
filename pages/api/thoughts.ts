@@ -28,6 +28,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const { data, error } = await supabase
       .from('thoughts')
       .select('*')
+      .eq('is_public', true) // Only fetch public thoughts
       .order('created_at', { ascending: false });
 
     if (error) {
