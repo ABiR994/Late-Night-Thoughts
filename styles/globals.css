@@ -3,21 +3,37 @@
 @tailwind utilities;
 
 :root {
-  --color-text-primary: #1f2937; /* Gray 800 */
-  --color-text-secondary: #4b5563; /* Gray 600 */
-  --color-bg-primary: #f3f4f6; /* Gray 100 */
-  --color-bg-secondary: #ffffff; /* White */
-  --color-border: #e5e7eb; /* Gray 200 */
-  --color-accent: #2563eb; /* Blue 600 */
+  --color-text-primary: #333333; /* Darker gray for readability */
+  --color-text-secondary: #6B7280; /* Muted gray */
+  --color-bg-primary: #FDF9F5; /* Soft, warm off-white */
+  --color-bg-primary-darker: #F7F2ED; /* Slightly darker primary for gradient */
+  --color-bg-secondary: #FFFFFF; /* Clean white for cards */
+  --color-border: #E0E0E0; /* Lighter, soft border */
+  --color-accent: #AECAD6; /* Muted pastel blue */
+  --color-mood-happy: #FDE68A; /* Pale yellow */
+  --color-mood-sad: #BFDBFE;   /* Pale blue */
+  --color-mood-contemplative: #D1C4E9; /* Light lavender */
+  --color-mood-anxious: #FBCFE8; /* Soft pink */
+  --color-mood-hopeful: #CCEECC; /* Soft green */
+  --color-mood-angry: #FCA5A5; /* Soft red */
+  --color-mood-calm: #BBDEFB; /* Muted light blue */
 }
 
 html.dark {
-  --color-text-primary: #f3f4f6; /* Gray 100 */
-  --color-text-secondary: #9ca3af; /* Gray 400 */
-  --color-bg-primary: #111827; /* Gray 900 */
-  --color-bg-secondary: #1f2937; /* Gray 800 */
-  --color-border: #374151; /* Gray 700 */
-  --color-accent: #60a5fa; /* Blue 400 */
+  --color-text-primary: #E5E7EB; /* Lighter gray for readability */
+  --color-text-secondary: #9CA3AF; /* Muted gray */
+  --color-bg-primary: #1A202C; /* Dark, soft blue-gray */
+  --color-bg-primary-darker: #151921; /* Slightly darker primary for gradient */
+  --color-bg-secondary: #2D3748; /* Slightly lighter dark gray for cards */
+  --color-border: #4A5568; /* Darker border */
+  --color-accent: #63B3ED; /* Vibrant blue */
+  --color-mood-happy: #F6E05E; /* Yellow */
+  --color-mood-sad: #667EEA;   /* Blue */
+  --color-mood-contemplative: #9F7AEA; /* Purple */
+  --color-mood-anxious: #ED64A6; /* Pink */
+  --color-mood-hopeful: #68D391; /* Green */
+  --color-mood-angry: #FC8181; /* Red */
+  --color-mood-calm: #4299E1; /* Light blue */
 }
 
 html,
@@ -30,6 +46,7 @@ body {
   background-color: var(--color-bg-primary);
   color: var(--color-text-primary);
   transition: background-color 0.3s ease, color 0.3s ease;
+  min-height: 100vh;
 }
 
 a {

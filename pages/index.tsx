@@ -48,8 +48,8 @@ export default function Home() {
         <meta name="description" content="Anonymous thought journal" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="flex min-h-screen flex-col items-center py-8 space-y-8"> {/* Removed bg-gray-100 */}
-        <h1 className="text-4xl font-bold"> {/* Removed text-gray-800 */}
+      <main className="flex min-h-screen flex-col items-center py-8 space-y-8 bg-gradient-to-br from-[var(--color-bg-primary)] to-[var(--color-bg-primary-darker)]"> {/* Added gradient */}
+        <h1 className="text-4xl font-bold">
           Late Night Thoughts
         </h1>
         
@@ -57,7 +57,7 @@ export default function Home() {
 
         <section className="w-full max-w-md space-y-4">
           <div className="flex justify-between items-center">
-            <h2 className="text-2xl font-semibold">Recent Thoughts</h2> {/* Removed text-gray-700 */}
+            <h2 className="text-2xl font-semibold">Recent Thoughts</h2>
             <MoodFilter onSelectMood={setSelectedMood} currentMood={selectedMood} />
           </div>
           {loading && <p>Loading thoughts...</p>}
