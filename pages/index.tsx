@@ -5,22 +5,20 @@ import ThoughtCard from '../components/ThoughtCard';
 import MoodFilter from '../components/MoodFilter';
 import ReadingMode from '../components/ReadingMode';
 import React, { useState, useEffect, useCallback } from 'react';
-import { MOOD_DATA, Mood } from '@/utils/moods';
-import WanderIcon from '../components/icons/WanderIcon';
 
 interface Thought {
   id: string;
   created_at: string;
   content: string;
   is_public: boolean;
-  mood: Mood | null;
+  mood: string | null;
 }
 
 export default function Home() {
   const [thoughts, setThoughts] = useState<Thought[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [selectedMood, setSelectedMood] = useState<Mood>('All');
+  const [selectedMood, setSelectedMood] = useState('All');
   const [selectedThought, setSelectedThought] = useState<Thought | null>(null);
   const [selectedIndex, setSelectedIndex] = useState<number>(-1);
 
@@ -28,19 +26,12 @@ export default function Home() {
     setLoading(true);
     setError(null);
     try {
-      const controller = new AbortController();
-      const signal = controller.signal;
-
       const query = selectedMood === 'All' ? '' : `?mood=${selectedMood}`;
-      const response = await fetch(`/api/thoughts${query}`, { signal });
+      const response = await fetch(`/api/thoughts${query}`);
       if (!response.ok) throw new Error('Failed to fetch');
       const data: Thought[] = await response.json();
       setThoughts(data);
     } catch (err: any) {
-      if (err.name === 'AbortError') {
-        // console.log('Fetch aborted');
-        return; 
-      }
       setError(err.message);
     } finally {
       setLoading(false);
@@ -48,14 +39,8 @@ export default function Home() {
   }, [selectedMood]);
 
   useEffect(() => {
-      const controller = new AbortController();
-      const signal = controller.signal;
-
-      // Clean up function for AbortController
-      return () => {
-        controller.abort();
-      };
-    }, [fetchThoughts]);
+    fetchThoughts();
+  }, [fetchThoughts]);
 
   // Open reading mode
   const openReading = (thought: Thought, index: number) => {
@@ -148,7 +133,15 @@ export default function Home() {
                     group
                   "
                 >
-                  <WanderIcon className="w-4 h-4 transition-transform duration-700 group-hover:rotate-180" />
+                  <svg 
+                    className="w-4 h-4 transition-transform duration-700 group-hover:rotate-180" 
+                    fill="none" 
+                    viewBox="0 0 24 24" 
+                    stroke="currentColor" 
+                    strokeWidth={1.5}
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 12c0-1.232-.046-2.453-.138-3.662a4.006 4.006 0 00-3.7-3.7 48.678 48.678 0 00-7.324 0 4.006 4.006 0 00-3.7 3.7c-.017.22-.032.441-.046.662M19.5 12l3-3m-3 3l-3-3m-12 3c0 1.232.046 2.453.138 3.662a4.006 4.006 0 003.7 3.7 48.656 48.656 0 007.324 0 4.006 4.006 0 003.7-3.7c.017-.22.032-.441.046-.662M4.5 12l3 3m-3-3l-3 3" />
+                  </svg>
                   <span>Wander</span>
                 </button>
               </div>
