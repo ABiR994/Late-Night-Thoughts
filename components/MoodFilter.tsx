@@ -1,8 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { MOOD_DATA, Mood } from '@/utils/moods';
+import FilterIcon from './icons/FilterIcon';
+import CheckIcon from './icons/CheckIcon';
+import ChevronDownIcon from './icons/ChevronDownIcon';
 
 interface MoodFilterProps {
-  onSelectMood: (mood: string) => void;
-  currentMood: string;
+  onSelectMood: (mood: Mood) => void;
+  currentMood: Mood;
 }
 
 const moods = [
@@ -39,7 +43,7 @@ const MoodFilter: React.FC<MoodFilterProps> = ({ onSelectMood, currentMood }) =>
     return () => document.removeEventListener('keydown', handleEscape);
   }, []);
 
-  const selected = moods.find(m => m.value === currentMood) || moods[0];
+  const selected = MOOD_DATA.find(m => m.value === currentMood) || MOOD_DATA[0];
 
   return (
     <div ref={dropdownRef} className="relative">
@@ -63,21 +67,11 @@ const MoodFilter: React.FC<MoodFilterProps> = ({ onSelectMood, currentMood }) =>
             style={{ backgroundColor: selected.color }}
           />
         ) : (
-          <svg className="w-4 h-4 text-[var(--text-muted)]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 01-.659 1.591l-5.432 5.432a2.25 2.25 0 00-.659 1.591v2.927a2.25 2.25 0 01-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 00-.659-1.591L3.659 7.409A2.25 2.25 0 013 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0112 3z" />
-          </svg>
-        )}
-        <span className="text-[var(--text-secondary)]">{selected.label}</span>
-        <svg 
-          className={`w-4 h-4 text-[var(--text-muted)] transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} 
-          fill="none" 
-          viewBox="0 0 24 24" 
-          stroke="currentColor" 
-          strokeWidth={1.5}
-        >
-          <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-        </svg>
-      </button>
+          <FilterIcon className="w-4 h-4 text-[var(--text-muted)]" />
+          )}
+          <span className="text-[var(--text-secondary)]">{selected.label}</span>
+          <ChevronDownIcon className={`w-4 h-4 text-[var(--text-muted)] transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />
+        </button>
 
       {/* Dropdown */}
       {isOpen && (
@@ -92,7 +86,7 @@ const MoodFilter: React.FC<MoodFilterProps> = ({ onSelectMood, currentMood }) =>
           animate-fade-in-down
           overflow-hidden
         ">
-          {moods.map((mood, index) => (
+          {MOOD_DATA.map((mood, index) => (
             <button
               key={mood.value}
               onClick={() => {
@@ -120,15 +114,7 @@ const MoodFilter: React.FC<MoodFilterProps> = ({ onSelectMood, currentMood }) =>
               )}
               <span className="flex-1">{mood.label}</span>
               {currentMood === mood.value && (
-                <svg 
-                  className="w-4 h-4 flex-shrink-0" 
-                  fill="none" 
-                  viewBox="0 0 24 24" 
-                  stroke="currentColor" 
-                  strokeWidth={2}
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-                </svg>
+                <CheckIcon />
               )}
             </button>
           ))}
