@@ -49,32 +49,32 @@ const PostForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="p-4 bg-[var(--color-bg-secondary)] shadow-md rounded-lg max-w-md w-full border border-[var(--color-border)]">
+    <form onSubmit={handleSubmit} className="p-6 bg-[var(--color-bg-secondary)] shadow-xl rounded-xl max-w-lg w-full border border-[var(--color-border)] transition-all duration-300 ease-in-out hover:shadow-2xl">
       <textarea
-        className="w-full p-2 border border-[var(--color-border)] rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] bg-[var(--color-bg-primary)] text-[var(--color-text-primary)]"
-        rows={4}
+        className="w-full p-3 border border-[var(--color-border)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] bg-[var(--color-bg-primary)] text-[var(--color-text-primary)] text-base placeholder:text-[var(--color-text-secondary)] transition-all duration-200 ease-in-out resize-none"
+        rows={5}
         placeholder="Share your late night thoughts..."
         value={content}
         onChange={(e) => setContent(e.target.value)}
         disabled={loading}
       ></textarea>
-      <div className="mt-2 flex items-center justify-between">
+      <div className="mt-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div className="flex items-center">
           <input
             type="checkbox"
             id="isPublic"
-            className="mr-2 accent-[var(--color-accent)]"
+            className="mr-2 h-4 w-4 accent-[var(--color-accent)] cursor-pointer"
             checked={isPublic}
             onChange={(e) => setIsPublic(e.target.checked)}
             disabled={loading}
           />
-          <label htmlFor="isPublic" className="text-[var(--color-text-primary)]">Make Public</label>
+          <label htmlFor="isPublic" className="text-[var(--color-text-primary)] text-sm select-none">Make Public</label>
         </div>
         <div className="flex items-center">
-          <label htmlFor="moodSelect" className="text-[var(--color-text-primary)] mr-2">Mood:</label>
+          <label htmlFor="moodSelect" className="text-[var(--color-text-primary)] text-sm mr-2 select-none">Mood:</label>
           <select
             id="moodSelect"
-            className="p-1 border border-[var(--color-border)] rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] bg-[var(--color-bg-primary)] text-[var(--color-text-primary)]"
+            className="p-2 border border-[var(--color-border)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] bg-[var(--color-bg-primary)] text-[var(--color-text-primary)] text-sm transition-all duration-200 ease-in-out cursor-pointer"
             value={mood}
             onChange={(e) => setMood(e.target.value)}
             disabled={loading}
@@ -87,13 +87,13 @@ const PostForm = () => {
       </div>
       <button
         type="submit"
-        className="mt-4 w-full bg-[var(--color-accent)] text-white py-2 px-4 rounded-md hover:brightness-110 focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] focus:ring-offset-2 disabled:opacity-50 transition-all duration-200"
+        className="mt-6 w-full bg-[var(--color-accent)] text-white font-semibold py-3 px-4 rounded-lg hover:brightness-110 focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] focus:ring-offset-2 focus:ring-offset-[var(--color-bg-secondary)] disabled:opacity-50 transition-all duration-300 ease-in-out"
         disabled={loading}
       >
         {loading ? 'Posting...' : 'Post Thought'}
       </button>
       {message && (
-        <p className={`mt-3 text-sm ${message.startsWith('Error') ? 'text-red-500' : 'text-green-600'}`}>
+        <p className={`mt-4 text-center text-sm ${message.startsWith('Error') ? 'text-red-500' : 'text-green-600'}`}>
           {message}
         </p>
       )}
