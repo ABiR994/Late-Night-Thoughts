@@ -1,2 +1,11 @@
-// Database connection and utility functions will go here
-// This file will handle connections to Supabase/Firebase/MongoDB Atlas
+import { createClient } from '@supabase/supabase-js';
+
+// Ensure these environment variables are set in your .env file
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+if (!supabaseUrl || !supabaseAnonKey) {
+  throw new Error('Missing Supabase environment variables. Make sure NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY are set.');
+}
+
+export const supabase = createClient(supabaseUrl, supabaseAnonKey);

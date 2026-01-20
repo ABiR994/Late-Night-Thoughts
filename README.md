@@ -14,7 +14,7 @@ An anonymous thought journal web application.
 ## Tech Stack
 - Frontend: Next.js (React)
 - Backend: Serverless API routes (Next.js API routes)
-- Database: Serverless-friendly database (Supabase, Firebase, or MongoDB Atlas)
+- Database: Supabase (PostgreSQL)
 - Styling: Tailwind CSS or clean custom CSS with soft gradients
 
 ## Getting Started
@@ -24,7 +24,22 @@ An anonymous thought journal web application.
     npm install
     \`\`\`
 
-2.  **Run the development server:**
+2.  **Set up Supabase Project:**
+    *   Go to [Supabase](https://supabase.com/) and create a new project.
+    *   Find your Project URL and Anon Key in Project Settings -> API.
+    *   Create a `.env` file in the root of this project with the following content:
+        \`\`\`
+        NEXT_PUBLIC_SUPABASE_URL=YOUR_SUPABASE_URL
+        NEXT_PUBLIC_SUPABASE_ANON_KEY=YOUR_SUPABASE_ANON_KEY
+        \`\`\`
+        Replace `YOUR_SUPABASE_URL` and `YOUR_SUPABASE_ANON_KEY` with your actual credentials.
+    *   In your Supabase project, navigate to the "Table Editor" and create a new table named `thoughts` with the following schema:
+        *   `id`: `uuid` (Primary Key, Default Value: `gen_random_uuid()`)
+        *   `created_at`: `timestamp with time zone` (Default Value: `now()`)
+        *   `content`: `text` (Nullable: `false`)
+        *   `is_public`: `boolean` (Default Value: `false`)
+
+3.  **Run the development server:**
     \`\`\`bash
     npm run dev
     \`\`\`
