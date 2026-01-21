@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
+import { supabase } from '../utils/db';
 
 interface PostFormProps {
   onSuccess?: () => void;
@@ -73,9 +74,15 @@ const PostForm: React.FC<PostFormProps> = ({ onSuccess }) => {
     setMessage(null);
 
     try {
+      const { data: { session } } = await supabase.auth.getSession();
+      const headers: HeadersInit = { 'Content-Type': 'application/json' };
+      if (session) {
+        headers['Authorization'] = `Bearer ${session.access_token}`;
+      }
+
       const response = await fetch('/api/thoughts', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers,
         body: JSON.stringify({
           content,
           is_public: isPublic,

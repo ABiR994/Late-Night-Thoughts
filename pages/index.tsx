@@ -5,6 +5,7 @@ import ThoughtCard from '../components/ThoughtCard';
 import MoodFilter from '../components/MoodFilter';
 import ReadingMode from '../components/ReadingMode';
 import React, { useState, useEffect, useCallback } from 'react';
+import { supabase } from '../utils/db';
 
 interface Thought {
   id: string;
@@ -21,13 +22,24 @@ export default function Home() {
   const [selectedMood, setSelectedMood] = useState('All');
   const [selectedThought, setSelectedThought] = useState<Thought | null>(null);
   const [selectedIndex, setSelectedIndex] = useState<number>(-1);
+  const [showComposer, setShowComposer] = useState(false);
+  const [scope, setScope] = useState<'all' | 'me'>('all');
 
   const fetchThoughts = useCallback(async () => {
     setLoading(true);
     setError(null);
     try {
-      const query = selectedMood === 'All' ? '' : `?mood=${selectedMood}`;
-      const response = await fetch(`/api/thoughts${query}`);
+      const { data: { session } } = await supabase.auth.getSession();
+      const headers: HeadersInit = {};
+      if (session) {
+        headers['Authorization'] = `Bearer ${session.access_token}`;
+      }
+
+      const moodQuery = selectedMood === 'All' ? '' : `mood=${selectedMood}`;
+      const scopeQuery = `scope=${scope}`;
+      const queryString = [moodQuery, scopeQuery].filter(Boolean).join('&');
+      
+      const response = await fetch(`/api/thoughts?${queryString}`, { headers });
       if (!response.ok) throw new Error('Failed to fetch');
       const data: Thought[] = await response.json();
       setThoughts(data);
@@ -36,7 +48,7 @@ export default function Home() {
     } finally {
       setLoading(false);
     }
-  }, [selectedMood]);
+  }, [selectedMood, scope]);
 
   useEffect(() => {
     fetchThoughts();
@@ -119,9 +131,22 @@ export default function Home() {
         <section className="px-6 pb-6">
           <div className="max-w-xl mx-auto flex items-center justify-between gap-4">
             <div className="flex items-center gap-6">
-              <span className="text-[11px] font-mono uppercase tracking-[0.2em] text-[var(--text-faint)]">
-                {thoughts.length} thoughts
-              </span>
+              <div className="flex items-center gap-3">
+                <button
+                  onClick={() => setScope('all')}
+                  className={`text-[11px] font-mono uppercase tracking-[0.2em] transition-colors ${scope === 'all' ? 'text-aurora-violet' : 'text-[var(--text-faint)] hover:text-[var(--text-muted)]'}`}
+                >
+                  public
+                </button>
+                <span className="text-[var(--text-faint)] opacity-30 text-[10px]">/</span>
+                <button
+                  onClick={() => setScope('me')}
+                  className={`text-[11px] font-mono uppercase tracking-[0.2em] transition-colors ${scope === 'me' ? 'text-aurora-violet' : 'text-[var(--text-faint)] hover:text-[var(--text-muted)]'}`}
+                >
+                  mine
+                </button>
+              </div>
+              <div className="w-px h-3 bg-[var(--border-subtle)]" />
               <button
                 onClick={openRandom}
                 disabled={thoughts.length === 0}
