@@ -108,7 +108,7 @@ export default function Home({ initialThoughts }: HomeProps) {
         <link rel="icon" href="/icons/icon.png" />
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#02040a" />
-        <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
+        <link rel="apple-touch-icon" href="/icons/icon.png" />
       </Head>
 
       <main className="min-h-screen">
