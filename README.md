@@ -1,5 +1,9 @@
 # Late Night Thoughts 🌙
 
+<p align="center">
+  <img src="public/icons/icon.png" width="128" height="128" alt="Late Night Thoughts Logo">
+</p>
+
 A beautiful, anonymous, and minimalistic journal for the thoughts that find you after midnight. Built with a focus on typography, privacy, and immersive user experience.
 
 ![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)

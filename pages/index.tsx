@@ -105,7 +105,7 @@ export default function Home({ initialThoughts }: HomeProps) {
         <title>Late Night Thoughts</title>
         <meta name="description" content="A quiet place for your midnight reflections." />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/icons/icon.png" />
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#02040a" />
         <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
