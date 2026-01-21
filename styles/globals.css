@@ -1,6 +1,6 @@
 /* ============================================
-   LATE NIGHT THOUGHTS - PREMIUM UI SYSTEM
-   A unique, immersive experience for midnight reflections
+   LATE NIGHT THOUGHTS - DARK MODE ONLY
+   An immersive experience for midnight reflections
    ============================================ */
 
 /* Premium Typography */
@@ -11,7 +11,7 @@
 @tailwind utilities;
 
 /* ============================================
-   ROOT DESIGN TOKENS
+   ROOT DESIGN TOKENS - DARK MODE ONLY
    ============================================ */
 :root {
   /* Core palette - Midnight Aurora */
@@ -27,13 +27,14 @@
   --midnight-100: #e5e7eb;
   --midnight-50: #f9fafb;
 
-  /* Accent - Aurora glow */
+  /* Accent - Aurora glow (enhanced) */
   --aurora-violet: #8b5cf6;
   --aurora-purple: #a855f7;
   --aurora-pink: #ec4899;
   --aurora-blue: #3b82f6;
   --aurora-cyan: #06b6d4;
   --aurora-teal: #14b8a6;
+  --aurora-indigo: #6366f1;
 
   /* Warm accent */
   --ember-500: #f59e0b;
@@ -45,14 +46,35 @@
   --warning: #f59e0b;
   --error: #ef4444;
 
+  /* Dark Mode - The Only Mode */
+  --bg-base: var(--midnight-950);
+  --bg-surface: var(--midnight-900);
+  --bg-elevated: var(--midnight-800);
+  --bg-overlay: rgba(3, 7, 18, 0.9);
+
+  --text-primary: var(--midnight-50);
+  --text-secondary: var(--midnight-300);
+  --text-muted: var(--midnight-500);
+  --text-faint: var(--midnight-600);
+
+  --border-subtle: rgba(255, 255, 255, 0.06);
+  --border-default: rgba(255, 255, 255, 0.1);
+  --border-strong: rgba(255, 255, 255, 0.2);
+
+  --accent: var(--aurora-violet);
+  --accent-secondary: var(--aurora-pink);
+  --accent-glow: rgba(139, 92, 246, 0.5);
+
   /* Glass effects */
-  --glass-bg: rgba(255, 255, 255, 0.03);
-  --glass-border: rgba(255, 255, 255, 0.08);
-  --glass-highlight: rgba(255, 255, 255, 0.12);
+  --glass-bg: rgba(255, 255, 255, 0.02);
+  --glass-bg-hover: rgba(255, 255, 255, 0.04);
+  --glass-border: rgba(255, 255, 255, 0.06);
+  --glass-highlight: rgba(255, 255, 255, 0.1);
 
   /* Shadows */
   --shadow-glow: 0 0 60px -12px rgba(139, 92, 246, 0.4);
   --shadow-glow-lg: 0 0 100px -20px rgba(139, 92, 246, 0.5);
+  --shadow-glow-sm: 0 0 30px -8px rgba(139, 92, 246, 0.3);
   --shadow-float: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
   --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -2px rgba(0, 0, 0, 0.3);
 
@@ -66,9 +88,6 @@
   --ease-in-out-expo: cubic-bezier(0.87, 0, 0.13, 1);
   --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
 
-  /* Spacing rhythm */
-  --space-unit: 0.25rem;
-
   /* Border radius */
   --radius-sm: 0.5rem;
   --radius-md: 0.75rem;
@@ -76,56 +95,6 @@
   --radius-xl: 1.5rem;
   --radius-2xl: 2rem;
   --radius-full: 9999px;
-}
-
-/* ============================================
-   DARK MODE (Default - The Primary Experience)
-   ============================================ */
-html {
-  --bg-base: var(--midnight-950);
-  --bg-surface: var(--midnight-900);
-  --bg-elevated: var(--midnight-800);
-  --bg-overlay: rgba(3, 7, 18, 0.8);
-
-  --text-primary: var(--midnight-50);
-  --text-secondary: var(--midnight-300);
-  --text-muted: var(--midnight-500);
-
-  --border-subtle: var(--glass-border);
-  --border-default: rgba(255, 255, 255, 0.1);
-  --border-strong: rgba(255, 255, 255, 0.2);
-
-  --accent: var(--aurora-violet);
-  --accent-glow: rgba(139, 92, 246, 0.5);
-}
-
-/* ============================================
-   LIGHT MODE
-   ============================================ */
-html.light {
-  --bg-base: #fefefe;
-  --bg-surface: #ffffff;
-  --bg-elevated: #f8fafc;
-  --bg-overlay: rgba(255, 255, 255, 0.9);
-
-  --text-primary: var(--midnight-900);
-  --text-secondary: var(--midnight-600);
-  --text-muted: var(--midnight-400);
-
-  --border-subtle: rgba(0, 0, 0, 0.04);
-  --border-default: rgba(0, 0, 0, 0.08);
-  --border-strong: rgba(0, 0, 0, 0.15);
-
-  --accent: var(--aurora-violet);
-  --accent-glow: rgba(139, 92, 246, 0.3);
-
-  --glass-bg: rgba(255, 255, 255, 0.7);
-  --glass-border: rgba(0, 0, 0, 0.08);
-  --glass-highlight: rgba(255, 255, 255, 0.9);
-
-  --shadow-glow: 0 0 60px -12px rgba(139, 92, 246, 0.25);
-  --shadow-float: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
-  --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
 }
 
 /* ============================================
@@ -206,12 +175,12 @@ h1, h2, h3, h4, h5, h6 {
   pointer-events: none;
 }
 
-/* Gradient orbs */
+/* Gradient orbs - Enhanced */
 .orb {
   position: absolute;
   border-radius: 50%;
   filter: blur(80px);
-  opacity: 0.5;
+  opacity: 0.6;
   animation: float 20s ease-in-out infinite;
 }
 
@@ -241,12 +210,7 @@ h1, h2, h3, h4, h5, h6 {
   left: 50%;
   transform: translate(-50%, -50%);
   animation-delay: -14s;
-  opacity: 0.3;
-}
-
-html.light .orb {
-  opacity: 0.25;
-  filter: blur(100px);
+  opacity: 0.35;
 }
 
 @keyframes float {
@@ -276,10 +240,6 @@ html.light .orb {
   animation: twinkle 8s ease-in-out infinite;
 }
 
-html.light .stars {
-  opacity: 0;
-}
-
 @keyframes twinkle {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.5; }
@@ -289,7 +249,7 @@ html.light .stars {
 .noise {
   position: absolute;
   inset: 0;
-  opacity: 0.03;
+  opacity: 0.025;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
 }
 
@@ -301,7 +261,7 @@ html.light .stars {
     linear-gradient(var(--border-subtle) 1px, transparent 1px),
     linear-gradient(90deg, var(--border-subtle) 1px, transparent 1px);
   background-size: 60px 60px;
-  opacity: 0.3;
+  opacity: 0.4;
   mask-image: radial-gradient(ellipse 80% 50% at 50% 50%, black, transparent);
 }
 
@@ -316,229 +276,39 @@ html.light .stars {
 }
 
 .glass-strong {
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.06);
   backdrop-filter: blur(40px) saturate(200%);
   -webkit-backdrop-filter: blur(40px) saturate(200%);
   border: 1px solid var(--glass-highlight);
 }
 
-html.light .glass {
-  background: rgba(255, 255, 255, 0.8);
-  border: 1px solid rgba(0, 0, 0, 0.08);
-}
-
-html.light .glass-strong {
-  background: rgba(255, 255, 255, 0.9);
-  border: 1px solid rgba(0, 0, 0, 0.1);
-}
-
 /* ============================================
-   BUTTON SYSTEM
+   TEXT GRADIENT UTILITIES
    ============================================ */
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  padding: 0.75rem 1.5rem;
-  font-family: var(--font-body);
-  font-size: 0.875rem;
-  font-weight: 500;
-  line-height: 1;
-  text-decoration: none;
-  border-radius: var(--radius-full);
-  border: none;
-  cursor: pointer;
-  transition: all 0.3s var(--ease-out-expo);
-  position: relative;
-  overflow: hidden;
+.text-gradient {
+  background: linear-gradient(135deg, var(--aurora-violet), var(--aurora-pink));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
-.btn-primary {
-  background: linear-gradient(135deg, var(--aurora-violet), var(--aurora-purple));
-  color: white;
-  box-shadow: var(--shadow-glow);
-}
-
-.btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-glow-lg);
-}
-
-.btn-primary:active {
-  transform: translateY(0);
-}
-
-.btn-secondary {
-  background: var(--glass-bg);
-  color: var(--text-primary);
-  border: 1px solid var(--border-default);
-  backdrop-filter: blur(10px);
-}
-
-.btn-secondary:hover {
-  background: var(--glass-highlight);
-  border-color: var(--border-strong);
-}
-
-.btn-ghost {
-  background: transparent;
-  color: var(--text-secondary);
-  padding: 0.5rem;
-}
-
-.btn-ghost:hover {
-  color: var(--text-primary);
-  background: var(--glass-bg);
-}
-
-/* ============================================
-   CARD SYSTEM
-   ============================================ */
-.card {
-  background: var(--glass-bg);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-xl);
-  transition: all 0.4s var(--ease-out-expo);
-}
-
-.card:hover {
-  border-color: var(--border-default);
-  box-shadow: var(--shadow-float);
-  transform: translateY(-4px);
-}
-
-.card-glow {
-  position: relative;
-}
-
-.card-glow::before {
-  content: '';
-  position: absolute;
-  inset: -1px;
-  border-radius: inherit;
-  padding: 1px;
-  background: linear-gradient(
-    135deg,
-    transparent 0%,
-    var(--aurora-violet) 50%,
-    transparent 100%
-  );
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  opacity: 0;
-  transition: opacity 0.4s ease;
-}
-
-.card-glow:hover::before {
-  opacity: 1;
-}
-
-/* ============================================
-   INPUT SYSTEM
-   ============================================ */
-.input-wrapper {
-  position: relative;
-}
-
-.input {
-  width: 100%;
-  padding: 1rem 1.25rem;
-  font-family: var(--font-body);
-  font-size: 1rem;
-  color: var(--text-primary);
-  background: var(--glass-bg);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-lg);
-  outline: none;
-  transition: all 0.3s var(--ease-out-expo);
-}
-
-.input:focus {
-  border-color: var(--accent);
-  box-shadow: 0 0 0 4px var(--accent-glow);
-}
-
-.input::placeholder {
-  color: var(--text-muted);
-}
-
-.textarea {
-  resize: none;
-  min-height: 120px;
-  line-height: 1.7;
+.text-gradient-subtle {
+  background: linear-gradient(135deg, var(--text-primary), var(--aurora-violet));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 /* ============================================
    MOOD SYSTEM
    ============================================ */
-.mood-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.375rem;
-  padding: 0.375rem 0.75rem;
-  font-size: 0.75rem;
-  font-weight: 500;
-  letter-spacing: 0.02em;
-  border-radius: var(--radius-full);
-  text-transform: uppercase;
-  transition: all 0.2s ease;
-}
-
-.mood-happy {
-  background: rgba(251, 191, 36, 0.15);
-  color: #fbbf24;
-  border: 1px solid rgba(251, 191, 36, 0.3);
-}
-
-.mood-sad {
-  background: rgba(96, 165, 250, 0.15);
-  color: #60a5fa;
-  border: 1px solid rgba(96, 165, 250, 0.3);
-}
-
-.mood-contemplative {
-  background: rgba(167, 139, 250, 0.15);
-  color: #a78bfa;
-  border: 1px solid rgba(167, 139, 250, 0.3);
-}
-
-.mood-anxious {
-  background: rgba(244, 114, 182, 0.15);
-  color: #f472b6;
-  border: 1px solid rgba(244, 114, 182, 0.3);
-}
-
-.mood-hopeful {
-  background: rgba(52, 211, 153, 0.15);
-  color: #34d399;
-  border: 1px solid rgba(52, 211, 153, 0.3);
-}
-
-.mood-angry {
-  background: rgba(248, 113, 113, 0.15);
-  color: #f87171;
-  border: 1px solid rgba(248, 113, 113, 0.3);
-}
-
-.mood-calm {
-  background: rgba(56, 189, 248, 0.15);
-  color: #38bdf8;
-  border: 1px solid rgba(56, 189, 248, 0.3);
-}
-
-/* Light mode mood adjustments */
-html.light .mood-happy { background: rgba(251, 191, 36, 0.1); color: #d97706; }
-html.light .mood-sad { background: rgba(96, 165, 250, 0.1); color: #2563eb; }
-html.light .mood-contemplative { background: rgba(167, 139, 250, 0.1); color: #7c3aed; }
-html.light .mood-anxious { background: rgba(244, 114, 182, 0.1); color: #db2777; }
-html.light .mood-hopeful { background: rgba(52, 211, 153, 0.1); color: #059669; }
-html.light .mood-angry { background: rgba(248, 113, 113, 0.1); color: #dc2626; }
-html.light .mood-calm { background: rgba(56, 189, 248, 0.1); color: #0284c7; }
+.mood-happy { color: #fbbf24; }
+.mood-sad { color: #60a5fa; }
+.mood-contemplative { color: #a78bfa; }
+.mood-anxious { color: #f472b6; }
+.mood-hopeful { color: #34d399; }
+.mood-angry { color: #f87171; }
+.mood-calm { color: #38bdf8; }
 
 /* ============================================
    ANIMATIONS
@@ -562,7 +332,7 @@ html.light .mood-calm { background: rgba(56, 189, 248, 0.1); color: #0284c7; }
 @keyframes fadeInDown {
   from {
     opacity: 0;
-    transform: translateY(-20px);
+    transform: translateY(-10px);
   }
   to {
     opacity: 1;
@@ -573,7 +343,7 @@ html.light .mood-calm { background: rgba(56, 189, 248, 0.1); color: #0284c7; }
 @keyframes scaleIn {
   from {
     opacity: 0;
-    transform: scale(0.9);
+    transform: scale(0.95);
   }
   to {
     opacity: 1;
@@ -581,33 +351,14 @@ html.light .mood-calm { background: rgba(56, 189, 248, 0.1); color: #0284c7; }
   }
 }
 
-@keyframes slideInRight {
-  from {
-    opacity: 0;
-    transform: translateX(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
 @keyframes pulse {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.5;
-  }
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
 }
 
-@keyframes shimmer {
-  0% {
-    background-position: -200% 0;
-  }
-  100% {
-    background-position: 200% 0;
-  }
+@keyframes breathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.02); }
 }
 
 @keyframes glow {
@@ -616,15 +367,6 @@ html.light .mood-calm { background: rgba(56, 189, 248, 0.1); color: #0284c7; }
   }
   50% {
     box-shadow: 0 0 40px var(--accent-glow), 0 0 60px var(--accent-glow);
-  }
-}
-
-@keyframes breathe {
-  0%, 100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.02);
   }
 }
 
@@ -637,38 +379,23 @@ html.light .mood-calm { background: rgba(56, 189, 248, 0.1); color: #0284c7; }
 }
 
 .animate-fade-in-down {
-  animation: fadeInDown 0.6s var(--ease-out-expo) forwards;
+  animation: fadeInDown 0.4s var(--ease-out-expo) forwards;
 }
 
 .animate-scale-in {
   animation: scaleIn 0.5s var(--ease-out-expo) forwards;
 }
 
-.animate-slide-in-right {
-  animation: slideInRight 0.5s var(--ease-out-expo) forwards;
-}
-
 .animate-pulse {
   animation: pulse 2s ease-in-out infinite;
 }
 
-.animate-shimmer {
-  background: linear-gradient(
-    90deg,
-    var(--bg-surface) 0%,
-    var(--bg-elevated) 50%,
-    var(--bg-surface) 100%
-  );
-  background-size: 200% 100%;
-  animation: shimmer 1.5s infinite;
+.animate-breathe {
+  animation: breathe 4s ease-in-out infinite;
 }
 
 .animate-glow {
   animation: glow 2s ease-in-out infinite;
-}
-
-.animate-breathe {
-  animation: breathe 4s ease-in-out infinite;
 }
 
 /* Stagger delays */
@@ -682,8 +409,8 @@ html.light .mood-calm { background: rgba(56, 189, 248, 0.1); color: #0284c7; }
    SCROLLBAR
    ============================================ */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
 }
 
 ::-webkit-scrollbar-track {
@@ -723,57 +450,16 @@ html.light .mood-calm { background: rgba(56, 189, 248, 0.1); color: #0284c7; }
 /* ============================================
    UTILITY CLASSES
    ============================================ */
-.container {
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 1.5rem;
-}
-
-.text-gradient {
-  background: linear-gradient(135deg, var(--aurora-violet), var(--aurora-pink));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.border-gradient {
-  border: 1px solid transparent;
-  background: linear-gradient(var(--bg-surface), var(--bg-surface)) padding-box,
-              linear-gradient(135deg, var(--aurora-violet), var(--aurora-pink)) border-box;
-}
-
-.glow-effect {
-  box-shadow: var(--shadow-glow);
-}
-
-.float-effect {
-  box-shadow: var(--shadow-float);
-}
-
-/* Hide scrollbar but keep functionality */
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
-}
-
-.no-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-
-/* ============================================
-   LINE CLAMP UTILITIES
-   ============================================ */
-.line-clamp-4 {
+.line-clamp-3 {
   display: -webkit-box;
-  -webkit-line-clamp: 4;
+  -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
 
-.line-clamp-5 {
+.line-clamp-4 {
   display: -webkit-box;
-  -webkit-line-clamp: 5;
+  -webkit-line-clamp: 4;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
@@ -790,22 +476,4 @@ html.light .mood-calm { background: rgba(56, 189, 248, 0.1); color: #0284c7; }
   .grid-overlay {
     display: none;
   }
-}
-
-/* ============================================
-   ADDITIONAL ANIMATIONS
-   ============================================ */
-@keyframes slideUp {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.animate-slide-up {
-  animation: slideUp 0.4s var(--ease-out-expo) forwards;
 }
