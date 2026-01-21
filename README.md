@@ -1,4 +1,6 @@
-# Late Night Thoughts 🌙
+<h1 align="center">
+  Late Night Thoughts 🌙
+</h1>
 
 <p align="center">
   <img src="public/icons/icon.png" width="160" height="160" alt="Late Night Thoughts Logo">
