@@ -158,6 +158,12 @@ This application was architected and developed using **OpenCode** and **Antigrav
 
 ---
 
+## 📜 License
+
+Distributed under the **MIT License**. See [`LICENSE`](./LICENSE) for the full text.
+
+---
+
 <div align="center">
   🌌*Made for the quiet moments when the world falls silent.*
 </div>
