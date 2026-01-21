@@ -4,7 +4,7 @@ import PostForm from '../components/PostForm';
 import ThoughtCard from '../components/ThoughtCard';
 import MoodFilter from '../components/MoodFilter';
 import ReadingMode from '../components/ReadingMode';
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { supabase } from '../utils/db';
 import { GetStaticProps } from 'next';
 
@@ -28,13 +28,31 @@ export default function Home({ initialThoughts }: HomeProps) {
   const [selectedThought, setSelectedThought] = useState<Thought | null>(null);
   const [selectedIndex, setSelectedIndex] = useState<number>(-1);
   const [scope, setScope] = useState<'all' | 'me'>('all');
+  const [user, setUser] = useState<any>(null);
+  
+  // Track if we should use the initial static thoughts
+  const [isLive, setIsLive] = useState(false);
 
-  const fetchThoughts = useCallback(async () => {
-    // If it's the initial load and scope is 'all' and mood is 'All', we already have the data
-    if (scope === 'all' && selectedMood === 'All' && thoughts === initialThoughts && thoughts.length > 0) return;
+  // Initialize user and listen for auth
+  useEffect(() => {
+    const checkUser = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      setUser(session?.user ?? null);
+    };
 
+    checkUser();
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  const fetchThoughts = useCallback(async (currentScope: string, currentMood: string) => {
     setLoading(true);
     setError(null);
+    
     try {
       const { data: { session } } = await supabase.auth.getSession();
       const headers: HeadersInit = {};
@@ -42,30 +60,39 @@ export default function Home({ initialThoughts }: HomeProps) {
         headers['Authorization'] = `Bearer ${session.access_token}`;
       }
 
-      const moodQuery = selectedMood === 'All' ? '' : `mood=${selectedMood}`;
-      const scopeQuery = `scope=${scope}`;
-      const queryString = [moodQuery, scopeQuery].filter(Boolean).join('&');
+      const moodParam = currentMood === 'All' ? '' : `mood=${currentMood}`;
+      const scopeParam = `scope=${currentScope}`;
+      const queryString = [moodParam, scopeParam].filter(Boolean).join('&');
       
       const response = await fetch(`/api/thoughts?${queryString}`, { headers });
       if (!response.ok) throw new Error('Failed to fetch');
       const data: Thought[] = await response.json();
+      
       setThoughts(data);
+      setIsLive(true);
     } catch (err: any) {
+      console.error('Fetch error:', err);
       setError(err.message);
     } finally {
       setLoading(false);
     }
-  }, [selectedMood, scope, initialThoughts, thoughts]);
+  }, []);
 
+  // Effect to trigger fetch on filter changes
   useEffect(() => {
-    // Only fetch if we're not on the initial state
-    if (scope !== 'all' || selectedMood !== 'All') {
-      fetchThoughts();
+    // Don't fetch on initial mount if scope is 'all' and mood is 'All'
+    // because we already have initialThoughts from GetStaticProps
+    if (!isLive && scope === 'all' && selectedMood === 'All') {
+      return;
     }
-  }, [fetchThoughts, scope, selectedMood]);
+    
+    fetchThoughts(scope, selectedMood);
+  }, [scope, selectedMood, fetchThoughts, isLive]);
 
-  // Rest of the component...
-
+  // Handle post success
+  const handlePostSuccess = () => {
+    fetchThoughts(scope, selectedMood);
+  };
 
   const openReading = (thought: Thought, index: number) => {
     setSelectedThought(thought);
@@ -108,7 +135,6 @@ export default function Home({ initialThoughts }: HomeProps) {
       </Head>
 
       <main className="min-h-screen">
-        {/* Hero - Centered, Expressive */}
         <header className="pt-24 sm:pt-32 pb-24 px-6 text-center">
           <div className="flex items-center justify-center gap-3 mb-10 animate-fade-in">
             <div className="w-8 h-px bg-gradient-to-r from-transparent to-aurora-violet/50" />
@@ -131,19 +157,16 @@ export default function Home({ initialThoughts }: HomeProps) {
           </p>
         </header>
 
-        {/* Composer */}
         <section className="px-6 pb-16">
           <div className="max-w-xl mx-auto">
-            <PostForm onSuccess={fetchThoughts} />
+            <PostForm onSuccess={handlePostSuccess} />
           </div>
         </section>
 
-        {/* Divider */}
         <div className="max-w-xl mx-auto px-6 pb-8">
           <div className="h-px bg-[var(--border-subtle)]" />
         </div>
 
-        {/* Feed Header */}
         <section className="px-6 pb-6">
           <div className="max-w-xl mx-auto flex items-center justify-between gap-4">
             <div className="flex items-center gap-6">
@@ -180,63 +203,47 @@ export default function Home({ initialThoughts }: HomeProps) {
           </div>
         </section>
 
-        {/* Thoughts Feed */}
-        <section className="px-6 pb-20">
+        <section className="px-6 pb-20 relative min-h-[400px]">
           <div className="max-w-xl mx-auto">
-            {/* Loading */}
+            {/* Smooth Loading Indicator - No full-screen flicker */}
             {loading && (
-              <div className="space-y-4">
-                {[1, 2, 3].map((i) => (
-                  <div key={i} className="py-6 border-b border-[var(--border-subtle)]">
-                    <div className="animate-pulse space-y-3">
-                      <div className="h-4 bg-[var(--border-subtle)] rounded w-full" />
-                      <div className="h-4 bg-[var(--border-subtle)] rounded w-3/4" />
-                      <div className="h-3 bg-[var(--border-subtle)] rounded w-20 mt-4" />
-                    </div>
-                  </div>
-                ))}
+              <div className="absolute top-0 right-0 left-0 flex justify-center -mt-4">
+                <div className="w-8 h-0.5 bg-aurora-violet/20 overflow-hidden rounded-full">
+                  <div className="w-full h-full bg-aurora-violet animate-[shimmer_1s_infinite]" />
+                </div>
               </div>
             )}
 
-            {/* Error */}
             {error && (
               <div className="py-16 text-center">
                 <p className="text-[var(--text-secondary)] text-sm mb-4">Something went wrong</p>
-                <button
-                  onClick={fetchThoughts}
-                  className="text-xs text-aurora-violet hover:underline"
-                >
+                <button onClick={() => fetchThoughts(scope, selectedMood)} className="text-xs text-aurora-violet hover:underline">
                   Try again
                 </button>
               </div>
             )}
 
-            {/* Empty */}
-            {!loading && !error && thoughts.length === 0 && (
+            {!loading && thoughts.length === 0 && (
               <div className="py-20 text-center">
                 <p className="text-[var(--text-secondary)] text-sm">
-                  No thoughts yet. Be the first to share.
+                  {scope === 'me' ? "You haven't shared any thoughts yet." : "No thoughts found."}
                 </p>
               </div>
             )}
 
-            {/* List */}
-            {!loading && !error && thoughts.length > 0 && (
-              <div>
-                {thoughts.map((thought, index) => (
-                  <ThoughtCard
-                    key={thought.id}
-                    thought={thought}
-                    index={index}
-                    onClick={() => openReading(thought, index)}
-                  />
-                ))}
-              </div>
-            )}
+            <div className={`transition-opacity duration-300 ${loading ? 'opacity-50' : 'opacity-100'}`}>
+              {thoughts.map((thought, index) => (
+                <ThoughtCard
+                  key={thought.id}
+                  thought={thought}
+                  index={index}
+                  onClick={() => openReading(thought, index)}
+                />
+              ))}
+            </div>
           </div>
         </section>
 
-        {/* Footer */}
         <footer className="px-6 py-12 border-t border-[var(--border-subtle)]">
           <div className="max-w-xl mx-auto text-center">
             <p className="text-xs text-[var(--text-muted)]">
@@ -246,7 +253,6 @@ export default function Home({ initialThoughts }: HomeProps) {
         </footer>
       </main>
 
-      {/* Reading Mode */}
       {selectedThought && (
         <ReadingMode
           thought={selectedThought}
@@ -277,7 +283,7 @@ export const getStaticProps: GetStaticProps = async () => {
       props: {
         initialThoughts: data || [],
       },
-      revalidate: 60, // Revalidate every 60 seconds
+      revalidate: 60,
     };
   } catch (err) {
     console.error('Error in getStaticProps:', err);
