@@ -52,7 +52,7 @@ const ThoughtCard: React.FC<ThoughtCardProps> = ({ thought, index = 0, onClick }
   }, [thought.id]);
 
   useEffect(() => {
-    const t = setTimeout(() => setIsVisible(true), index * 30);
+    const t = setTimeout(() => setIsVisible(true), index * 50);
     return () => clearTimeout(t);
   }, [index]);
 
@@ -71,55 +71,54 @@ const ThoughtCard: React.FC<ThoughtCardProps> = ({ thought, index = 0, onClick }
       onClick={onClick}
       className={`
         group cursor-pointer
-        py-8 border-b border-[var(--border-subtle)]
-        transition-all duration-500 ease-out
+        py-6 border-b border-[var(--border-subtle)]
+        transition-all duration-300
         hover:bg-[var(--glass-bg)]
-        ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'}
+        ${isVisible ? 'opacity-100' : 'opacity-0'}
       `}
     >
-      {/* Meta row - Above for better readability */}
-      <div className="flex items-center gap-4 text-[11px] font-mono tracking-wider text-[var(--text-faint)] mb-4 uppercase">
-        <time dateTime={thought.created_at}>
-          {formatTime(thought.created_at)}
-        </time>
-        
-        {moodColor && (
-          <>
-            <span className="opacity-20 text-[10px]">/</span>
-            <span style={{ color: moodColor }}>{thought.mood}</span>
-          </>
-        )}
-      </div>
-
       {/* Content */}
       <p className="
-        text-[17px] sm:text-[19px] leading-[1.7]
+        text-base sm:text-lg leading-relaxed
         text-[var(--text-primary)]
         font-body
-        tracking-normal
         whitespace-pre-wrap
+        mb-4
       ">
         {thought.content}
       </p>
 
-      {/* Hover Actions */}
-      <div className="mt-6 flex items-center justify-between opacity-0 group-hover:opacity-100 transition-all duration-300">
-        <button
-          onClick={toggleFavorite}
-          className={`
-            flex items-center gap-2 text-[10px] font-mono uppercase tracking-widest transition-colors
-            ${isFavorited ? 'text-pink-400' : 'text-[var(--text-faint)] hover:text-pink-400'}
-          `}
-        >
-          <svg className="w-3.5 h-3.5" fill={isFavorited ? 'currentColor' : 'none'} viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
-          </svg>
-          {isFavorited ? 'Saved' : 'Save'}
-        </button>
+      {/* Meta row */}
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-3 text-xs text-[var(--text-muted)]">
+          <time dateTime={thought.created_at}>
+            {formatTime(thought.created_at)}
+          </time>
+          
+          {moodColor && (
+            <>
+              <span className="opacity-30">/</span>
+              <span style={{ color: moodColor }}>{thought.mood?.toLowerCase()}</span>
+            </>
+          )}
+        </div>
 
-        <span className="text-[10px] font-mono uppercase tracking-widest text-[var(--text-faint)]">
-          Read Full
-        </span>
+        {/* Actions */}
+        <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+          <button
+            onClick={toggleFavorite}
+            className={`
+              p-1 rounded
+              transition-colors
+              ${isFavorited ? 'text-pink-400' : 'text-[var(--text-muted)] hover:text-pink-400'}
+            `}
+          >
+            <svg className="w-4 h-4" fill={isFavorited ? 'currentColor' : 'none'} viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
+            </svg>
+          </button>
+          <span className="text-[var(--text-muted)] text-xs">read</span>
+        </div>
       </div>
     </article>
   );

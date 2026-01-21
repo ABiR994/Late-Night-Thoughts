@@ -28,26 +28,8 @@ export default function Home({ initialThoughts }: HomeProps) {
   const [selectedThought, setSelectedThought] = useState<Thought | null>(null);
   const [selectedIndex, setSelectedIndex] = useState<number>(-1);
   const [scope, setScope] = useState<'all' | 'me'>('all');
-  const [user, setUser] = useState<any>(null);
   
-  // Track if we should use the initial static thoughts
   const [isLive, setIsLive] = useState(false);
-
-  // Initialize user and listen for auth
-  useEffect(() => {
-    const checkUser = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      setUser(session?.user ?? null);
-    };
-
-    checkUser();
-
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null);
-    });
-
-    return () => subscription.unsubscribe();
-  }, []);
 
   const fetchThoughts = useCallback(async (currentScope: string, currentMood: string) => {
     setLoading(true);
@@ -78,18 +60,13 @@ export default function Home({ initialThoughts }: HomeProps) {
     }
   }, []);
 
-  // Effect to trigger fetch on filter changes
   useEffect(() => {
-    // Don't fetch on initial mount if scope is 'all' and mood is 'All'
-    // because we already have initialThoughts from GetStaticProps
     if (!isLive && scope === 'all' && selectedMood === 'All') {
       return;
     }
-    
     fetchThoughts(scope, selectedMood);
   }, [scope, selectedMood, fetchThoughts, isLive]);
 
-  // Handle post success
   const handlePostSuccess = () => {
     fetchThoughts(scope, selectedMood);
   };
@@ -203,14 +180,19 @@ export default function Home({ initialThoughts }: HomeProps) {
           </div>
         </section>
 
-        <section className="px-6 pb-20 relative min-h-[400px]">
+        <section className="px-6 pb-20">
           <div className="max-w-xl mx-auto">
-            {/* Smooth Loading Indicator - No full-screen flicker */}
             {loading && (
-              <div className="absolute top-0 right-0 left-0 flex justify-center -mt-4">
-                <div className="w-8 h-0.5 bg-aurora-violet/20 overflow-hidden rounded-full">
-                  <div className="w-full h-full bg-aurora-violet animate-[shimmer_1s_infinite]" />
-                </div>
+              <div className="space-y-4">
+                {[1, 2, 3].map((i) => (
+                  <div key={i} className="py-6 border-b border-[var(--border-subtle)]">
+                    <div className="animate-pulse space-y-3">
+                      <div className="h-4 bg-[var(--border-subtle)] rounded w-full" />
+                      <div className="h-4 bg-[var(--border-subtle)] rounded w-3/4" />
+                      <div className="h-3 bg-[var(--border-subtle)] rounded w-20 mt-4" />
+                    </div>
+                  </div>
+                ))}
               </div>
             )}
 
@@ -223,7 +205,7 @@ export default function Home({ initialThoughts }: HomeProps) {
               </div>
             )}
 
-            {!loading && thoughts.length === 0 && (
+            {!loading && !error && thoughts.length === 0 && (
               <div className="py-20 text-center">
                 <p className="text-[var(--text-secondary)] text-sm">
                   {scope === 'me' ? "You haven't shared any thoughts yet." : "No thoughts found."}
@@ -231,16 +213,18 @@ export default function Home({ initialThoughts }: HomeProps) {
               </div>
             )}
 
-            <div className={`transition-opacity duration-300 ${loading ? 'opacity-50' : 'opacity-100'}`}>
-              {thoughts.map((thought, index) => (
-                <ThoughtCard
-                  key={thought.id}
-                  thought={thought}
-                  index={index}
-                  onClick={() => openReading(thought, index)}
-                />
-              ))}
-            </div>
+            {!loading && thoughts.length > 0 && (
+              <div>
+                {thoughts.map((thought, index) => (
+                  <ThoughtCard
+                    key={thought.id}
+                    thought={thought}
+                    index={index}
+                    onClick={() => openReading(thought, index)}
+                  />
+                ))}
+              </div>
+            )}
           </div>
         </section>
 
