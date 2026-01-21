@@ -74,10 +74,6 @@ This project implements several "Real World" security practices:
 -   **Rate Limiting**: Prevent bot spam with IP-based request throttling.
 -   **Content Sanitization**: Basic filtering for malicious or prohibited content.
 
-## 📜 License
-
-Distributed under the MIT License. See `LICENSE` for more information.
-
 ---
 
 *Made for the quiet moments.* 🌌
