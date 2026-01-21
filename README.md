@@ -1,79 +1,83 @@
-# Late Night Thoughts
+# Late Night Thoughts 🌙
 
-An anonymous thought journal web application.
+A beautiful, anonymous, and minimalistic journal for the thoughts that find you after midnight. Built with a focus on typography, privacy, and immersive user experience.
 
-## Core Features
-- Anonymous posting (no usernames, no accounts)
-- Private or public thoughts
-- Mood-based filtering (happy, sad, contemplative, etc.)
-- Minimal UI with an almost poetic vibe
-- Optional client-side encryption for private thoughts
-- Rate limiting to prevent spam and abuse
-- Premium dark mode and light mode experiences
+![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
+![Supabase](https://img.shields.io/badge/Supabase-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white)
 
-## Tech Stack
-- Frontend: Next.js (React)
-- Backend: Serverless API routes (Next.js API routes)
-- Database: Supabase (PostgreSQL)
-- Styling: Tailwind CSS or clean custom CSS with soft gradients
+## ✨ Features
 
-## Getting Started
+-   **Anonymous Identity**: Automatic anonymous authentication via Supabase. No accounts, no passwords, just your thoughts.
+-   **Immersive Design**: A premium "Midnight Aurora" dark theme with ambient background effects and glassmorphism.
+-   **Privacy Focused**: Choose to share thoughts publicly or keep them strictly private using database-level Row Level Security (RLS).
+-   **Personal Feed**: A dedicated "Mine" tab to view all your previous reflections across sessions.
+-   **Mood Tagging**: Express your emotional state with curated mood tags and filter the collective feed by emotion.
+-   **Performance First**: Built with Next.js ISR (Incremental Static Regeneration) for instant loading and SEO.
+-   **Safe Space**: Built-in server-side rate limiting and content moderation filters.
+-   **PWA Ready**: Installable on mobile devices for a native journaling experience.
 
-1.  **Install dependencies:**
-    \`\`\`bash
+## 🚀 Tech Stack
+
+-   **Frontend**: Next.js (React), TypeScript, Tailwind CSS
+-   **Backend**: Next.js API Routes (Serverless)
+-   **Database & Auth**: Supabase (PostgreSQL)
+-   **Styling**: Modern CSS with CSS Variables and custom animations
+-   **Offline Support**: `next-pwa` for service worker integration
+
+## 🛠️ Installation & Setup
+
+1.  **Clone the repository**:
+    ```bash
+    git clone https://github.com/your-username/late-night-thoughts.git
+    cd late-night-thoughts
+    ```
+
+2.  **Install dependencies**:
+    ```bash
     npm install
-    \`\`\`
+    ```
 
-2.  **Set up Supabase Project:**
-    *   Go to [Supabase](https://supabase.com/) and create a new project.
-    *   Find your Project URL and Anon Key in Project Settings -> API.
-    *   Create a `.env` file in the root of this project with the following content:
-        \`\`\`
-        NEXT_PUBLIC_SUPABASE_URL=YOUR_SUPABASE_URL
-        NEXT_PUBLIC_SUPABASE_ANON_KEY=YOUR_SUPABASE_ANON_KEY
-        \`\`\`
-        Replace `YOUR_SUPABASE_URL` and `YOUR_SUPABASE_ANON_KEY` with your actual credentials.
-    *   In your Supabase project, navigate to the "Table Editor" and create a new table named `thoughts` with the following schema:
-        *   `id`: `uuid` (Primary Key, Default Value: `gen_random_uuid()`)
-        *   `created_at`: `timestamp with time zone` (Default Value: `now()`)
-        *   `content`: `text` (Nullable: `false`)
-        *   `is_public`: `boolean` (Default Value: `false`)
+3.  **Configure Environment Variables**:
+    Create a `.env` file in the root directory based on `.env.example`:
+    ```env
+    NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
+    NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+    ```
 
-3.  **Run the development server:**
-    \`\`\`bash
+4.  **Database Setup**:
+    Ensure **Anonymous Sign-ins** are enabled in Supabase Auth settings. Run the following SQL in your Supabase SQL Editor:
+    ```sql
+    CREATE TABLE public.thoughts (
+        id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+        created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
+        content TEXT NOT NULL CHECK (char_length(content) <= 1000),
+        mood TEXT,
+        is_public BOOLEAN DEFAULT false NOT NULL,
+        user_id UUID DEFAULT auth.uid() REFERENCES auth.users(id) ON DELETE SET NULL
+    );
+    ALTER TABLE public.thoughts ENABLE ROW LEVEL SECURITY;
+    -- (Add RLS Policies as documented in project history)
+    ```
+
+5.  **Run the development server**:
+    ```bash
     npm run dev
-    \`\`\`
+    ```
 
-    Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🔒 Security
 
-## Project Structure
+This project implements several "Real World" security practices:
+-   **Row Level Security (RLS)**: Users can only retrieve their own private thoughts from the database.
+-   **JWT Verification**: API routes verify Supabase tokens before processing sensitive requests.
+-   **Rate Limiting**: Prevent bot spam with IP-based request throttling.
+-   **Content Sanitization**: Basic filtering for malicious or prohibited content.
 
-\`\`\`
-Late Night Thoughts/
-components/
-- ThoughtCard.tsx        (display a single thought)
-- PostForm.tsx           (submit a new thought)
-- MoodFilter.tsx         (filter thoughts by mood)
-- Layout.tsx             (shared layout wrapper)
+## 📜 License
 
-pages/
-- index.tsx              (main feed, filters, posting)
-- api/
-  - thoughts.ts          (GET/POST thoughts)
-  - rateLimit.ts         (rate limiting logic)
-  - encryption.ts        (optional encryption utilities)
+Distributed under the MIT License. See `LICENSE` for more information.
 
-styles/
-- globals.css             (base styles)
-- themes.css              (dark/light mode styling)
+---
 
-utils/
-- db.ts                   (database helpers)
-
-.gitignore
-package.json
-tsconfig.json
-tailwind.config.js
-README.md
-.env (ignored by git)
-\`\`\`
+*Made for the quiet moments.* 🌌
