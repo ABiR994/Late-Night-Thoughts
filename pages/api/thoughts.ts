@@ -19,12 +19,24 @@ const checkRateLimit = (ip: string, limit: number, windowMs: number) => {
   return userRate.count <= limit;
 };
 
+// Simple Content Moderation (Baseline)
+const moderateContent = async (content: string): Promise<{ safe: boolean; reason?: string }> => {
+  const forbiddenWords = ['spam', 'buy now', 'cheap watches', 'porn', 'violence'];
+  const lowerContent = content.toLowerCase();
+  
+  for (const word of forbiddenWords) {
+    if (lowerContent.includes(word)) {
+      return { safe: false, reason: 'Content violates community guidelines.' };
+    }
+  }
+  return { safe: true };
+};
+
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress || 'anonymous';
   const authHeader = req.headers.authorization;
 
   // 1. Create a dedicated Supabase client for THIS request
-  // This passes the user's token to Postgres so RLS works
   const supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
@@ -44,10 +56,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const { content, is_public, mood } = req.body;
     if (!content) return res.status(400).json({ error: 'Content is required' });
 
-    // 2. Get the authenticated user from the token
-    const { data: { user }, error: userError } = await supabase.auth.getUser();
+    // 2. Content Moderation
+    const moderation = await moderateContent(content);
+    if (!moderation.safe) {
+      return res.status(400).json({ error: moderation.reason });
+    }
+
+    // 3. Get the authenticated user from the token
+    const { data: { user } } = await supabase.auth.getUser();
     
-    // 3. Insert the thought using the user's identity
+    // 4. Insert the thought using the user's identity
     const { data, error } = await supabase
       .from('thoughts')
       .insert([
@@ -55,7 +73,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           content, 
           is_public: is_public || false, 
           mood,
-          user_id: user?.id // Explicitly link the user ID
+          user_id: user?.id 
         }
       ])
       .select();
