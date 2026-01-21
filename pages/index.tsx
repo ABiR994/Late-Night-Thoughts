@@ -6,6 +6,7 @@ import MoodFilter from '../components/MoodFilter';
 import ReadingMode from '../components/ReadingMode';
 import React, { useState, useEffect, useCallback } from 'react';
 import { supabase } from '../utils/db';
+import { GetStaticProps } from 'next';
 
 interface Thought {
   id: string;
@@ -15,17 +16,23 @@ interface Thought {
   mood: string | null;
 }
 
-export default function Home() {
-  const [thoughts, setThoughts] = useState<Thought[]>([]);
-  const [loading, setLoading] = useState(true);
+interface HomeProps {
+  initialThoughts: Thought[];
+}
+
+export default function Home({ initialThoughts }: HomeProps) {
+  const [thoughts, setThoughts] = useState<Thought[]>(initialThoughts);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [selectedMood, setSelectedMood] = useState('All');
   const [selectedThought, setSelectedThought] = useState<Thought | null>(null);
   const [selectedIndex, setSelectedIndex] = useState<number>(-1);
-  const [showComposer, setShowComposer] = useState(false);
   const [scope, setScope] = useState<'all' | 'me'>('all');
 
   const fetchThoughts = useCallback(async () => {
+    // If it's the initial load and scope is 'all' and mood is 'All', we already have the data
+    if (scope === 'all' && selectedMood === 'All' && thoughts === initialThoughts && thoughts.length > 0) return;
+
     setLoading(true);
     setError(null);
     try {
@@ -48,11 +55,17 @@ export default function Home() {
     } finally {
       setLoading(false);
     }
-  }, [selectedMood, scope]);
+  }, [selectedMood, scope, initialThoughts, thoughts]);
 
   useEffect(() => {
-    fetchThoughts();
-  }, [fetchThoughts]);
+    // Only fetch if we're not on the initial state
+    if (scope !== 'all' || selectedMood !== 'All') {
+      fetchThoughts();
+    }
+  }, [fetchThoughts, scope, selectedMood]);
+
+  // Rest of the component...
+
 
   const openReading = (thought: Thought, index: number) => {
     setSelectedThought(thought);
@@ -89,6 +102,9 @@ export default function Home() {
         <meta name="description" content="A quiet place for your midnight reflections." />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="theme-color" content="#02040a" />
+        <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
       </Head>
 
       <main className="min-h-screen">
@@ -245,3 +261,31 @@ export default function Home() {
     </Layout>
   );
 }
+
+export const getStaticProps: GetStaticProps = async () => {
+  try {
+    const { data, error } = await supabase
+      .from('thoughts')
+      .select('*')
+      .eq('is_public', true)
+      .order('created_at', { ascending: false })
+      .limit(20);
+
+    if (error) throw error;
+
+    return {
+      props: {
+        initialThoughts: data || [],
+      },
+      revalidate: 60, // Revalidate every 60 seconds
+    };
+  } catch (err) {
+    console.error('Error in getStaticProps:', err);
+    return {
+      props: {
+        initialThoughts: [],
+      },
+      revalidate: 10,
+    };
+  }
+};

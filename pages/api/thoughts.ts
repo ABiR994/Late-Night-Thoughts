@@ -19,6 +19,39 @@ const checkRateLimit = (ip: string, limit: number, windowMs: number) => {
   return userRate.count <= limit;
 };
 
+// Simple Content Moderation (Baseline)
+// In a real app, use OpenAI Moderation API or Perspective API
+const moderateContent = async (content: string): Promise<{ safe: boolean; reason?: string }> => {
+  const forbiddenWords = ['spam', 'buy now', 'cheap watches', 'porn', 'violence']; // Example list
+  const lowerContent = content.toLowerCase();
+  
+  for (const word of forbiddenWords) {
+    if (lowerContent.includes(word)) {
+      return { safe: false, reason: 'Content violates community guidelines.' };
+    }
+  }
+
+  // Placeholder for AI Moderation
+  /*
+  if (process.env.OPENAI_API_KEY) {
+    const response = await fetch('https://api.openai.com/v1/moderations', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`
+      },
+      body: JSON.stringify({ input: content })
+    });
+    const data = await response.json();
+    if (data.results[0].flagged) {
+      return { safe: false, reason: 'Flagged by AI moderation.' };
+    }
+  }
+  */
+
+  return { safe: true };
+};
+
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress || 'anonymous';
   
@@ -30,6 +63,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     const { content, is_public, mood } = req.body;
     
+    if (!content) {
+      return res.status(400).json({ error: 'Thought content cannot be empty.' });
+    }
+
+    // Content Moderation
+    const moderation = await moderateContent(content);
+    if (!moderation.safe) {
+      return res.status(400).json({ error: moderation.reason });
+    }
+    
     // Get user from auth header
     const authHeader = req.headers.authorization;
     let userId = null;
@@ -38,10 +81,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       const token = authHeader.replace('Bearer ', '');
       const { data: { user } } = await supabase.auth.getUser(token);
       userId = user?.id;
-    }
-
-    if (!content) {
-      return res.status(400).json({ error: 'Thought content cannot be empty.' });
     }
 
     const { data, error } = await supabase
