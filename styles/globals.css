@@ -762,6 +762,23 @@ html.light .mood-calm { background: rgba(56, 189, 248, 0.1); color: #0284c7; }
 }
 
 /* ============================================
+   LINE CLAMP UTILITIES
+   ============================================ */
+.line-clamp-4 {
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.line-clamp-5 {
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ============================================
    RESPONSIVE UTILITIES
    ============================================ */
 @media (max-width: 768px) {
@@ -773,4 +790,22 @@ html.light .mood-calm { background: rgba(56, 189, 248, 0.1); color: #0284c7; }
   .grid-overlay {
     display: none;
   }
+}
+
+/* ============================================
+   ADDITIONAL ANIMATIONS
+   ============================================ */
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-slide-up {
+  animation: slideUp 0.4s var(--ease-out-expo) forwards;
 }

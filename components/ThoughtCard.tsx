@@ -14,14 +14,14 @@ interface ThoughtCardProps {
   onClick?: () => void;
 }
 
-const moodConfig: Record<string, { class: string; color: string }> = {
-  Happy: { class: 'mood-happy', color: '#fbbf24' },
-  Sad: { class: 'mood-sad', color: '#60a5fa' },
-  Contemplative: { class: 'mood-contemplative', color: '#a78bfa' },
-  Anxious: { class: 'mood-anxious', color: '#f472b6' },
-  Hopeful: { class: 'mood-hopeful', color: '#34d399' },
-  Angry: { class: 'mood-angry', color: '#f87171' },
-  Calm: { class: 'mood-calm', color: '#38bdf8' },
+const moodConfig: Record<string, { color: string }> = {
+  Happy: { color: '#fbbf24' },
+  Sad: { color: '#60a5fa' },
+  Contemplative: { color: '#a78bfa' },
+  Anxious: { color: '#f472b6' },
+  Hopeful: { color: '#34d399' },
+  Angry: { color: '#f87171' },
+  Calm: { color: '#38bdf8' },
 };
 
 const formatTime = (dateString: string): string => {
@@ -32,11 +32,11 @@ const formatTime = (dateString: string): string => {
   const hours = Math.floor(diff / 3600000);
   const days = Math.floor(diff / 86400000);
 
-  if (mins < 1) return 'just now';
-  if (mins < 60) return `${mins}m ago`;
-  if (hours < 24) return `${hours}h ago`;
-  if (days === 1) return 'yesterday';
-  if (days < 7) return `${days}d ago`;
+  if (mins < 1) return 'now';
+  if (mins < 60) return `${mins}m`;
+  if (hours < 24) return `${hours}h`;
+  if (days === 1) return '1d';
+  if (days < 7) return `${days}d`;
   
   return date.toLocaleDateString('en-US', {
     month: 'short',
@@ -46,12 +46,11 @@ const formatTime = (dateString: string): string => {
 
 const ThoughtCard: React.FC<ThoughtCardProps> = ({ thought, index = 0, onClick }) => {
   const [isFavorited, setIsFavorited] = useState(false);
-  const [isExpanded, setIsExpanded] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
 
-  const isLong = thought.content.length > 320 || thought.content.split('\n').length > 5;
   const moodStyle = thought.mood ? moodConfig[thought.mood] : null;
+  const isLong = thought.content.length > 280;
 
   // Load favorite state
   useEffect(() => {
@@ -61,7 +60,7 @@ const ThoughtCard: React.FC<ThoughtCardProps> = ({ thought, index = 0, onClick }
 
   // Staggered animation
   useEffect(() => {
-    const timeout = setTimeout(() => setIsVisible(true), index * 100);
+    const timeout = setTimeout(() => setIsVisible(true), index * 80);
     return () => clearTimeout(timeout);
   }, [index]);
 
@@ -75,11 +74,6 @@ const ThoughtCard: React.FC<ThoughtCardProps> = ({ thought, index = 0, onClick }
     setIsFavorited(!isFavorited);
   };
 
-  const handleExpand = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setIsExpanded(!isExpanded);
-  };
-
   return (
     <article
       onClick={onClick}
@@ -87,161 +81,117 @@ const ThoughtCard: React.FC<ThoughtCardProps> = ({ thought, index = 0, onClick }
       onMouseLeave={() => setIsHovered(false)}
       className={`
         group relative cursor-pointer
-        transition-all duration-700 ease-out
-        ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}
+        pl-6 py-6
+        border-b border-[var(--border-subtle)]
+        transition-all duration-500 ease-out
+        ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}
+        hover:bg-[var(--glass-bg)]
       `}
-      style={{ transitionDelay: `${index * 60}ms` }}
+      style={{ transitionDelay: `${index * 40}ms` }}
     >
-      {/* Outer glow on hover */}
+      {/* Timeline dot */}
       <div 
         className={`
-          absolute -inset-px rounded-3xl transition-opacity duration-500
-          ${isHovered ? 'opacity-100' : 'opacity-0'}
+          absolute left-0 top-8 -translate-x-1/2
+          w-2 h-2 rounded-full
+          transition-all duration-300
+          ${isHovered ? 'scale-150' : 'scale-100'}
         `}
-        style={{
-          background: moodStyle 
-            ? `linear-gradient(135deg, ${moodStyle.color}20, transparent 50%)`
-            : 'linear-gradient(135deg, rgba(139, 92, 246, 0.15), transparent 50%)',
+        style={{ 
+          backgroundColor: moodStyle?.color || 'var(--text-muted)',
+          boxShadow: isHovered && moodStyle ? `0 0 12px ${moodStyle.color}` : 'none'
         }}
       />
 
-      {/* Card */}
-      <div 
-        className={`
-          relative overflow-hidden
-          bg-[var(--glass-bg)] backdrop-blur-xl
-          border border-[var(--border-subtle)]
-          rounded-2xl
-          transition-all duration-500 ease-out
-          ${isHovered 
-            ? 'border-[var(--border-default)] shadow-float transform -translate-y-1' 
-            : 'shadow-card'
-          }
-        `}
-      >
-        {/* Mood accent - top gradient line */}
-        {moodStyle && (
-          <div 
-            className="absolute top-0 left-0 right-0 h-[2px]"
-            style={{
-              background: `linear-gradient(90deg, transparent, ${moodStyle.color}60, transparent)`,
-            }}
-          />
-        )}
-
-        {/* Content area */}
-        <div className="p-7 sm:p-8">
-          {/* Thought text */}
-          <p className={`
-            font-display text-[1.125rem] sm:text-[1.25rem] leading-[1.7] tracking-[-0.01em]
-            text-[var(--text-primary)]
-            whitespace-pre-wrap
-            transition-all duration-300
-            ${!isExpanded && isLong ? 'line-clamp-5' : ''}
-          `}>
-            {thought.content}
-          </p>
-
-          {/* Expand button */}
-          {isLong && (
-            <button
-              onClick={handleExpand}
-              className="
-                mt-4 inline-flex items-center gap-1.5
-                text-sm font-body font-medium
-                text-aurora-violet/80 hover:text-aurora-violet
-                transition-colors duration-200
-              "
-            >
-              <span>{isExpanded ? 'Show less' : 'Continue reading'}</span>
-              <svg 
-                className={`w-4 h-4 transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`} 
-                fill="none" 
-                viewBox="0 0 24 24" 
-                stroke="currentColor" 
-                strokeWidth={2}
+      {/* Content */}
+      <div className="pr-4">
+        {/* Metadata row */}
+        <div className="flex items-center gap-3 mb-3">
+          <time 
+            className="text-xs font-mono text-[var(--text-muted)] tracking-wide"
+            dateTime={thought.created_at}
+          >
+            {formatTime(thought.created_at)}
+          </time>
+          
+          {moodStyle && (
+            <>
+              <span className="text-[var(--text-muted)] opacity-30">/</span>
+              <span 
+                className="text-xs font-mono tracking-wide"
+                style={{ color: moodStyle.color }}
               >
-                <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-              </svg>
-            </button>
+                {thought.mood?.toLowerCase()}
+              </span>
+            </>
           )}
         </div>
 
-        {/* Footer */}
-        <div className="px-7 sm:px-8 pb-6 pt-2">
-          <div className="flex items-center justify-between">
-            {/* Left side - timestamp and mood */}
-            <div className="flex items-center gap-4">
-              <time 
-                className="text-[13px] font-mono text-[var(--text-muted)] tracking-wide"
-                dateTime={thought.created_at}
-              >
-                {formatTime(thought.created_at)}
-              </time>
+        {/* Thought text */}
+        <p className={`
+          font-display text-lg sm:text-xl leading-[1.6] tracking-[-0.01em]
+          text-[var(--text-primary)]
+          whitespace-pre-wrap
+          ${isLong ? 'line-clamp-4' : ''}
+        `}>
+          {thought.content}
+        </p>
 
-              {moodStyle && (
-                <span 
-                  className={`
-                    inline-flex items-center gap-1.5
-                    px-3 py-1 rounded-full
-                    text-[11px] font-body font-medium uppercase tracking-wider
-                    transition-all duration-200
-                    ${moodStyle.class}
-                  `}
-                >
-                  <span 
-                    className="w-1.5 h-1.5 rounded-full"
-                    style={{ backgroundColor: moodStyle.color }}
-                  />
-                  {thought.mood}
-                </span>
-              )}
-            </div>
+        {/* Read more indicator for long thoughts */}
+        {isLong && (
+          <span className="
+            inline-block mt-3
+            text-xs font-mono text-[var(--text-muted)]
+            group-hover:text-aurora-violet
+            transition-colors duration-200
+          ">
+            continue reading...
+          </span>
+        )}
+      </div>
 
-            {/* Right side - actions */}
-            <div 
-              className={`
-                flex items-center gap-1
-                transition-all duration-300
-                ${isHovered ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-2'}
-              `}
-            >
-              {/* Favorite button */}
-              <button
-                onClick={toggleFavorite}
-                className={`
-                  p-2.5 rounded-xl
-                  transition-all duration-200
-                  ${isFavorited 
-                    ? 'text-pink-400 bg-pink-500/10' 
-                    : 'text-[var(--text-muted)] hover:text-pink-400 hover:bg-pink-500/10'
-                  }
-                `}
-                aria-label={isFavorited ? 'Remove from favorites' : 'Add to favorites'}
-              >
-                <svg
-                  className="w-[18px] h-[18px]"
-                  fill={isFavorited ? 'currentColor' : 'none'}
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={isFavorited ? 0 : 1.5}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
-                  />
-                </svg>
-              </button>
+      {/* Actions - appear on hover */}
+      <div 
+        className={`
+          absolute right-4 top-6
+          flex items-center gap-1
+          transition-all duration-300
+          ${isHovered ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-2'}
+        `}
+      >
+        {/* Favorite button */}
+        <button
+          onClick={toggleFavorite}
+          className={`
+            p-2 rounded-full
+            transition-all duration-200
+            ${isFavorited 
+              ? 'text-pink-400' 
+              : 'text-[var(--text-muted)] hover:text-pink-400'
+            }
+          `}
+          aria-label={isFavorited ? 'Remove from favorites' : 'Add to favorites'}
+        >
+          <svg
+            className="w-4 h-4"
+            fill={isFavorited ? 'currentColor' : 'none'}
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={isFavorited ? 0 : 1.5}
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
+            />
+          </svg>
+        </button>
 
-              {/* Expand indicator */}
-              <div className="p-2.5 text-[var(--text-muted)]">
-                <svg className="w-[18px] h-[18px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 3.75v4.5m0-4.5h4.5m-4.5 0L9 9M3.75 20.25v-4.5m0 4.5h4.5m-4.5 0L9 15M20.25 3.75h-4.5m4.5 0v4.5m0-4.5L15 9m5.25 11.25h-4.5m4.5 0v-4.5m0 4.5L15 15" />
-                </svg>
-              </div>
-            </div>
-          </div>
+        {/* Expand indicator */}
+        <div className="p-2 text-[var(--text-muted)]">
+          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+          </svg>
         </div>
       </div>
     </article>

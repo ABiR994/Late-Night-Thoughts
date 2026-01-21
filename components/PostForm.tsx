@@ -1,14 +1,18 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 
+interface PostFormProps {
+  onSuccess?: () => void;
+}
+
 const moods = [
-  { value: 'None', label: 'No mood', color: null },
-  { value: 'Happy', label: 'Happy', color: '#fbbf24' },
-  { value: 'Sad', label: 'Sad', color: '#60a5fa' },
-  { value: 'Contemplative', label: 'Contemplative', color: '#a78bfa' },
-  { value: 'Anxious', label: 'Anxious', color: '#f472b6' },
-  { value: 'Hopeful', label: 'Hopeful', color: '#34d399' },
-  { value: 'Angry', label: 'Angry', color: '#f87171' },
-  { value: 'Calm', label: 'Calm', color: '#38bdf8' },
+  { value: 'None', label: 'No mood', color: null, icon: '...' },
+  { value: 'Happy', label: 'Happy', color: '#fbbf24', icon: 'H' },
+  { value: 'Sad', label: 'Sad', color: '#60a5fa', icon: 'S' },
+  { value: 'Contemplative', label: 'Contemplative', color: '#a78bfa', icon: 'C' },
+  { value: 'Anxious', label: 'Anxious', color: '#f472b6', icon: 'A' },
+  { value: 'Hopeful', label: 'Hopeful', color: '#34d399', icon: 'H' },
+  { value: 'Angry', label: 'Angry', color: '#f87171', icon: 'A' },
+  { value: 'Calm', label: 'Calm', color: '#38bdf8', icon: 'C' },
 ];
 
 const prompts = [
@@ -24,18 +28,16 @@ const prompts = [
 
 const MAX_CHARS = 1000;
 
-const PostForm = () => {
+const PostForm: React.FC<PostFormProps> = ({ onSuccess }) => {
   const [content, setContent] = useState('');
   const [isPublic, setIsPublic] = useState(false);
   const [mood, setMood] = useState('None');
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
   const [isFocused, setIsFocused] = useState(false);
-  const [showMoodPicker, setShowMoodPicker] = useState(false);
   const [currentPrompt, setCurrentPrompt] = useState('');
   
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const moodPickerRef = useRef<HTMLDivElement>(null);
 
   // Set random prompt on mount
   useEffect(() => {
@@ -71,20 +73,9 @@ const PostForm = () => {
   useEffect(() => {
     if (textareaRef.current) {
       textareaRef.current.style.height = 'auto';
-      textareaRef.current.style.height = `${Math.max(180, textareaRef.current.scrollHeight)}px`;
+      textareaRef.current.style.height = `${Math.max(140, textareaRef.current.scrollHeight)}px`;
     }
   }, [content]);
-
-  // Close mood picker on outside click
-  useEffect(() => {
-    const handleClick = (e: MouseEvent) => {
-      if (moodPickerRef.current && !moodPickerRef.current.contains(e.target as Node)) {
-        setShowMoodPicker(false);
-      }
-    };
-    document.addEventListener('mousedown', handleClick);
-    return () => document.removeEventListener('mousedown', handleClick);
-  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -105,19 +96,22 @@ const PostForm = () => {
       });
 
       if (response.ok) {
-        setMessage({ type: 'success', text: 'Your thought has been released into the night.' });
+        setMessage({ type: 'success', text: 'Released into the night.' });
         setContent('');
         setMood('None');
         setIsPublic(false);
         localStorage.removeItem('thought-draft');
         setCurrentPrompt(prompts[Math.floor(Math.random() * prompts.length)]);
-        setTimeout(() => setMessage(null), 5000);
+        setTimeout(() => {
+          setMessage(null);
+          onSuccess?.();
+        }, 1500);
       } else {
         const error = await response.json();
         setMessage({ type: 'error', text: error.error || 'Something went wrong.' });
       }
     } catch (error) {
-      setMessage({ type: 'error', text: 'Failed to share thought. Please try again.' });
+      setMessage({ type: 'error', text: 'Failed to share thought.' });
     } finally {
       setLoading(false);
     }
@@ -127,249 +121,178 @@ const PostForm = () => {
   const charProgress = (content.length / MAX_CHARS) * 100;
 
   return (
-    <form onSubmit={handleSubmit} className="w-full max-w-2xl mx-auto">
-      {/* Main card container */}
+    <form onSubmit={handleSubmit} className="w-full">
+      {/* Terminal-style composer */}
       <div 
         className={`
-          relative rounded-3xl
-          transition-all duration-500 ease-out
-          ${isFocused ? 'shadow-glow' : ''}
+          relative
+          bg-[var(--bg-surface)]/60 backdrop-blur-xl
+          border border-[var(--border-subtle)]
+          rounded-2xl
+          overflow-hidden
+          transition-all duration-500
+          ${isFocused ? 'border-[var(--border-default)] shadow-glow' : ''}
         `}
       >
-        {/* Gradient border */}
-        <div 
-          className={`
-            absolute -inset-[1px] rounded-3xl
-            transition-opacity duration-500
-            ${isFocused ? 'opacity-100' : 'opacity-0'}
-          `}
-          style={{
-            background: 'linear-gradient(135deg, rgba(139, 92, 246, 0.4), rgba(236, 72, 153, 0.2), transparent)',
-          }}
-        />
-
-        {/* Card content */}
-        <div 
-          className={`
-            relative
-            bg-[var(--bg-surface)]/80 backdrop-blur-2xl
-            border border-[var(--border-subtle)]
-            rounded-3xl
-            overflow-hidden
-            transition-all duration-500
-            ${isFocused ? 'border-transparent' : ''}
-          `}
-        >
-          {/* Inner content */}
-          <div className="p-8 sm:p-10">
-            {/* Prompt hint - fades when typing */}
-            <div className={`
-              overflow-hidden transition-all duration-500 ease-out
-              ${content ? 'max-h-0 opacity-0 mb-0' : 'max-h-20 opacity-100 mb-6'}
+        {/* Terminal header */}
+        <div className="flex items-center justify-between px-5 py-3 border-b border-[var(--border-subtle)]">
+          <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1.5">
+              <span className="w-3 h-3 rounded-full bg-red-500/60" />
+              <span className="w-3 h-3 rounded-full bg-yellow-500/60" />
+              <span className="w-3 h-3 rounded-full bg-green-500/60" />
+            </div>
+          </div>
+          
+          <div className="flex items-center gap-3 text-xs font-mono text-[var(--text-muted)]">
+            <span className={`
+              transition-colors duration-300
+              ${charProgress > 90 ? 'text-red-400' : charProgress > 70 ? 'text-amber-400' : ''}
             `}>
-              <p className="text-base text-[var(--text-muted)] font-display italic leading-relaxed">
-                "{currentPrompt}"
-              </p>
+              {content.length}/{MAX_CHARS}
+            </span>
+            <span className="opacity-50">|</span>
+            <span>{isPublic ? 'public' : 'private'}</span>
+          </div>
+        </div>
+
+        {/* Writing area */}
+        <div className="p-5 sm:p-6">
+          {/* Prompt - shows when empty */}
+          {!content && (
+            <div className="mb-4 text-sm text-[var(--text-muted)] font-mono opacity-60">
+              // {currentPrompt}
+            </div>
+          )}
+
+          {/* Textarea */}
+          <textarea
+            ref={textareaRef}
+            value={content}
+            onChange={(e) => e.target.value.length <= MAX_CHARS && setContent(e.target.value)}
+            onFocus={() => setIsFocused(true)}
+            onBlur={() => setIsFocused(false)}
+            placeholder="Start typing..."
+            disabled={loading}
+            className="
+              w-full min-h-[140px] bg-transparent
+              text-lg sm:text-xl font-display leading-[1.7] tracking-[-0.01em]
+              text-[var(--text-primary)]
+              placeholder:text-[var(--text-muted)] placeholder:font-mono placeholder:text-sm
+              focus:outline-none resize-none
+            "
+          />
+        </div>
+
+        {/* Progress bar */}
+        <div className="h-0.5 bg-[var(--border-subtle)]">
+          <div 
+            className={`
+              h-full rounded-r-full
+              transition-all duration-300 ease-out
+              ${charProgress > 90 
+                ? 'bg-red-500' 
+                : charProgress > 70 
+                  ? 'bg-amber-500' 
+                  : 'bg-aurora-violet'
+              }
+            `}
+            style={{ width: `${Math.min(charProgress, 100)}%` }}
+          />
+        </div>
+
+        {/* Controls */}
+        <div className="p-5 sm:p-6 pt-4 bg-[var(--bg-base)]/30">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            {/* Left: Mood selector - inline pills */}
+            <div className="flex items-center gap-2 flex-wrap">
+              <span className="text-xs font-mono text-[var(--text-muted)] mr-1">mood:</span>
+              {moods.map((m) => (
+                <button
+                  key={m.value}
+                  type="button"
+                  onClick={() => setMood(m.value)}
+                  className={`
+                    px-3 py-1.5 rounded-full
+                    text-xs font-body
+                    border transition-all duration-200
+                    ${mood === m.value 
+                      ? 'border-transparent text-[var(--bg-base)]' 
+                      : 'border-[var(--border-subtle)] text-[var(--text-secondary)] hover:border-[var(--border-default)]'
+                    }
+                  `}
+                  style={{
+                    backgroundColor: mood === m.value ? (m.color || 'var(--text-muted)') : 'transparent',
+                  }}
+                >
+                  {m.label}
+                </button>
+              ))}
             </div>
 
-            {/* Textarea */}
-            <textarea
-              ref={textareaRef}
-              value={content}
-              onChange={(e) => e.target.value.length <= MAX_CHARS && setContent(e.target.value)}
-              onFocus={() => setIsFocused(true)}
-              onBlur={() => setIsFocused(false)}
-              placeholder="What's on your mind tonight?"
-              disabled={loading}
-              className="
-                w-full min-h-[180px] bg-transparent
-                text-xl sm:text-2xl font-display leading-[1.6] tracking-[-0.01em]
-                text-[var(--text-primary)]
-                placeholder:text-[var(--text-muted)] placeholder:font-body placeholder:text-lg placeholder:font-normal
-                focus:outline-none resize-none
-              "
-            />
-          </div>
-
-          {/* Divider with progress */}
-          <div className="relative h-[1px] mx-8 sm:mx-10">
-            <div className="absolute inset-0 bg-[var(--border-subtle)]" />
-            <div 
-              className={`
-                absolute left-0 top-0 h-full rounded-full
-                transition-all duration-300 ease-out
-                ${charProgress > 90 
-                  ? 'bg-gradient-to-r from-red-500 to-red-400' 
-                  : charProgress > 70 
-                    ? 'bg-gradient-to-r from-amber-500 to-amber-400' 
-                    : 'bg-gradient-to-r from-aurora-violet to-aurora-purple'
-                }
-              `}
-              style={{ width: `${Math.min(charProgress, 100)}%` }}
-            />
-          </div>
-
-          {/* Controls */}
-          <div className="p-8 sm:p-10 pt-6 sm:pt-8">
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
-              {/* Left controls */}
-              <div className="flex flex-wrap items-center gap-5">
-                {/* Public toggle */}
-                <label className="flex items-center gap-3 cursor-pointer group">
-                  <div className="relative">
-                    <input
-                      type="checkbox"
-                      checked={isPublic}
-                      onChange={(e) => setIsPublic(e.target.checked)}
-                      disabled={loading}
-                      className="sr-only peer"
-                    />
-                    <div className="
-                      w-12 h-7 rounded-full
-                      bg-[var(--border-default)] 
-                      peer-checked:bg-aurora-violet
-                      transition-colors duration-300
-                    " />
-                    <div className="
-                      absolute left-1 top-1 w-5 h-5 rounded-full
-                      bg-white shadow-md
-                      peer-checked:translate-x-5
-                      transition-transform duration-300 ease-out
-                    " />
-                  </div>
-                  <span className="text-sm font-body text-[var(--text-secondary)] group-hover:text-[var(--text-primary)] transition-colors">
-                    Share publicly
-                  </span>
-                </label>
-
-                {/* Mood picker */}
-                <div className="relative" ref={moodPickerRef}>
-                  <button
-                    type="button"
-                    onClick={() => setShowMoodPicker(!showMoodPicker)}
-                    className={`
-                      flex items-center gap-2.5 px-4 py-2 rounded-xl
-                      text-sm font-body
-                      bg-[var(--glass-bg)] backdrop-blur-sm
-                      border border-[var(--border-subtle)]
-                      transition-all duration-200
-                      hover:border-[var(--border-default)]
-                      ${showMoodPicker ? 'border-aurora-violet/50' : ''}
-                    `}
-                  >
-                    {selectedMood?.color && (
-                      <span 
-                        className="w-2.5 h-2.5 rounded-full"
-                        style={{ backgroundColor: selectedMood.color }}
-                      />
-                    )}
-                    <span className="text-[var(--text-secondary)]">
-                      {selectedMood?.label || 'Mood'}
-                    </span>
-                    <svg 
-                      className={`w-4 h-4 text-[var(--text-muted)] transition-transform duration-200 ${showMoodPicker ? 'rotate-180' : ''}`} 
-                      fill="none" 
-                      viewBox="0 0 24 24" 
-                      stroke="currentColor" 
-                      strokeWidth={2}
-                    >
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-                    </svg>
-                  </button>
-
-                  {/* Mood dropdown */}
-                  {showMoodPicker && (
-                    <div className="
-                      absolute left-0 top-full mt-3 z-50
-                      min-w-[200px] py-2
-                      bg-[var(--bg-elevated)]/95 backdrop-blur-xl
-                      border border-[var(--border-default)]
-                      rounded-2xl shadow-float
-                      animate-fade-in-down
-                    ">
-                      {moods.map((m) => (
-                        <button
-                          key={m.value}
-                          type="button"
-                          onClick={() => {
-                            setMood(m.value);
-                            setShowMoodPicker(false);
-                          }}
-                          className={`
-                            w-full flex items-center gap-3 px-4 py-3
-                            text-sm text-left font-body
-                            transition-colors duration-150
-                            ${mood === m.value 
-                              ? 'text-aurora-violet bg-aurora-violet/10' 
-                              : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--glass-bg)]'
-                            }
-                          `}
-                        >
-                          {m.color ? (
-                            <span 
-                              className="w-2.5 h-2.5 rounded-full"
-                              style={{ backgroundColor: m.color }}
-                            />
-                          ) : (
-                            <span className="w-2.5 h-2.5 rounded-full border border-[var(--border-default)]" />
-                          )}
-                          <span className="flex-1">{m.label}</span>
-                          {mood === m.value && (
-                            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                              <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-                            </svg>
-                          )}
-                        </button>
-                      ))}
-                    </div>
-                  )}
+            {/* Right: Actions */}
+            <div className="flex items-center gap-4 w-full sm:w-auto">
+              {/* Public toggle */}
+              <label className="flex items-center gap-2 cursor-pointer group">
+                <div className="relative">
+                  <input
+                    type="checkbox"
+                    checked={isPublic}
+                    onChange={(e) => setIsPublic(e.target.checked)}
+                    disabled={loading}
+                    className="sr-only peer"
+                  />
+                  <div className="
+                    w-10 h-6 rounded-full
+                    bg-[var(--border-default)] 
+                    peer-checked:bg-aurora-violet
+                    transition-colors duration-300
+                  " />
+                  <div className="
+                    absolute left-0.5 top-0.5 w-5 h-5 rounded-full
+                    bg-white shadow-sm
+                    peer-checked:translate-x-4
+                    transition-transform duration-300 ease-out
+                  " />
                 </div>
-              </div>
-
-              {/* Right side - character count and submit */}
-              <div className="flex items-center gap-4">
-                <span className={`
-                  text-xs font-mono tracking-wide
-                  transition-colors duration-300
-                  ${charProgress > 90 ? 'text-red-400' : charProgress > 70 ? 'text-amber-400' : 'text-[var(--text-muted)]'}
-                `}>
-                  {content.length}/{MAX_CHARS}
+                <span className="text-xs font-mono text-[var(--text-muted)] group-hover:text-[var(--text-secondary)] transition-colors">
+                  share
                 </span>
+              </label>
 
-                <button
-                  type="submit"
-                  disabled={loading || !content.trim()}
-                  className="
-                    relative overflow-hidden
-                    flex items-center gap-2.5
-                    px-7 py-3.5
-                    bg-gradient-to-r from-aurora-violet to-aurora-purple
-                    text-white font-body font-medium text-sm
-                    rounded-2xl
-                    transition-all duration-300 ease-out
-                    hover:shadow-glow-lg hover:-translate-y-0.5
-                    disabled:opacity-40 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none
-                    active:translate-y-0
-                  "
-                >
-                  {loading ? (
-                    <>
-                      <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-                      </svg>
-                      <span>Releasing...</span>
-                    </>
-                  ) : (
-                    <>
-                      <span>Release thought</span>
-                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
-                      </svg>
-                    </>
-                  )}
-                </button>
-              </div>
+              {/* Submit */}
+              <button
+                type="submit"
+                disabled={loading || !content.trim()}
+                className="
+                  flex-1 sm:flex-none
+                  flex items-center justify-center gap-2
+                  px-6 py-3
+                  bg-[var(--text-primary)] text-[var(--bg-base)]
+                  font-body font-medium text-sm
+                  rounded-full
+                  transition-all duration-300
+                  hover:opacity-90
+                  disabled:opacity-30 disabled:cursor-not-allowed
+                "
+              >
+                {loading ? (
+                  <>
+                    <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                    </svg>
+                    <span>Releasing...</span>
+                  </>
+                ) : (
+                  <>
+                    <span>Release</span>
+                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
+                    </svg>
+                  </>
+                )}
+              </button>
             </div>
           </div>
         </div>
@@ -378,7 +301,7 @@ const PostForm = () => {
       {/* Success/Error message */}
       {message && (
         <div className={`
-          mt-6 px-6 py-4 rounded-2xl text-sm font-body text-center
+          mt-4 px-4 py-3 rounded-xl text-sm font-mono text-center
           animate-fade-in-up
           ${message.type === 'success' 
             ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' 
