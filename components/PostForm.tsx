@@ -110,22 +110,22 @@ const PostForm: React.FC<PostFormProps> = ({ onSuccess }) => {
     <form onSubmit={handleSubmit}>
       {/* Textarea Container */}
       <div className="
-        bg-[var(--bg-surface)]/50 backdrop-blur-sm
+        bg-[var(--bg-surface)]/40 backdrop-blur-md
         border border-[var(--border-subtle)]
-        rounded-xl
-        transition-all duration-200
-        focus-within:border-[var(--border-default)]
+        rounded-2xl
+        transition-all duration-300
+        focus-within:border-aurora-violet/30 focus-within:shadow-glow
       ">
         <textarea
           ref={textareaRef}
           value={content}
           onChange={(e) => e.target.value.length <= MAX_CHARS && setContent(e.target.value)}
-          placeholder="What's on your mind?"
+          placeholder="What's on your mind tonight?"
           disabled={loading}
           className="
-            w-full min-h-[100px] p-4
+            w-full min-h-[120px] p-6
             bg-transparent
-            text-base font-body leading-relaxed
+            text-[17px] font-body leading-relaxed
             text-[var(--text-primary)]
             placeholder:text-[var(--text-muted)]
             focus:outline-none resize-none

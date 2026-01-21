@@ -79,26 +79,27 @@ const ThoughtCard: React.FC<ThoughtCardProps> = ({ thought, index = 0, onClick }
     >
       {/* Content */}
       <p className="
-        text-base sm:text-lg leading-relaxed
+        text-[17px] sm:text-[19px] leading-[1.65]
         text-[var(--text-primary)]
         font-body
+        tracking-tight
         whitespace-pre-wrap
-        mb-4
+        mb-6
       ">
         {thought.content}
       </p>
 
       {/* Meta row */}
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3 text-xs text-[var(--text-muted)]">
+        <div className="flex items-center gap-4 text-[12px] font-mono tracking-wider text-[var(--text-muted)]">
           <time dateTime={thought.created_at}>
             {formatTime(thought.created_at)}
           </time>
           
           {moodColor && (
             <>
-              <span className="opacity-30">/</span>
-              <span style={{ color: moodColor }}>{thought.mood?.toLowerCase()}</span>
+              <span className="opacity-20 text-[10px]">/</span>
+              <span style={{ color: moodColor }} className="uppercase">{thought.mood?.toLowerCase()}</span>
             </>
           )}
         </div>

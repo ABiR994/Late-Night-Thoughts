@@ -80,13 +80,26 @@ export default function Home() {
       </Head>
 
       <main className="min-h-screen">
-        {/* Hero - Centered, Minimal */}
-        <header className="pt-20 sm:pt-28 pb-16 px-6 text-center">
-          <h1 className="text-4xl sm:text-5xl font-display text-[var(--text-primary)] mb-4">
-            Late Night Thoughts
+        {/* Hero - Centered, Expressive */}
+        <header className="pt-24 sm:pt-32 pb-24 px-6 text-center">
+          <div className="flex items-center justify-center gap-3 mb-10 animate-fade-in">
+            <div className="w-8 h-px bg-gradient-to-r from-transparent to-aurora-violet/50" />
+            <span className="text-[10px] font-mono uppercase tracking-[0.4em] text-[var(--text-muted)]">
+              Anonymous Journal
+            </span>
+            <div className="w-8 h-px bg-gradient-to-l from-transparent to-aurora-violet/50" />
+          </div>
+
+          <h1 className="animate-fade-in">
+            <span className="block text-display-lg font-display text-[var(--text-primary)] leading-[0.95]">
+              Late Night
+            </span>
+            <span className="block text-display-lg font-display text-gradient leading-[0.95] mt-1">
+              Thoughts
+            </span>
           </h1>
-          <p className="text-base text-[var(--text-secondary)] max-w-md mx-auto">
-            A quiet space for anonymous reflections
+          <p className="mt-10 text-lg text-[var(--text-secondary)] font-body max-w-md mx-auto leading-relaxed animate-fade-in-up delay-1">
+            Where words find their way out when the world falls quiet.
           </p>
         </header>
 
@@ -105,15 +118,16 @@ export default function Home() {
         {/* Feed Header */}
         <section className="px-6 pb-6">
           <div className="max-w-xl mx-auto flex items-center justify-between gap-4">
-            <div className="flex items-center gap-4">
-              <span className="text-sm text-[var(--text-muted)]">
+            <div className="flex items-center gap-6">
+              <span className="text-[11px] font-mono uppercase tracking-[0.2em] text-[var(--text-faint)]">
                 {thoughts.length} thoughts
               </span>
               <button
                 onClick={openRandom}
                 disabled={thoughts.length === 0}
                 className="
-                  text-xs text-[var(--text-muted)] hover:text-aurora-violet
+                  text-[11px] font-mono uppercase tracking-[0.2em]
+                  text-[var(--text-muted)] hover:text-aurora-violet
                   disabled:opacity-40 disabled:cursor-not-allowed
                   transition-colors
                 "
