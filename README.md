@@ -152,7 +152,7 @@ This project implements industry-standard security practices:
 
 ## 🤖 Built With
 
-This application was architected and developed using **[OpenCode](https://opencode.com)** and **Antigravity**, leveraging advanced agentic coding workflows to ensure clean architecture, minimalistic UI design, and robust functionality.
+This application was architected and developed using **OpenCode** and **Antigravity**, leveraging advanced agentic coding workflows to ensure clean architecture, minimalistic UI design, and robust functionality.
 
 > "Great software balances logic, creativity, and human experience."
 
