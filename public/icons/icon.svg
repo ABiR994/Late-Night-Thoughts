@@ -1,0 +1,28 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="512" height="512" rx="120" fill="#02040A"/>
+  
+  <!-- Subtle Glow -->
+  <circle cx="256" cy="256" r="180" fill="url(#glow_grad)" opacity="0.15"/>
+  
+  <!-- Crescent Moon -->
+  <path d="M340 310C340 376.274 286.274 430 220 430C153.726 430 100 376.274 100 310C100 243.726 153.726 190 220 190C240.237 190 259.083 195.006 275.548 203.856C252.378 212.87 236 235.525 236 262C236 295.137 262.863 322 296 322C314.17 322 330.407 313.882 341.229 301.077C340.421 304.004 340 306.96 340 310Z" fill="url(#moon_grad)"/>
+  
+  <!-- Shining Star -->
+  <path d="M380 150L383.5 158.5L392 162L383.5 165.5L380 174L376.5 165.5L368 162L376.5 158.5L380 150Z" fill="#F5F6FA"/>
+  <circle cx="380" cy="162" r="12" fill="#8B5CF6" opacity="0.3">
+    <animate attributeName="opacity" values="0.2;0.5;0.2" dur="3s" repeatCount="indefinite" />
+  </circle>
+
+  <!-- Definitions -->
+  <defs>
+    <radialGradient id="glow_grad" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" transform="translate(256 256) rotate(90) scale(180)">
+      <stop stop-color="#8B5CF6"/>
+      <stop offset="1" stop-color="#8B5CF6" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="moon_grad" x1="100" y1="190" x2="340" y2="430" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#8B5CF6"/>
+      <stop offset="1" stop-color="#EC4899"/>
+    </linearGradient>
+  </defs>
+</svg>
