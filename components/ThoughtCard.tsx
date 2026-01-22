@@ -71,11 +71,10 @@ const ThoughtCard: React.FC<ThoughtCardProps> = ({ thought, index = 0, onClick }
       onClick={onClick}
       className={`
         group cursor-pointer relative
-        py-8 px-6 -mx-4 mb-4
-        bg-black/20 backdrop-blur-md
-        border border-white/[0.03]
+        py-8 px-6 -mx-4 mb-2
+        bg-black/40 backdrop-blur-sm
         transition-all duration-500 ease-[var(--ease-out-expo)]
-        hover:bg-black/40 hover:border-white/[0.08] hover:shadow-2xl
+        hover:bg-black/60
         rounded-2xl
         ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}
       `}
