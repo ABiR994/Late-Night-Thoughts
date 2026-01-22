@@ -89,6 +89,7 @@ const ThoughtCard = forwardRef<HTMLElement, ThoughtCardProps>(({ thought, index 
         group cursor-pointer relative
         py-8 px-6 -mx-4 mb-2
         bg-black/40 backdrop-blur-sm
+        glass-edge
         transition-all duration-500 ease-[var(--ease-out-expo)]
         hover:bg-black/60
         rounded-2xl overflow-hidden

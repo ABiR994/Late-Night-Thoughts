@@ -140,6 +140,7 @@ const PostForm: React.FC<PostFormProps> = ({ onSuccess }) => {
       <div className="
         bg-[var(--bg-surface)]/30 backdrop-blur-xl
         border border-[var(--border-subtle)]
+        glass-edge
         rounded-2xl relative
         transition-all duration-500 ease-[var(--ease-out-expo)]
         focus-within:border-aurora-violet/40 focus-within:shadow-glow
