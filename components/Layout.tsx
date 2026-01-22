@@ -33,6 +33,10 @@ const Layout = ({ children, blurBackground = false }: LayoutProps) => {
   return (
     <div className={`relative min-h-screen overflow-hidden theme-${timeState}`}>
       
+      {/* Mist Overlays */}
+      <div className="mist-overlay mist-top" />
+      <div className="mist-overlay mist-bottom" />
+
       {/* Ripple of Silence */}
       <div className="ripple-container">
         {ripples.map(id => (
