@@ -152,7 +152,7 @@ export default function Home({ initialThoughts }: HomeProps) {
   };
 
   return (
-    <Layout>
+    <Layout blurBackground={!!selectedThought}>
       <Head>
         <title>Late Night Thoughts</title>
         <meta name="description" content="A quiet place for your midnight reflections." />
@@ -163,7 +163,7 @@ export default function Home({ initialThoughts }: HomeProps) {
         <link rel="apple-touch-icon" href="/icons/icon.png" />
       </Head>
 
-      <main className="min-h-screen">
+      <main className={`min-h-screen transition-all duration-700 ${selectedThought ? 'blur-md pointer-events-none' : 'blur-0'}`}>
         <header className="pt-32 sm:pt-48 pb-32 px-6 text-center">
           <div className="flex items-center justify-center gap-4 mb-12 animate-fade-in">
             <div className="w-12 h-px bg-gradient-to-r from-transparent via-aurora-violet/40 to-transparent" />

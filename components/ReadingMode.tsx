@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useCursor } from '../context/CursorContext';
 
 interface Thought {
   id: string;
@@ -37,6 +38,7 @@ const formatDate = (dateString: string): string => {
 const ReadingMode: React.FC<ReadingModeProps> = ({ thought, onClose, onNext, onPrev }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [isFavorited, setIsFavorited] = useState(false);
+  const { handwritten } = useCursor();
   const moodColor = thought.mood ? moodColors[thought.mood] : null;
 
   useEffect(() => {
@@ -76,15 +78,18 @@ const ReadingMode: React.FC<ReadingModeProps> = ({ thought, onClose, onNext, onP
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       {/* Backdrop */}
       <div 
-        className={`absolute inset-0 bg-[var(--bg-base)] transition-opacity duration-300 ${isVisible ? 'opacity-100' : 'opacity-0'}`}
+        className={`absolute inset-0 bg-[var(--bg-base)]/60 backdrop-blur-md transition-opacity duration-500 ${isVisible ? 'opacity-100' : 'opacity-0'}`}
         onClick={onClose}
       />
 
       {/* Content */}
       <div className={`
         relative z-10 w-full max-w-2xl mx-6 sm:mx-auto
-        transition-all duration-300
-        ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}
+        bg-[var(--bg-surface)]/80 backdrop-blur-xl
+        p-10 sm:p-16 rounded-3xl
+        border border-white/10 glass-edge
+        transition-all duration-500 ease-[var(--ease-out-expo)]
+        ${isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95 translate-y-4'}
       `}>
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
@@ -120,13 +125,13 @@ const ReadingMode: React.FC<ReadingModeProps> = ({ thought, onClose, onNext, onP
           )}
 
           {/* Thought */}
-          <p className="
+          <p className={`
             text-2xl sm:text-3xl md:text-4xl
             leading-relaxed
             text-[var(--text-primary)]
-            font-display italic
+            ${handwritten ? 'font-handwritten text-4xl sm:text-5xl !italic-none' : 'font-display italic'}
             whitespace-pre-wrap
-          ">
+          `}>
             {thought.content}
           </p>
         </div>
