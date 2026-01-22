@@ -79,9 +79,9 @@ const ThoughtCard: React.FC<ThoughtCardProps> = ({ thought, index = 0, onClick }
     >
       {/* Content */}
       <p className="
-        text-[17px] sm:text-[19px] leading-[1.6]
+        text-[19px] sm:text-[22px] leading-[1.6]
         text-[var(--text-secondary)] group-hover:text-[var(--text-primary)]
-        font-body
+        font-display italic
         whitespace-pre-wrap
         mb-6
         transition-colors duration-300
