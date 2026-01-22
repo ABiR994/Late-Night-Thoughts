@@ -187,7 +187,7 @@ const PostForm: React.FC<PostFormProps> = ({ onSuccess }) => {
           
           <div className="flex flex-wrap items-center justify-between gap-4">
             {/* Left: Mood & Public */}
-            <div className="flex items-center gap-5 text-[11px] font-mono uppercase tracking-wider">
+            <div className="flex items-center gap-10 text-[11px] font-mono uppercase tracking-wider">
               {/* Mood selector */}
               <div className="flex items-center gap-2 group/select relative">
                 <span className="text-[var(--text-muted)]">mood</span>
@@ -247,7 +247,7 @@ const PostForm: React.FC<PostFormProps> = ({ onSuccess }) => {
                 ${content.length > 900 ? 'text-amber-400' : 'text-[var(--text-faint)]'}
                 ${content.length > 950 ? 'text-red-400' : ''}
               `}>
-                {content.length}/{MAX_CHARS}
+                CHAR: {content.length}/{MAX_CHARS}
               </span>
             </div>
 
