@@ -31,10 +31,17 @@ export default function Home({ initialThoughts }: HomeProps) {
   const [selectedIndex, setSelectedIndex] = useState<number>(-1);
   const [scope, setScope] = useState<'all' | 'me'>('all');
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const [currentTime, setCurrentTime] = useState(new Date());
   const cardRefs = useRef<(HTMLElement | null)[]>([]);
   const { triggerFallingStar } = useCursor();
   
   const [isLive, setIsLive] = useState(false);
+
+  // Live clock
+  useEffect(() => {
+    const timer = setInterval(() => setCurrentTime(new Date()), 1000);
+    return () => clearInterval(timer);
+  }, []);
 
   // Real-time listener for falling stars
   useEffect(() => {
@@ -149,9 +156,14 @@ export default function Home({ initialThoughts }: HomeProps) {
         <header className="pt-32 sm:pt-48 pb-32 px-6 text-center">
           <div className="flex items-center justify-center gap-4 mb-12 animate-fade-in">
             <div className="w-12 h-px bg-gradient-to-r from-transparent via-aurora-violet/40 to-transparent" />
-            <span className="text-[10px] font-mono uppercase tracking-[0.5em] text-[var(--text-muted)] opacity-70">
-              Midnight Reflections
-            </span>
+            <div className="flex flex-col items-center">
+              <span className="text-[10px] font-mono uppercase tracking-[0.5em] text-[var(--text-muted)] opacity-70">
+                Midnight Reflections
+              </span>
+              <span className="text-[11px] font-mono text-aurora-violet/60 mt-2 tabular-nums">
+                {currentTime.toLocaleTimeString('en-US', { hour12: true, hour: '2-digit', minute: '2-digit', second: '2-digit' })}
+              </span>
+            </div>
             <div className="w-12 h-px bg-gradient-to-r from-transparent via-aurora-violet/40 to-transparent" />
           </div>
 
