@@ -27,7 +27,7 @@ const PostForm: React.FC<PostFormProps> = ({ onSuccess }) => {
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
   const [showOptions, setShowOptions] = useState(false);
   const [particles, setParticles] = useState<{ id: number; x: number; y: number }[]>([]);
-  const { setMood: setGlobalMood } = useCursor();
+  const { setMood: setGlobalMood, triggerRipple } = useCursor();
   
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -118,6 +118,7 @@ const PostForm: React.FC<PostFormProps> = ({ onSuccess }) => {
       });
 
       if (response.ok) {
+        triggerRipple();
         setMessage({ type: 'success', text: 'Shared.' });
         setContent('');
         setMood('None');

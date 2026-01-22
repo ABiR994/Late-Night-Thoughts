@@ -5,15 +5,26 @@ type Mood = string | null;
 interface CursorContextType {
   mood: Mood;
   setMood: (mood: Mood) => void;
+  triggerRipple: () => void;
+  ripples: number[];
 }
 
 const CursorContext = createContext<CursorContextType | undefined>(undefined);
 
 export const CursorProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [mood, setMood] = useState<Mood>(null);
+  const [ripples, setRipples] = useState<number[]>([]);
+
+  const triggerRipple = () => {
+    const id = Date.now();
+    setRipples(prev => [...prev, id]);
+    setTimeout(() => {
+      setRipples(prev => prev.filter(r => r !== id));
+    }, 2000);
+  };
 
   return (
-    <CursorContext.Provider value={{ mood, setMood }}>
+    <CursorContext.Provider value={{ mood, setMood, triggerRipple, ripples }}>
       {children}
     </CursorContext.Provider>
   );

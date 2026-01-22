@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import CustomCursor from './CustomCursor';
+import { useCursor } from '../context/CursorContext';
 
 type LayoutProps = {
   children: React.ReactNode;
@@ -9,6 +10,7 @@ type LayoutProps = {
 const Layout = ({ children, blurBackground = false }: LayoutProps) => {
   const [timeState, setTimeState] = useState<'dusk' | 'midnight' | 'dawn'>('midnight');
   const [scrollProgress, setScrollProgress] = useState(0);
+  const { ripples } = useCursor();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -32,6 +34,14 @@ const Layout = ({ children, blurBackground = false }: LayoutProps) => {
   return (
     <div className={`relative min-h-screen overflow-hidden theme-${timeState}`}>
       <CustomCursor />
+      
+      {/* Ripple of Silence */}
+      <div className="ripple-container">
+        {ripples.map(id => (
+          <div key={id} className="ripple-wave" />
+        ))}
+      </div>
+
       {/* Scroll Progress Shooting Star */}
       <div className="scroll-progress-container">
         <div 
