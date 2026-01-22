@@ -179,27 +179,27 @@ export default function Home({ initialThoughts }: HomeProps) {
           </div>
 
           <h1 className="animate-fade-in relative">
-            <span className="block text-display-lg font-display text-[var(--text-primary)] leading-[0.9] tracking-tight">
+            <span className="block text-display-lg font-display text-gradient leading-[0.9] tracking-tight">
               Late Night
             </span>
             <span className="block text-display-lg font-display text-gradient leading-[0.9] mt-2 tracking-tight">
               Thoughts
             </span>
-            <div className="absolute -top-12 left-1/2 -translate-x-1/2 w-48 h-48 bg-aurora-violet/10 blur-[100px] -z-10 rounded-full" />
+            <div className="absolute -top-12 left-1/2 -translate-x-1/2 w-64 h-64 bg-aurora-violet/15 blur-[120px] -z-10 rounded-full animate-pulse" />
           </h1>
           <p className="mt-12 text-lg text-[var(--text-secondary)] font-body max-w-sm mx-auto leading-relaxed animate-fade-in-up delay-1 opacity-80">
             A quiet space for words that only emerge when the world falls silent.
           </p>
         </header>
 
-        <section className="px-6 pb-16">
+        <section className="px-6 pb-32">
           <div className="max-w-xl mx-auto">
             <PostForm onSuccess={handlePostSuccess} />
           </div>
         </section>
 
-        <div className="max-w-xl mx-auto px-6 pb-8">
-          <div className="h-px bg-[var(--border-subtle)]" />
+        <div className="max-w-xl mx-auto px-6 pb-16">
+          <div className="h-px bg-[var(--border-subtle)]/50" />
         </div>
 
         <section className="px-6 pb-8">
