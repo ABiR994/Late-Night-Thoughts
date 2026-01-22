@@ -187,7 +187,7 @@ const PostForm: React.FC<PostFormProps> = ({ onSuccess }) => {
           
           <div className="flex flex-wrap items-center justify-between gap-4">
             {/* Left: Mood & Public */}
-            <div className="flex items-center text-[11px] font-mono uppercase tracking-wider">
+            <div className="flex items-center space-x-8 text-[11px] font-mono uppercase tracking-wider">
               {/* Mood selector */}
               <div className="flex items-center gap-2 group/select relative">
                 <span className="text-[var(--text-muted)]">mood</span>
@@ -218,7 +218,7 @@ const PostForm: React.FC<PostFormProps> = ({ onSuccess }) => {
                 </div>
               </div>
 
-              <div className="w-px h-3 bg-[var(--border-subtle)] mx-8" />
+              <div className="w-px h-3 bg-[var(--border-subtle)] opacity-50" />
 
               {/* Public toggle */}
               <label className="flex items-center gap-2 cursor-pointer group/toggle">
@@ -241,7 +241,7 @@ const PostForm: React.FC<PostFormProps> = ({ onSuccess }) => {
                 <span className="text-[var(--text-muted)] group-hover/toggle:text-[var(--text-secondary)] transition-colors">public</span>
               </label>
 
-              <div className="w-px h-3 bg-[var(--border-subtle)] mx-8" />
+              <div className="w-px h-3 bg-[var(--border-subtle)] opacity-50" />
 
               {/* Char count */}
               <span className={`
