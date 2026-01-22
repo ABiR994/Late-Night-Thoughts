@@ -117,11 +117,12 @@ const PostForm: React.FC<PostFormProps> = ({ onSuccess }) => {
     <form onSubmit={handleSubmit}>
       {/* Textarea Container */}
       <div className="
-        bg-[var(--bg-surface)]/40 backdrop-blur-md
+        bg-[var(--bg-surface)]/30 backdrop-blur-xl
         border border-[var(--border-subtle)]
         rounded-2xl
-        transition-all duration-300
-        focus-within:border-aurora-violet/30 focus-within:shadow-glow
+        transition-all duration-500 ease-[var(--ease-out-expo)]
+        focus-within:border-aurora-violet/40 focus-within:shadow-glow
+        focus-within:bg-[var(--bg-surface)]/50
       ">
         <textarea
           ref={textareaRef}
@@ -130,9 +131,9 @@ const PostForm: React.FC<PostFormProps> = ({ onSuccess }) => {
           placeholder="What's on your mind tonight?"
           disabled={loading}
           className="
-            w-full min-h-[120px] p-6
+            w-full min-h-[140px] p-8
             bg-transparent
-            text-[17px] font-body leading-relaxed
+            text-[18px] font-body leading-relaxed
             text-[var(--text-primary)]
             placeholder:text-[var(--text-muted)]
             focus:outline-none resize-none
@@ -141,57 +142,72 @@ const PostForm: React.FC<PostFormProps> = ({ onSuccess }) => {
 
         {/* Options - Show when typing */}
         <div className={`
-          px-4 pb-4 pt-2
-          transition-all duration-200
-          ${showOptions ? 'opacity-100' : 'opacity-0 pointer-events-none'}
+          px-6 pb-6 pt-0
+          transition-all duration-500 ease-[var(--ease-out-expo)]
+          ${showOptions ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2 pointer-events-none'}
         `}>
-          <div className="flex flex-wrap items-center justify-between gap-3">
+          <div className="h-px bg-gradient-to-r from-transparent via-[var(--border-subtle)] to-transparent mb-6" />
+          
+          <div className="flex flex-wrap items-center justify-between gap-4">
             {/* Left: Mood & Public */}
-            <div className="flex items-center gap-4 text-xs">
+            <div className="flex items-center gap-5 text-[11px] font-mono uppercase tracking-wider">
               {/* Mood selector */}
-              <div className="flex items-center gap-2">
-                <span className="text-[var(--text-muted)]">mood:</span>
-                <select
-                  value={mood}
-                  onChange={(e) => setMood(e.target.value)}
-                  className="
-                    bg-transparent text-[var(--text-secondary)]
-                    focus:outline-none cursor-pointer
-                    hover:text-[var(--text-primary)]
-                  "
-                  style={{ color: selectedMood?.color || undefined }}
-                >
-                  {moods.map((m) => (
-                    <option key={m.value} value={m.value} className="bg-[var(--bg-surface)] text-[var(--text-primary)]">
-                      {m.label}
-                    </option>
-                  ))}
-                </select>
+              <div className="flex items-center gap-2 group/select relative">
+                <span className="text-[var(--text-muted)]">mood</span>
+                <div className="relative">
+                  <select
+                    value={mood}
+                    onChange={(e) => setMood(e.target.value)}
+                    className="
+                      bg-transparent text-[var(--text-secondary)]
+                      focus:outline-none cursor-pointer
+                      hover:text-[var(--text-primary)]
+                      appearance-none pr-4
+                      transition-colors
+                    "
+                    style={{ color: selectedMood?.color || undefined }}
+                  >
+                    {moods.map((m) => (
+                      <option key={m.value} value={m.value} className="bg-[var(--bg-surface)] text-[var(--text-primary)]">
+                        {m.label}
+                      </option>
+                    ))}
+                  </select>
+                  <div className="absolute right-0 top-1/2 -translate-y-1/2 pointer-events-none opacity-40">
+                    <svg className="w-2 h-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={4}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                    </svg>
+                  </div>
+                </div>
               </div>
 
+              <div className="w-px h-3 bg-[var(--border-subtle)]" />
+
               {/* Public toggle */}
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={isPublic}
-                  onChange={(e) => setIsPublic(e.target.checked)}
-                  disabled={loading}
-                  className="
-                    w-3 h-3 rounded
-                    border border-[var(--border-default)]
-                    bg-transparent
-                    checked:bg-aurora-violet checked:border-aurora-violet
-                    focus:ring-0 focus:ring-offset-0
-                    cursor-pointer
-                  "
-                />
-                <span className="text-[var(--text-muted)]">public</span>
+              <label className="flex items-center gap-2 cursor-pointer group/toggle">
+                <div className="relative flex items-center">
+                  <input
+                    type="checkbox"
+                    checked={isPublic}
+                    onChange={(e) => setIsPublic(e.target.checked)}
+                    disabled={loading}
+                    className="
+                      w-3 h-3 rounded-sm
+                      border border-[var(--border-strong)]
+                      bg-transparent
+                      checked:bg-aurora-violet checked:border-aurora-violet
+                      focus:ring-0 focus:ring-offset-0
+                      cursor-pointer transition-all
+                    "
+                  />
+                </div>
+                <span className="text-[var(--text-muted)] group-hover/toggle:text-[var(--text-secondary)] transition-colors">public</span>
               </label>
 
               {/* Char count */}
               <span className={`
-                text-[var(--text-muted)]
-                ${content.length > 900 ? 'text-amber-400' : ''}
+                text-[10px] tabular-nums
+                ${content.length > 900 ? 'text-amber-400' : 'text-[var(--text-faint)]'}
                 ${content.length > 950 ? 'text-red-400' : ''}
               `}>
                 {content.length}/{MAX_CHARS}
@@ -203,13 +219,13 @@ const PostForm: React.FC<PostFormProps> = ({ onSuccess }) => {
               type="submit"
               disabled={loading || !content.trim()}
               className="
-                px-4 py-1.5
-                text-xs font-medium
+                px-6 py-2
+                text-[11px] font-mono uppercase tracking-[0.2em]
                 bg-[var(--text-primary)] text-[var(--bg-base)]
-                rounded-md
-                hover:opacity-90
-                disabled:opacity-30 disabled:cursor-not-allowed
-                transition-opacity
+                rounded-full
+                hover:scale-105 active:scale-95
+                disabled:opacity-20 disabled:scale-100 disabled:cursor-not-allowed
+                transition-all duration-300
               "
             >
               {loading ? '...' : 'share'}

@@ -112,25 +112,26 @@ export default function Home({ initialThoughts }: HomeProps) {
       </Head>
 
       <main className="min-h-screen">
-        <header className="pt-24 sm:pt-32 pb-24 px-6 text-center">
-          <div className="flex items-center justify-center gap-3 mb-10 animate-fade-in">
-            <div className="w-8 h-px bg-gradient-to-r from-transparent to-aurora-violet/50" />
-            <span className="text-[10px] font-mono uppercase tracking-[0.4em] text-[var(--text-muted)]">
-              Anonymous Journal
+        <header className="pt-32 sm:pt-48 pb-32 px-6 text-center">
+          <div className="flex items-center justify-center gap-4 mb-12 animate-fade-in">
+            <div className="w-12 h-px bg-gradient-to-r from-transparent via-aurora-violet/40 to-transparent" />
+            <span className="text-[10px] font-mono uppercase tracking-[0.5em] text-[var(--text-muted)] opacity-70">
+              Midnight Reflections
             </span>
-            <div className="w-8 h-px bg-gradient-to-l from-transparent to-aurora-violet/50" />
+            <div className="w-12 h-px bg-gradient-to-r from-transparent via-aurora-violet/40 to-transparent" />
           </div>
 
-          <h1 className="animate-fade-in">
-            <span className="block text-display-lg font-display text-[var(--text-primary)] leading-[0.95]">
+          <h1 className="animate-fade-in relative">
+            <span className="block text-display-lg font-display text-[var(--text-primary)] leading-[0.9] tracking-tight">
               Late Night
             </span>
-            <span className="block text-display-lg font-display text-gradient leading-[0.95] mt-1">
+            <span className="block text-display-lg font-display text-gradient leading-[0.9] mt-2 tracking-tight">
               Thoughts
             </span>
+            <div className="absolute -top-12 left-1/2 -translate-x-1/2 w-48 h-48 bg-aurora-violet/10 blur-[100px] -z-10 rounded-full" />
           </h1>
-          <p className="mt-10 text-lg text-[var(--text-secondary)] font-body max-w-md mx-auto leading-relaxed animate-fade-in-up delay-1">
-            Where words find their way out when the world falls quiet.
+          <p className="mt-12 text-lg text-[var(--text-secondary)] font-body max-w-sm mx-auto leading-relaxed animate-fade-in-up delay-1 opacity-80">
+            A quiet space for words that only emerge when the world falls silent.
           </p>
         </header>
 
@@ -144,35 +145,38 @@ export default function Home({ initialThoughts }: HomeProps) {
           <div className="h-px bg-[var(--border-subtle)]" />
         </div>
 
-        <section className="px-6 pb-6">
+        <section className="px-6 pb-8">
           <div className="max-w-xl mx-auto flex items-center justify-between gap-4">
-            <div className="flex items-center gap-6">
-              <div className="flex items-center gap-3">
+            <div className="flex items-center gap-8">
+              <div className="flex items-center gap-6">
                 <button
                   onClick={() => setScope('all')}
-                  className={`text-[11px] font-mono uppercase tracking-[0.2em] transition-colors ${scope === 'all' ? 'text-aurora-violet' : 'text-[var(--text-faint)] hover:text-[var(--text-muted)]'}`}
+                  className={`relative text-[10px] font-mono uppercase tracking-[0.3em] transition-all duration-300 ${scope === 'all' ? 'text-aurora-violet' : 'text-[var(--text-faint)] hover:text-[var(--text-muted)]'}`}
                 >
                   public
+                  {scope === 'all' && <span className="absolute -bottom-2 left-0 w-full h-px bg-aurora-violet shadow-[0_0_8px_rgba(139,92,246,0.6)]" />}
                 </button>
-                <span className="text-[var(--text-faint)] opacity-30 text-[10px]">/</span>
                 <button
                   onClick={() => setScope('me')}
-                  className={`text-[11px] font-mono uppercase tracking-[0.2em] transition-colors ${scope === 'me' ? 'text-aurora-violet' : 'text-[var(--text-faint)] hover:text-[var(--text-muted)]'}`}
+                  className={`relative text-[10px] font-mono uppercase tracking-[0.3em] transition-all duration-300 ${scope === 'me' ? 'text-aurora-violet' : 'text-[var(--text-faint)] hover:text-[var(--text-muted)]'}`}
                 >
                   mine
+                  {scope === 'me' && <span className="absolute -bottom-2 left-0 w-full h-px bg-aurora-violet shadow-[0_0_8px_rgba(139,92,246,0.6)]" />}
                 </button>
               </div>
-              <div className="w-px h-3 bg-[var(--border-subtle)]" />
+              <div className="w-px h-4 bg-white/10" />
               <button
                 onClick={openRandom}
                 disabled={thoughts.length === 0}
                 className="
-                  text-[11px] font-mono uppercase tracking-[0.2em]
-                  text-[var(--text-muted)] hover:text-aurora-violet
-                  disabled:opacity-40 disabled:cursor-not-allowed
-                  transition-colors
+                  text-[10px] font-mono uppercase tracking-[0.3em]
+                  text-[var(--text-faint)] hover:text-aurora-violet
+                  disabled:opacity-20 disabled:cursor-not-allowed
+                  transition-all duration-300
+                  flex items-center gap-2
                 "
               >
+                <span className="w-1 h-1 rounded-full bg-current" />
                 random
               </button>
             </div>
