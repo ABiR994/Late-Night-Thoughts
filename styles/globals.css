@@ -320,6 +320,28 @@ h1, h2, h3, h4, h5, h6 {
 .delay-2 { animation-delay: 0.4s; }
 
 /* ============================================
+   TIME-AWARE THEMES
+   ============================================ */
+.theme-dusk {
+  --aurora-violet: #7c3aed;
+  --aurora-blue: #2563eb;
+  --aurora-pink: #db2777;
+}
+
+.theme-dawn {
+  --aurora-violet: #a78bfa;
+  --aurora-blue: #60a5fa;
+  --aurora-pink: #f472b6;
+  --bg-base: #05070f;
+}
+
+.theme-midnight {
+  --aurora-violet: #8b5cf6;
+  --aurora-blue: #3b82f6;
+  --aurora-pink: #ec4899;
+}
+
+/* ============================================
    SCROLLBAR
    ============================================ */
 ::-webkit-scrollbar { width: 4px; }
