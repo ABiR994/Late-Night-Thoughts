@@ -36,6 +36,11 @@ const PostForm: React.FC<PostFormProps> = ({ onSuccess }) => {
     if (val.length <= MAX_CHARS) {
       setContent(val);
       
+      // Haptic feedback
+      if (val.length % 10 === 0 && val.length > 0 && typeof navigator !== 'undefined' && navigator.vibrate) {
+        navigator.vibrate(5);
+      }
+
       // Emit particle
       const id = Date.now() + Math.random();
       const x = (Math.random() - 0.5) * 160;
@@ -160,7 +165,11 @@ const PostForm: React.FC<PostFormProps> = ({ onSuccess }) => {
             placeholder:text-[var(--text-muted)]
             focus:outline-none resize-none
             relative z-10
+            transition-opacity duration-300
           "
+          style={{ 
+            opacity: Math.max(0.3, 1 - (content.length / MAX_CHARS) * 0.7) 
+          }}
         />
 
         {/* Typing Particles */}
