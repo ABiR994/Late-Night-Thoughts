@@ -186,11 +186,11 @@ const PostForm: React.FC<PostFormProps> = ({ onSuccess }) => {
           <div className="h-px bg-gradient-to-r from-transparent via-[var(--border-subtle)] to-transparent mb-6" />
           
           <div className="flex flex-wrap items-center justify-between gap-4">
-            {/* Left: Mood & Public Grouped with Dividers */}
-            <div className="flex items-center space-x-10 text-[11px] font-mono uppercase tracking-wider">
+            {/* Controls container */}
+            <div className="flex items-center gap-12 text-[11px] font-mono uppercase tracking-wider">
               
-              {/* Mood selector group */}
-              <div className="flex items-center gap-6">
+              {/* Mood selector block */}
+              <div className="flex items-center gap-2">
                 <div className="flex items-center gap-2 group/select relative">
                   <span className="text-[var(--text-muted)]">mood</span>
                   <div className="relative">
@@ -222,8 +222,8 @@ const PostForm: React.FC<PostFormProps> = ({ onSuccess }) => {
                 <div className="w-px h-3 bg-[var(--border-subtle)] opacity-50" />
               </div>
 
-              {/* Public toggle group */}
-              <div className="flex items-center gap-6">
+              {/* Public toggle block */}
+              <div className="flex items-center gap-2">
                 <label className="flex items-center gap-2 cursor-pointer group/toggle">
                   <div className="relative flex items-center">
                     <input
