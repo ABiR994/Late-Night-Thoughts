@@ -75,22 +75,27 @@ const ReadingMode: React.FC<ReadingModeProps> = ({ thought, onClose, onNext, onP
   }, [onClose, onNext, onPrev]);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center">
+    <div 
+      className="fixed inset-0 z-50 flex items-center justify-center"
+      onClick={onClose}
+    >
       {/* Backdrop */}
       <div 
         className={`absolute inset-0 bg-[var(--bg-base)]/60 backdrop-blur-md transition-opacity duration-500 ${isVisible ? 'opacity-100' : 'opacity-0'}`}
-        onClick={onClose}
       />
 
       {/* Content */}
-      <div className={`
-        relative z-10 w-full max-w-2xl mx-6 sm:mx-auto
-        bg-[var(--bg-surface)]/80 backdrop-blur-xl
-        p-10 sm:p-16 rounded-3xl
-        border border-white/10 glass-edge
-        transition-all duration-500 ease-[var(--ease-out-expo)]
-        ${isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95 translate-y-4'}
-      `}>
+      <div 
+        onClick={(e) => e.stopPropagation()}
+        className={`
+          relative z-10 w-full max-w-2xl mx-6 sm:mx-auto
+          bg-[var(--bg-surface)]/80 backdrop-blur-xl
+          p-10 sm:p-16 rounded-3xl
+          border border-white/10 glass-edge
+          transition-all duration-500 ease-[var(--ease-out-expo)]
+          ${isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95 translate-y-4'}
+        `}
+      >
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <button
