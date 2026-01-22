@@ -25,8 +25,25 @@ const PostForm: React.FC<PostFormProps> = ({ onSuccess }) => {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
   const [showOptions, setShowOptions] = useState(false);
+  const [particles, setParticles] = useState<{ id: number; x: number; y: number }[]>([]);
   
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  const handleContentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const val = e.target.value;
+    if (val.length <= MAX_CHARS) {
+      setContent(val);
+      
+      // Emit particle
+      const id = Date.now() + Math.random();
+      const x = (Math.random() - 0.5) * 160;
+      const y = (Math.random() - 0.5) * 80;
+      setParticles(prev => [...prev.slice(-15), { id, x, y }]);
+      setTimeout(() => {
+        setParticles(prev => prev.filter(p => p.id !== id));
+      }, 800);
+    }
+  };
 
   // Load draft
   useEffect(() => {
@@ -119,7 +136,7 @@ const PostForm: React.FC<PostFormProps> = ({ onSuccess }) => {
       <div className="
         bg-[var(--bg-surface)]/30 backdrop-blur-xl
         border border-[var(--border-subtle)]
-        rounded-2xl
+        rounded-2xl relative
         transition-all duration-500 ease-[var(--ease-out-expo)]
         focus-within:border-aurora-violet/40 focus-within:shadow-glow
         focus-within:bg-[var(--bg-surface)]/50
@@ -127,7 +144,7 @@ const PostForm: React.FC<PostFormProps> = ({ onSuccess }) => {
         <textarea
           ref={textareaRef}
           value={content}
-          onChange={(e) => e.target.value.length <= MAX_CHARS && setContent(e.target.value)}
+          onChange={handleContentChange}
           placeholder="What's on your mind tonight?"
           disabled={loading}
           className="
@@ -137,8 +154,24 @@ const PostForm: React.FC<PostFormProps> = ({ onSuccess }) => {
             text-[var(--text-primary)]
             placeholder:text-[var(--text-muted)]
             focus:outline-none resize-none
+            relative z-10
           "
         />
+
+        {/* Typing Particles */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
+          {particles.map(p => (
+            <div 
+              key={p.id}
+              className="typing-particle left-1/2 top-1/2"
+              style={{ 
+                '--x': `${p.x}px`, 
+                '--y': `${p.y}px`,
+                '--particle-color': selectedMood?.color || 'white'
+              } as React.CSSProperties}
+            />
+          ))}
+        </div>
 
         {/* Options - Show when typing */}
         <div className={`
