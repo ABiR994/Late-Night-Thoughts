@@ -185,12 +185,12 @@ const PostForm: React.FC<PostFormProps> = ({ onSuccess }) => {
         `}>
           <div className="h-px bg-gradient-to-r from-transparent via-[var(--border-subtle)] to-transparent mb-6" />
           
-          <div className="flex items-center justify-between gap-6">
-            {/* Options Row: Redesigned for Maximum Breathability */}
-            <div className="flex items-center gap-12 text-[11px] font-mono uppercase tracking-wider">
+          <div className="flex items-center justify-between gap-10">
+            {/* Redesigned Controls: High Separation via Justify-Between and Max-Width */}
+            <div className="flex-1 flex items-center justify-between max-w-[420px] text-[11px] font-mono uppercase tracking-wider">
               
               {/* Mood selector */}
-              <div className="flex items-center gap-3 group/select relative">
+              <div className="flex items-center gap-2 group/select relative">
                 <span className="text-[var(--text-muted)]">mood</span>
                 <div className="relative">
                   <select
@@ -220,10 +220,10 @@ const PostForm: React.FC<PostFormProps> = ({ onSuccess }) => {
               </div>
 
               {/* Centered Divider 1 */}
-              <div className="w-px h-4 bg-[var(--border-subtle)]" />
+              <div className="w-px h-3 bg-[var(--border-subtle)] opacity-40" />
 
               {/* Public toggle */}
-              <label className="flex items-center gap-3 cursor-pointer group/toggle">
+              <label className="flex items-center gap-2 cursor-pointer group/toggle">
                 <div className="relative flex items-center">
                   <input
                     type="checkbox"
@@ -244,7 +244,7 @@ const PostForm: React.FC<PostFormProps> = ({ onSuccess }) => {
               </label>
 
               {/* Centered Divider 2 */}
-              <div className="w-px h-4 bg-[var(--border-subtle)]" />
+              <div className="w-px h-3 bg-[var(--border-subtle)] opacity-40" />
 
               {/* Char count */}
               <span className={`
