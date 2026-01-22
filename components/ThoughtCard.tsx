@@ -25,6 +25,43 @@ const moodColors: Record<string, string> = {
   Calm: '#38bdf8',
 };
 
+// Custom SVG Logos
+const ResonateIcon = ({ filled }: { filled: boolean }) => (
+  <svg viewBox="0 0 24 24" className="w-4 h-4 transition-all duration-500" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path 
+      d="M12 21L10.55 19.705C5.4 15.03 2 11.95 2 8.165C2 5.085 4.42 2.665 7.5 2.665C9.24 2.665 10.91 3.475 12 4.755C13.09 3.475 14.76 2.665 16.5 2.665C19.58 2.665 22 5.085 22 8.165C22 11.95 18.6 15.03 13.45 19.71L12 21Z" 
+      stroke="currentColor" 
+      strokeWidth="1.5"
+      fill={filled ? "currentColor" : "none"}
+      className={filled ? "animate-pulse" : ""}
+    />
+    <path 
+      d="M12 13L13.5 11.5M12 13L10.5 11.5M12 13V16" 
+      stroke="currentColor" 
+      strokeWidth="1.5" 
+      strokeLinecap="round" 
+      opacity={filled ? 1 : 0.4}
+    />
+    {filled && (
+      <circle cx="12" cy="8" r="1" fill="white" className="animate-ping" />
+    )}
+  </svg>
+);
+
+const ShareIcon = () => (
+  <svg viewBox="0 0 24 24" className="w-4 h-4" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path 
+      d="M20 4L3 11L10 14M20 4L13 21L10 14M20 4L10 14" 
+      stroke="currentColor" 
+      strokeWidth="1.5" 
+      strokeLinecap="round" 
+      strokeLinejoin="round" 
+    />
+    <circle cx="20" cy="4" r="1.5" stroke="currentColor" strokeWidth="1" />
+    <path d="M6 18H8M12 18H14M18 18H20" stroke="currentColor" strokeWidth="1" strokeLinecap="round" opacity="0.3" />
+  </svg>
+);
+
 const formatTime = (dateString: string): string => {
   const date = new Date(dateString);
   const now = new Date();
@@ -153,9 +190,7 @@ const ThoughtCard = forwardRef<HTMLElement, ThoughtCardProps>(({ thought, index 
             `}
             title="Resonate"
           >
-            <svg className="w-4 h-4" fill={resonated ? "currentColor" : "none"} viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
-            </svg>
+            <ResonateIcon filled={resonated} />
           </button>
           <button
             onClick={handleShare}
@@ -167,9 +202,7 @@ const ThoughtCard = forwardRef<HTMLElement, ThoughtCardProps>(({ thought, index 
             "
             title="Share thought"
           >
-            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M7.217 10.907a2.25 2.25 0 100 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186l9.566-5.314m-9.566 7.5l9.566 5.314m0-10.628a2.25 2.25 0 103.935-2.186 2.25 2.25 0 00-3.935 2.186zm0 12.812a2.25 2.25 0 103.935 2.186 2.25 2.25 0 00-3.935-2.186z" />
-            </svg>
+            <ShareIcon />
           </button>
         </div>
       </div>
