@@ -24,7 +24,7 @@ const Layout = ({ children, blurBackground = false }: LayoutProps) => {
   }, []);
 
   return (
-    <div className={`relative min-h-screen overflow-hidden theme-midnight`}>
+    <div className={`relative min-h-screen theme-midnight`}>
       
       {/* Mist Overlays */}
       <div className="mist-overlay mist-top" />

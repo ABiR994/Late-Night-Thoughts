@@ -65,10 +65,8 @@ const ReadingMode: React.FC<ReadingModeProps> = ({ thought, onClose, onNext, onP
       if (e.key === 'ArrowLeft' && onPrev) onPrev();
     };
     document.addEventListener('keydown', handleKey);
-    document.body.style.overflow = 'hidden';
     return () => {
       document.removeEventListener('keydown', handleKey);
-      document.body.style.overflow = '';
     };
   }, [onClose, onNext, onPrev]);
 
