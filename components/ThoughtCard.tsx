@@ -117,24 +117,14 @@ const ThoughtCard = forwardRef<HTMLElement, ThoughtCardProps>(({ thought, index 
       {/* Mood Glow */}
       <div className="card-glow" />
 
-      {/* Wax Seal for Public Thoughts */}
-      {thought.is_public && (
-        <div className="wax-seal" title="Public Reflection">
-          <div className="w-2 h-2 rounded-full bg-white/20" />
-        </div>
-      )}
-
-      {/* Decorative Ink Blot */}
-      <div className="ink-blot" />
-
       {/* Content */}
       <p className={`
-        text-[19px] sm:text-[22px] leading-[1.6] group-hover:leading-[1.7]
+        text-[19px] sm:text-[22px] leading-[1.6]
         text-[var(--text-secondary)] group-hover:text-[var(--text-primary)]
         font-display italic
         whitespace-pre-wrap
         mb-6
-        transition-all duration-700
+        transition-all duration-500
         ink-flow-text ${isVisible ? 'ink-flow-active' : 'opacity-0'}
       `}>
         {thought.content}
@@ -157,7 +147,7 @@ const ThoughtCard = forwardRef<HTMLElement, ThoughtCardProps>(({ thought, index 
         </div>
 
         {/* Actions */}
-        <div className="flex items-center gap-4 opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-500 ease-[var(--ease-spring)]">
+        <div className="flex items-center gap-4 opacity-0 group-hover:opacity-100 translate-x-2 group-hover:translate-x-0 transition-all duration-500 ease-[var(--ease-out-expo)]">
           <button
             onClick={handleShare}
             className="

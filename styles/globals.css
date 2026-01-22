@@ -311,35 +311,6 @@ h1, h2, h3, h4, h5, h6 {
   opacity: 0.15;
 }
 
-.wax-seal {
-  position: absolute;
-  top: 1.5rem;
-  right: 1.5rem;
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.1), transparent);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0.4;
-  mix-blend-mode: overlay;
-}
-
-.ink-blot {
-  position: absolute;
-  bottom: -5px;
-  right: 10%;
-  width: 30px;
-  height: 20px;
-  background: var(--text-primary);
-  filter: blur(15px);
-  opacity: 0.03;
-  border-radius: 40% 60% 30% 70%;
-  pointer-events: none;
-}
-
 /* ============================================
    LIQUID TRANSITIONS
    ============================================ */
