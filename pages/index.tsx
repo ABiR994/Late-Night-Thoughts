@@ -5,6 +5,7 @@ import ThoughtCard from '../components/ThoughtCard';
 import MoodFilter from '../components/MoodFilter';
 import ReadingMode from '../components/ReadingMode';
 import Constellation from '../components/Constellation';
+import { useCursor } from '../context/CursorContext';
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { supabase } from '../utils/db';
 import { GetStaticProps } from 'next';
@@ -31,8 +32,25 @@ export default function Home({ initialThoughts }: HomeProps) {
   const [scope, setScope] = useState<'all' | 'me'>('all');
   const [isTransitioning, setIsTransitioning] = useState(false);
   const cardRefs = useRef<(HTMLElement | null)[]>([]);
+  const { triggerFallingStar } = useCursor();
   
   const [isLive, setIsLive] = useState(false);
+
+  // Real-time listener for falling stars
+  useEffect(() => {
+    const channel = supabase
+      .channel('public:thoughts')
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'thoughts' }, (payload) => {
+        if (payload.new.is_public) {
+          triggerFallingStar();
+        }
+      })
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [triggerFallingStar]);
 
   const handleScopeChange = (newScope: 'all' | 'me') => {
     if (newScope === scope) return;

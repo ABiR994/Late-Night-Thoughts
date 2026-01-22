@@ -99,6 +99,10 @@ const ThoughtCard = forwardRef<HTMLElement, ThoughtCardProps>(({ thought, index 
       {/* Mood Glow */}
       <div className="card-glow" />
 
+      {/* Constellation Nodes (Visible in personal mode) */}
+      <div className="absolute top-2 left-2 w-1 h-1 rounded-full bg-aurora-violet/20 group-hover:bg-aurora-violet/60 transition-colors" />
+      <div className="absolute bottom-2 right-2 w-1 h-1 rounded-full bg-aurora-violet/20 group-hover:bg-aurora-violet/60 transition-colors" />
+
       {/* Content */}
       <p className={`
         text-[19px] sm:text-[22px] leading-[1.6] group-hover:leading-[1.7]

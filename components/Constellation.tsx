@@ -11,9 +11,18 @@ interface ConstellationProps {
 
 const Constellation: React.FC<ConstellationProps> = ({ targets }) => {
   const [points, setPoints] = useState<Point[]>([]);
+  const [isAnyHovered, setIsAnyHovered] = useState(false);
   const containerRef = useRef<SVGSVGElement>(null);
 
   useEffect(() => {
+    const handleHoverState = () => {
+      const hovered = targets.some(t => t.matches(':hover'));
+      setIsAnyHovered(hovered);
+    };
+
+    window.addEventListener('mouseover', handleHoverState);
+    window.addEventListener('mouseout', handleHoverState);
+
     const updatePoints = () => {
       if (targets.length < 2) {
         setPoints([]);
@@ -42,6 +51,8 @@ const Constellation: React.FC<ConstellationProps> = ({ targets }) => {
     targets.forEach(t => observer.observe(t, { attributes: true, attributeFilter: ['style', 'class'] }));
 
     return () => {
+      window.removeEventListener('mouseover', handleHoverState);
+      window.removeEventListener('mouseout', handleHoverState);
       window.removeEventListener('resize', updatePoints);
       window.removeEventListener('scroll', updatePoints);
       observer.disconnect();
@@ -66,9 +77,10 @@ const Constellation: React.FC<ConstellationProps> = ({ targets }) => {
         d={`M ${points.map(p => `${p.x} ${p.y}`).join(' L ')}`}
         fill="none"
         stroke="url(#constellation-grad)"
-        strokeWidth="1"
+        strokeWidth={isAnyHovered ? "1.5" : "1"}
         strokeDasharray="4 4"
-        className="animate-pulse"
+        className={`transition-all duration-500 ${isAnyHovered ? 'opacity-100' : 'animate-pulse'}`}
+        style={{ opacity: isAnyHovered ? 0.6 : undefined }}
       />
       {points.map((p, i) => (
         <circle 

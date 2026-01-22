@@ -9,9 +9,10 @@ type LayoutProps = {
 const Layout = ({ children, blurBackground = false }: LayoutProps) => {
   const [timeState, setTimeState] = useState<'dusk' | 'midnight' | 'dawn'>('midnight');
   const [scrollProgress, setScrollProgress] = useState(0);
-  const { ripples, shootingStars } = useCursor();
+  const { ripples, shootingStars, fallingStars } = useCursor();
 
   useEffect(() => {
+
     const handleScroll = () => {
       const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
       if (totalScroll > 0) {
@@ -47,6 +48,15 @@ const Layout = ({ children, blurBackground = false }: LayoutProps) => {
       {/* Shooting Star Success */}
       {shootingStars.map(id => (
         <div key={id} className="shooting-star-success" />
+      ))}
+
+      {/* Falling Stars (Global Notifications) */}
+      {fallingStars.map(star => (
+        <div 
+          key={star.id} 
+          className="falling-star" 
+          style={{ top: star.top, left: star.left }} 
+        />
       ))}
 
       {/* Scroll Progress Shooting Star */}

@@ -3,8 +3,10 @@ import React, { createContext, useContext, useState } from 'react';
 interface CursorContextType {
   triggerRipple: () => void;
   triggerShootingStar: () => void;
+  triggerFallingStar: () => void;
   ripples: number[];
   shootingStars: number[];
+  fallingStars: { id: number; top: string; left: string }[];
 }
 
 const CursorContext = createContext<CursorContextType | undefined>(undefined);
@@ -12,6 +14,7 @@ const CursorContext = createContext<CursorContextType | undefined>(undefined);
 export const CursorProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [ripples, setRipples] = useState<number[]>([]);
   const [shootingStars, setShootingStars] = useState<number[]>([]);
+  const [fallingStars, setFallingStars] = useState<{ id: number; top: string; left: string }[]>([]);
 
   const triggerRipple = () => {
     const id = Date.now();
@@ -29,8 +32,18 @@ export const CursorProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     }, 1500);
   };
 
+  const triggerFallingStar = () => {
+    const id = Date.now() + Math.random();
+    const top = `${Math.random() * 40}%`;
+    const left = `${Math.random() * 80}%`;
+    setFallingStars(prev => [...prev, { id, top, left }]);
+    setTimeout(() => {
+      setFallingStars(prev => prev.filter(s => s.id !== id));
+    }, 3000);
+  };
+
   return (
-    <CursorContext.Provider value={{ triggerRipple, triggerShootingStar, ripples, shootingStars }}>
+    <CursorContext.Provider value={{ triggerRipple, triggerShootingStar, triggerFallingStar, ripples, shootingStars, fallingStars }}>
       {children}
     </CursorContext.Provider>
   );
