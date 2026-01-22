@@ -96,7 +96,7 @@ const ThoughtCard = forwardRef<HTMLElement, ThoughtCardProps>(({ thought, index 
       onClick={onClick}
       className={`
         group cursor-pointer relative
-        py-8 px-6 mb-2
+        py-8 px-6 -mx-4 mb-2
         bg-black/40 backdrop-blur-sm
         glass-edge
         transition-all duration-500 ease-[var(--ease-out-expo)]

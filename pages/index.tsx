@@ -289,21 +289,13 @@ export default function Home({ initialThoughts }: HomeProps) {
               <div className="relative">
                 {scope === 'me' && <Constellation targets={cardRefs.current.filter((r): r is HTMLElement => r !== null)} />}
                 {thoughts.map((thought, index) => (
-                  <div 
+                  <ThoughtCard
                     key={thought.id}
-                    style={{ 
-                      marginLeft: index % 2 === 0 ? '0' : '2rem',
-                      marginRight: index % 2 === 0 ? '2rem' : '0',
-                      marginTop: index === 0 ? '0' : '-1rem'
-                    }}
-                  >
-                    <ThoughtCard
-                      ref={el => { cardRefs.current[index] = el; }}
-                      thought={thought}
-                      index={index}
-                      onClick={() => openReading(thought, index)}
-                    />
-                  </div>
+                    ref={el => { cardRefs.current[index] = el; }}
+                    thought={thought}
+                    index={index}
+                    onClick={() => openReading(thought, index)}
+                  />
                 ))}
               </div>
             )}
