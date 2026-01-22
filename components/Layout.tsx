@@ -9,7 +9,7 @@ type LayoutProps = {
 const Layout = ({ children, blurBackground = false }: LayoutProps) => {
   const [timeState, setTimeState] = useState<'dusk' | 'midnight' | 'dawn'>('midnight');
   const [scrollProgress, setScrollProgress] = useState(0);
-  const { ripples, shootingStars, fallingStars } = useCursor();
+  const { ripples, shootingStars, fallingStars, isMistActive } = useCursor();
 
   useEffect(() => {
 
@@ -37,6 +37,7 @@ const Layout = ({ children, blurBackground = false }: LayoutProps) => {
       {/* Mist Overlays */}
       <div className="mist-overlay mist-top" />
       <div className="mist-overlay mist-bottom" />
+      <div className={`mist-sweep ${isMistActive ? 'mist-active' : ''}`} />
 
       {/* Ripple of Silence */}
       <div className="ripple-container">

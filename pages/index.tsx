@@ -32,7 +32,7 @@ export default function Home({ initialThoughts }: HomeProps) {
   const [scope, setScope] = useState<'all' | 'me'>('all');
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [currentTime, setCurrentTime] = useState(new Date());
-  const { triggerFallingStar, handwritten, setHandwritten } = useCursor();
+  const { triggerFallingStar, handwritten, setHandwritten, triggerMist } = useCursor();
   const cardRefs = useRef<(HTMLElement | null)[]>([]);
   
   const [isLive, setIsLive] = useState(false);
@@ -62,8 +62,19 @@ export default function Home({ initialThoughts }: HomeProps) {
   const handleScopeChange = (newScope: 'all' | 'me') => {
     if (newScope === scope) return;
     setIsTransitioning(true);
+    triggerMist();
     setTimeout(() => {
       setScope(newScope);
+      setIsTransitioning(false);
+    }, 400);
+  };
+
+  const handleMoodSelect = (mood: string) => {
+    if (mood === selectedMood) return;
+    setIsTransitioning(true);
+    triggerMist();
+    setTimeout(() => {
+      setSelectedMood(mood);
       setIsTransitioning(false);
     }, 400);
   };
@@ -233,7 +244,7 @@ export default function Home({ initialThoughts }: HomeProps) {
                 random
               </button>
             </div>
-            <MoodFilter currentMood={selectedMood} onSelectMood={setSelectedMood} />
+            <MoodFilter currentMood={selectedMood} onSelectMood={handleMoodSelect} />
           </div>
         </section>
 
