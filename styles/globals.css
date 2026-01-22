@@ -133,6 +133,11 @@ body {
   66% { transform: translate(-30px, 30px) scale(0.9); }
 }
 
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
 .stars, .stars-2, .stars-3 {
   position: absolute;
   inset: -100px;

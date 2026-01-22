@@ -192,17 +192,17 @@ export default function Home({ initialThoughts }: HomeProps) {
           </p>
         </header>
 
-        <section className="px-6 pb-48">
+        <section className="px-6">
           <div className="max-w-xl mx-auto">
             <PostForm onSuccess={handlePostSuccess} />
           </div>
         </section>
 
-        <div className="max-w-xl mx-auto px-6 pb-24">
+        <div className="max-w-xl mx-auto px-6 py-40">
           <div className="h-px bg-[var(--border-subtle)]/50" />
         </div>
 
-        <section className="px-6 pb-8">
+        <section className="px-6 pb-20">
           <div className="max-w-xl mx-auto flex items-center justify-between gap-4">
             <div className="flex items-center gap-8">
               <div className="flex items-center gap-6">
