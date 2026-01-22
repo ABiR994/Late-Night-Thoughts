@@ -179,19 +179,19 @@ const PostForm: React.FC<PostFormProps> = ({ onSuccess }) => {
 
         {/* Options - Show when typing */}
         <div className={`
-          px-8 pb-6 pt-0
+          px-6 sm:px-8 pb-6 pt-0
           transition-all duration-500 ease-[var(--ease-out-expo)]
           ${showOptions ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2 pointer-events-none'}
         `}>
           <div className="h-px bg-gradient-to-r from-transparent via-[var(--border-subtle)] to-transparent mb-6" />
           
-          <div className="flex items-center justify-between gap-4">
-            {/* Redesigned Controls: Fixed-width containers for forced separation */}
-            <div className="flex items-center text-[11px] font-mono uppercase tracking-wider">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-6">
+            {/* Redesigned Controls: Responsive grid-like separation */}
+            <div className="flex items-center justify-between flex-1 max-w-full sm:max-w-[440px] text-[11px] font-mono uppercase tracking-wider">
               
-              {/* Mood block - Fixed Width */}
-              <div className="w-32 flex items-center gap-2 group/select relative">
-                <span className="text-[var(--text-muted)]">mood</span>
+              {/* Mood block */}
+              <div className="flex items-center gap-2 group/select relative">
+                <span className="hidden xs:inline text-[var(--text-muted)]">mood</span>
                 <div className="relative">
                   <select
                     value={mood}
@@ -222,8 +222,8 @@ const PostForm: React.FC<PostFormProps> = ({ onSuccess }) => {
               {/* Centered Divider 1 */}
               <div className="w-px h-3 bg-[var(--border-subtle)] opacity-30" />
 
-              {/* Public block - Fixed Width + Centered */}
-              <div className="w-32 flex items-center justify-center">
+              {/* Public block */}
+              <div className="flex items-center justify-center">
                 <label className="flex items-center gap-2 cursor-pointer group/toggle">
                   <div className="relative flex items-center">
                     <input
@@ -248,14 +248,14 @@ const PostForm: React.FC<PostFormProps> = ({ onSuccess }) => {
               {/* Centered Divider 2 */}
               <div className="w-px h-3 bg-[var(--border-subtle)] opacity-30" />
 
-              {/* Char block - Fixed Width + Aligned Right */}
-              <div className="w-32 flex items-center justify-end">
+              {/* Char block */}
+              <div className="flex items-center justify-end">
                 <span className={`
                   text-[10px] tabular-nums
                   ${content.length > 900 ? 'text-amber-400' : 'text-[var(--text-faint)]'}
                   ${content.length > 950 ? 'text-red-400' : ''}
                 `}>
-                  CHAR: {content.length}/{MAX_CHARS}
+                  <span className="hidden xs:inline">CHAR: </span>{content.length}/{MAX_CHARS}
                 </span>
               </div>
             </div>
@@ -265,13 +265,14 @@ const PostForm: React.FC<PostFormProps> = ({ onSuccess }) => {
               type="submit"
               disabled={loading || !content.trim()}
               className="
-                px-6 py-2
+                px-6 py-2.5 sm:py-2
                 text-[11px] font-mono uppercase tracking-[0.2em]
                 bg-[var(--text-primary)] text-[var(--bg-base)]
                 rounded-full
-                hover:scale-105 active:scale-95
+                hover:scale-[1.02] sm:hover:scale-105 active:scale-95
                 disabled:opacity-20 disabled:scale-100 disabled:cursor-not-allowed
                 transition-all duration-300
+                w-full sm:w-auto
               "
             >
               {loading ? '...' : 'share'}
