@@ -94,7 +94,21 @@ const ThoughtCard = forwardRef<HTMLElement, ThoughtCardProps>(({ thought, index 
         rounded-2xl overflow-hidden
         ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}
       `}
+      style={{ '--mood-glow-color': moodColor } as React.CSSProperties}
     >
+      {/* Mood Glow */}
+      <div className="card-glow" />
+
+      {/* Wax Seal for Public Thoughts */}
+      {thought.is_public && (
+        <div className="wax-seal" title="Public Reflection">
+          <div className="w-2 h-2 rounded-full bg-white/20" />
+        </div>
+      )}
+
+      {/* Decorative Ink Blot */}
+      <div className="ink-blot" />
+
       {/* Content */}
       <p className="
         text-[19px] sm:text-[22px] leading-[1.6]

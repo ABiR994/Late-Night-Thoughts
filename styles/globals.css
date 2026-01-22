@@ -276,6 +276,53 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* ============================================
+   CARD ARTIFACTS & GLOWS
+   ============================================ */
+.card-glow {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: -1;
+  box-shadow: 0 0 40px -10px var(--mood-glow-color, transparent);
+  opacity: 0;
+  transition: opacity 0.8s var(--ease-out-expo);
+}
+
+.group:hover .card-glow {
+  opacity: 0.15;
+}
+
+.wax-seal {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.1), transparent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.4;
+  mix-blend-mode: overlay;
+}
+
+.ink-blot {
+  position: absolute;
+  bottom: -5px;
+  right: 10%;
+  width: 30px;
+  height: 20px;
+  background: var(--text-primary);
+  filter: blur(15px);
+  opacity: 0.03;
+  border-radius: 40% 60% 30% 70%;
+  pointer-events: none;
+}
+
+/* ============================================
    LIQUID TRANSITIONS
    ============================================ */
 
