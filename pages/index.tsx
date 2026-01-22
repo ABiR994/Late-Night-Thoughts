@@ -4,6 +4,7 @@ import PostForm from '../components/PostForm';
 import ThoughtCard from '../components/ThoughtCard';
 import MoodFilter from '../components/MoodFilter';
 import ReadingMode from '../components/ReadingMode';
+import Constellation from '../components/Constellation';
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { supabase } from '../utils/db';
 import { GetStaticProps } from 'next';
@@ -29,6 +30,7 @@ export default function Home({ initialThoughts }: HomeProps) {
   const [selectedIndex, setSelectedIndex] = useState<number>(-1);
   const [scope, setScope] = useState<'all' | 'me'>('all');
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const cardRefs = useRef<(HTMLElement | null)[]>([]);
   
   const [isLive, setIsLive] = useState(false);
 
@@ -76,6 +78,10 @@ export default function Home({ initialThoughts }: HomeProps) {
     }
     fetchThoughts(scope, selectedMood);
   }, [scope, selectedMood, fetchThoughts, isLive]);
+
+  useEffect(() => {
+    cardRefs.current = cardRefs.current.slice(0, thoughts.length);
+  }, [thoughts]);
 
   const handlePostSuccess = () => {
     fetchThoughts(scope, selectedMood);
@@ -232,10 +238,12 @@ export default function Home({ initialThoughts }: HomeProps) {
             )}
 
             {!loading && thoughts.length > 0 && (
-              <div>
+              <div className="relative">
+                {scope === 'me' && <Constellation targets={cardRefs.current.filter((r): r is HTMLElement => r !== null)} />}
                 {thoughts.map((thought, index) => (
                   <ThoughtCard
                     key={thought.id}
+                    ref={el => { cardRefs.current[index] = el; }}
                     thought={thought}
                     index={index}
                     onClick={() => openReading(thought, index)}

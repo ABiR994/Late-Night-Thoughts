@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useImperativeHandle, forwardRef } from 'react';
 import { useCursor } from '../context/CursorContext';
 
 interface Thought {
@@ -41,10 +41,12 @@ const formatTime = (dateString: string): string => {
   return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 };
 
-const ThoughtCard: React.FC<ThoughtCardProps> = ({ thought, index = 0, onClick }) => {
+const ThoughtCard = forwardRef<HTMLElement, ThoughtCardProps>(({ thought, index = 0, onClick }, ref) => {
   const [isVisible, setIsVisible] = useState(false);
-  const cardRef = useRef<HTMLElement>(null);
+  const internalRef = useRef<HTMLElement>(null);
   const { setMood } = useCursor();
+
+  useImperativeHandle(ref, () => internalRef.current!);
 
   const moodColor = thought.mood ? moodColors[thought.mood] : null;
 
@@ -59,8 +61,8 @@ const ThoughtCard: React.FC<ThoughtCardProps> = ({ thought, index = 0, onClick }
       { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
     );
 
-    if (cardRef.current) {
-      observer.observe(cardRef.current);
+    if (internalRef.current) {
+      observer.observe(internalRef.current);
     }
 
     return () => observer.disconnect();
@@ -82,7 +84,7 @@ const ThoughtCard: React.FC<ThoughtCardProps> = ({ thought, index = 0, onClick }
 
   return (
     <article
-      ref={cardRef}
+      ref={internalRef}
       onClick={onClick}
       onMouseEnter={() => thought.mood && setMood(thought.mood)}
       onMouseLeave={() => setMood(null)}
@@ -152,6 +154,8 @@ const ThoughtCard: React.FC<ThoughtCardProps> = ({ thought, index = 0, onClick }
       </div>
     </article>
   );
-};
+});
+
+ThoughtCard.displayName = 'ThoughtCard';
 
 export default ThoughtCard;
