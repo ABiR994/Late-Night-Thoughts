@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 interface Thought {
   id: string;
@@ -42,12 +42,26 @@ const formatTime = (dateString: string): string => {
 
 const ThoughtCard: React.FC<ThoughtCardProps> = ({ thought, index = 0, onClick }) => {
   const [isVisible, setIsVisible] = useState(false);
+  const cardRef = useRef<HTMLElement>(null);
 
   const moodColor = thought.mood ? moodColors[thought.mood] : null;
 
   useEffect(() => {
-    const t = setTimeout(() => setIsVisible(true), index * 50);
-    return () => clearTimeout(t);
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => setIsVisible(true), (index % 5) * 100);
+          observer.unobserve(entry.target);
+        }
+      },
+      { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
+    );
+
+    if (cardRef.current) {
+      observer.observe(cardRef.current);
+    }
+
+    return () => observer.disconnect();
   }, [index]);
 
   const handleShare = (e: React.MouseEvent) => {
@@ -66,6 +80,7 @@ const ThoughtCard: React.FC<ThoughtCardProps> = ({ thought, index = 0, onClick }
 
   return (
     <article
+      ref={cardRef}
       onClick={onClick}
       className={`
         group cursor-pointer relative
