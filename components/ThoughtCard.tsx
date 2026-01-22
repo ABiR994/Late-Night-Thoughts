@@ -43,24 +43,11 @@ const formatTime = (dateString: string): string => {
 
 const ThoughtCard = forwardRef<HTMLElement, ThoughtCardProps>(({ thought, index = 0, onClick }, ref) => {
   const [isVisible, setIsVisible] = useState(false);
-  const [tilt, setTilt] = useState({ x: 0, y: 0 });
   const internalRef = useRef<HTMLElement>(null);
 
   useImperativeHandle(ref, () => internalRef.current!);
 
   const moodColor = thought.mood ? moodColors[thought.mood] : null;
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLElement>) => {
-    if (!internalRef.current) return;
-    const rect = internalRef.current.getBoundingClientRect();
-    const x = (e.clientX - rect.left) / rect.width - 0.5;
-    const y = (e.clientY - rect.top) / rect.height - 0.5;
-    setTilt({ x: x * 10, y: y * -10 }); // Subtle 10deg max tilt
-  };
-
-  const handleMouseLeave = () => {
-    setTilt({ x: 0, y: 0 });
-  };
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -98,8 +85,6 @@ const ThoughtCard = forwardRef<HTMLElement, ThoughtCardProps>(({ thought, index 
     <article
       ref={internalRef}
       onClick={onClick}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
       className={`
         group cursor-pointer relative
         py-8 px-6 -mx-4 mb-2
@@ -109,22 +94,19 @@ const ThoughtCard = forwardRef<HTMLElement, ThoughtCardProps>(({ thought, index 
         rounded-2xl overflow-hidden
         ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}
       `}
-      style={{ 
-        '--mood-glow-color': moodColor,
-        transform: `perspective(1000px) rotateX(${tilt.y}deg) rotateY(${tilt.x}deg) scale3d(1.02, 1.02, 1.02)`
-      } as React.CSSProperties}
+      style={{ '--mood-glow-color': moodColor } as React.CSSProperties}
     >
       {/* Mood Glow */}
       <div className="card-glow" />
 
       {/* Content */}
       <p className={`
-        text-[19px] sm:text-[22px] leading-[1.6]
+        text-[19px] sm:text-[22px] leading-[1.6] group-hover:leading-[1.7]
         text-[var(--text-secondary)] group-hover:text-[var(--text-primary)]
         font-display italic
         whitespace-pre-wrap
         mb-6
-        transition-all duration-500
+        transition-all duration-700
         ink-flow-text ${isVisible ? 'ink-flow-active' : 'opacity-0'}
       `}>
         {thought.content}
