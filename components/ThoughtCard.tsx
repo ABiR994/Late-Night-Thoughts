@@ -43,6 +43,7 @@ const formatTime = (dateString: string): string => {
 
 const ThoughtCard = forwardRef<HTMLElement, ThoughtCardProps>(({ thought, index = 0, onClick }, ref) => {
   const [isVisible, setIsVisible] = useState(false);
+  const { handwritten } = useCursor();
   const internalRef = useRef<HTMLElement>(null);
 
   useImperativeHandle(ref, () => internalRef.current!);
@@ -108,7 +109,7 @@ const ThoughtCard = forwardRef<HTMLElement, ThoughtCardProps>(({ thought, index 
       <p className={`
         text-[19px] sm:text-[22px] leading-[1.6] group-hover:leading-[1.7]
         text-[var(--text-secondary)] group-hover:text-[var(--text-primary)]
-        font-display italic
+        ${handwritten ? 'font-handwritten text-[24px] sm:text-[28px] !italic-none' : 'font-display italic'}
         whitespace-pre-wrap
         mb-6
         transition-all duration-700

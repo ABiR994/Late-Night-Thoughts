@@ -4,6 +4,8 @@ interface CursorContextType {
   triggerRipple: () => void;
   triggerShootingStar: () => void;
   triggerFallingStar: () => void;
+  handwritten: boolean;
+  setHandwritten: (val: boolean) => void;
   ripples: number[];
   shootingStars: number[];
   fallingStars: { id: number; top: string; left: string }[];
@@ -15,6 +17,7 @@ export const CursorProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   const [ripples, setRipples] = useState<number[]>([]);
   const [shootingStars, setShootingStars] = useState<number[]>([]);
   const [fallingStars, setFallingStars] = useState<{ id: number; top: string; left: string }[]>([]);
+  const [handwritten, setHandwritten] = useState(false);
 
   const triggerRipple = () => {
     const id = Date.now();
@@ -43,7 +46,7 @@ export const CursorProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   };
 
   return (
-    <CursorContext.Provider value={{ triggerRipple, triggerShootingStar, triggerFallingStar, ripples, shootingStars, fallingStars }}>
+    <CursorContext.Provider value={{ triggerRipple, triggerShootingStar, triggerFallingStar, handwritten, setHandwritten, ripples, shootingStars, fallingStars }}>
       {children}
     </CursorContext.Provider>
   );

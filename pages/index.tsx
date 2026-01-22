@@ -32,8 +32,8 @@ export default function Home({ initialThoughts }: HomeProps) {
   const [scope, setScope] = useState<'all' | 'me'>('all');
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [currentTime, setCurrentTime] = useState(new Date());
+  const { triggerFallingStar, handwritten, setHandwritten } = useCursor();
   const cardRefs = useRef<(HTMLElement | null)[]>([]);
-  const { triggerFallingStar } = useCursor();
   
   const [isLive, setIsLive] = useState(false);
 
@@ -210,6 +210,13 @@ export default function Home({ initialThoughts }: HomeProps) {
                   {scope === 'me' && <span className="absolute -bottom-2 left-0 w-full h-px bg-aurora-violet shadow-[0_0_8px_rgba(139,92,246,0.6)]" />}
                 </button>
               </div>
+              <div className="w-px h-4 bg-white/10" />
+              <button
+                onClick={() => setHandwritten(!handwritten)}
+                className={`text-[10px] font-mono uppercase tracking-[0.3em] transition-all duration-300 ${handwritten ? 'text-aurora-violet' : 'text-[var(--text-faint)] hover:text-[var(--text-muted)]'}`}
+              >
+                script
+              </button>
               <div className="w-px h-4 bg-white/10" />
               <button
                 onClick={openRandom}
