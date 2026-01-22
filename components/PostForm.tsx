@@ -179,19 +179,19 @@ const PostForm: React.FC<PostFormProps> = ({ onSuccess }) => {
 
         {/* Options - Show when typing */}
         <div className={`
-          px-6 sm:px-8 pb-6 pt-0
+          px-6 sm:px-8 pb-8 pt-0
           transition-all duration-500 ease-[var(--ease-out-expo)]
           ${showOptions ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2 pointer-events-none'}
         `}>
-          <div className="h-px bg-gradient-to-r from-transparent via-[var(--border-subtle)] to-transparent mb-6" />
+          <div className="h-px bg-gradient-to-r from-transparent via-[var(--border-subtle)] to-transparent mb-8" />
           
-          <div className="flex flex-wrap items-center justify-between gap-y-8 gap-x-4">
-            {/* Redesigned Controls: Fixed widths for desktop, optimized for mobile */}
-            <div className="flex items-center text-[11px] font-mono uppercase tracking-wider">
+          <div className="flex flex-col gap-8">
+            {/* Row 1: Spaced-out controls */}
+            <div className="flex items-center w-full text-[11px] font-mono uppercase tracking-wider">
               
               {/* Mood block */}
-              <div className="w-24 sm:w-40 flex items-center gap-2 group/select relative">
-                <span className="hidden xs:inline text-[var(--text-muted)]">mood</span>
+              <div className="flex-1 flex items-center justify-start gap-2 group/select relative">
+                <span className="text-[var(--text-muted)]">mood</span>
                 <div className="relative">
                   <select
                     value={mood}
@@ -219,11 +219,11 @@ const PostForm: React.FC<PostFormProps> = ({ onSuccess }) => {
                 </div>
               </div>
 
-              {/* Centered Divider 1 */}
+              {/* Divider */}
               <div className="w-px h-4 bg-[var(--border-subtle)] opacity-40" />
 
               {/* Public block */}
-              <div className="w-24 sm:w-40 flex items-center justify-center">
+              <div className="flex-1 flex items-center justify-center">
                 <label className="flex items-center gap-2 cursor-pointer group/toggle">
                   <div className="relative flex items-center">
                     <input
@@ -245,37 +245,39 @@ const PostForm: React.FC<PostFormProps> = ({ onSuccess }) => {
                 </label>
               </div>
 
-              {/* Centered Divider 2 */}
+              {/* Divider */}
               <div className="w-px h-4 bg-[var(--border-subtle)] opacity-40" />
 
               {/* Char block */}
-              <div className="w-24 sm:w-40 flex items-center justify-end">
+              <div className="flex-1 flex items-center justify-end">
                 <span className={`
                   text-[10px] tabular-nums
                   ${content.length > 900 ? 'text-amber-400' : 'text-[var(--text-faint)]'}
                   ${content.length > 950 ? 'text-red-400' : ''}
                 `}>
-                  <span className="hidden xs:inline">CHAR: </span>{content.length}/{MAX_CHARS}
+                  CHAR: {content.length}/{MAX_CHARS}
                 </span>
               </div>
             </div>
 
-            {/* Submit: Full width on mobile to avoid overlap */}
-            <button
-              type="submit"
-              disabled={loading || !content.trim()}
-              className="
-                w-full sm:w-auto px-10 py-2.5 sm:py-2
-                text-[11px] font-mono uppercase tracking-[0.2em]
-                bg-[var(--text-primary)] text-[var(--bg-base)]
-                rounded-full
-                hover:scale-[1.01] sm:hover:scale-105 active:scale-95
-                disabled:opacity-20 disabled:scale-100 disabled:cursor-not-allowed
-                transition-all duration-300
-              "
-            >
-              {loading ? '...' : 'share'}
-            </button>
+            {/* Row 2: Submit Button */}
+            <div className="flex justify-center sm:justify-end pt-2">
+              <button
+                type="submit"
+                disabled={loading || !content.trim()}
+                className="
+                  w-full sm:w-auto px-14 py-3 sm:py-2
+                  text-[11px] font-mono uppercase tracking-[0.2em]
+                  bg-[var(--text-primary)] text-[var(--bg-base)]
+                  rounded-full
+                  hover:scale-[1.02] sm:hover:scale-105 active:scale-95
+                  disabled:opacity-20 disabled:scale-100 disabled:cursor-not-allowed
+                  transition-all duration-300
+                "
+              >
+                {loading ? '...' : 'share'}
+              </button>
+            </div>
           </div>
         </div>
       </div>
