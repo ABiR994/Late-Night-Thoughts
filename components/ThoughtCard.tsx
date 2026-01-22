@@ -41,29 +41,27 @@ const formatTime = (dateString: string): string => {
 };
 
 const ThoughtCard: React.FC<ThoughtCardProps> = ({ thought, index = 0, onClick }) => {
-  const [isFavorited, setIsFavorited] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
 
   const moodColor = thought.mood ? moodColors[thought.mood] : null;
-
-  useEffect(() => {
-    const favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
-    setIsFavorited(favorites.includes(thought.id));
-  }, [thought.id]);
 
   useEffect(() => {
     const t = setTimeout(() => setIsVisible(true), index * 50);
     return () => clearTimeout(t);
   }, [index]);
 
-  const toggleFavorite = (e: React.MouseEvent) => {
+  const handleShare = (e: React.MouseEvent) => {
     e.stopPropagation();
-    const favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
-    const newFavorites = isFavorited
-      ? favorites.filter((id: string) => id !== thought.id)
-      : [...favorites, thought.id];
-    localStorage.setItem('favorites', JSON.stringify(newFavorites));
-    setIsFavorited(!isFavorited);
+    if (navigator.share) {
+      navigator.share({
+        title: 'Late Night Thought',
+        text: thought.content,
+        url: window.location.origin,
+      }).catch(() => {});
+    } else {
+      navigator.clipboard.writeText(thought.content);
+      alert('Thought copied to clipboard');
+    }
   };
 
   return (
@@ -110,19 +108,19 @@ const ThoughtCard: React.FC<ThoughtCardProps> = ({ thought, index = 0, onClick }
         {/* Actions */}
         <div className="flex items-center gap-4 opacity-0 group-hover:opacity-100 translate-x-2 group-hover:translate-x-0 transition-all duration-500 ease-[var(--ease-out-expo)]">
           <button
-            onClick={toggleFavorite}
-            className={`
+            onClick={handleShare}
+            className="
               p-2 rounded-full
+              text-[var(--text-faint)] hover:text-[var(--text-primary)]
+              hover:bg-white/5
               transition-all duration-300
-              hover:bg-pink-500/10
-              ${isFavorited ? 'text-pink-400' : 'text-[var(--text-faint)] hover:text-pink-400'}
-            `}
+            "
+            title="Share thought"
           >
-            <svg className="w-4 h-4" fill={isFavorited ? 'currentColor' : 'none'} viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M7.217 10.907a2.25 2.25 0 100 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186l9.566-5.314m-9.566 7.5l9.566 5.314m0-10.628a2.25 2.25 0 103.935-2.186 2.25 2.25 0 00-3.935 2.186zm0 12.812a2.25 2.25 0 103.935 2.186 2.25 2.25 0 00-3.935-2.186z" />
             </svg>
           </button>
-          <span className="text-[10px] font-mono uppercase tracking-widest text-[var(--text-faint)]">read</span>
         </div>
       </div>
     </article>
