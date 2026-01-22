@@ -83,8 +83,8 @@ const ReadingMode: React.FC<ReadingModeProps> = ({ thought, onClose, onNext, onP
       {/* Content */}
       <div className={`
         relative z-10 w-full max-w-2xl mx-6 sm:mx-auto
-        transition-all duration-700 ease-[var(--ease-out-expo)]
-        ${isVisible ? 'opacity-100 scale-100 translate-y-0' : 'opacity-0 scale-95 translate-y-8'}
+        transition-all duration-300
+        ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}
       `}>
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
