@@ -14,6 +14,7 @@ const Layout = ({ children }: LayoutProps) => {
         <div className="orb orb-3" />
         <div className="stars" />
         <div className="stars-2" />
+        <div className="stars-3" />
         <div className="noise" />
         <div className="grid-overlay" />
       </div>
