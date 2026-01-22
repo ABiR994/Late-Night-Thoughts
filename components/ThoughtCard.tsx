@@ -27,38 +27,26 @@ const moodColors: Record<string, string> = {
 
 // Custom SVG Logos
 const ResonateIcon = ({ filled }: { filled: boolean }) => (
-  <svg viewBox="0 0 24 24" className="w-4 h-4 transition-all duration-500" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <svg viewBox="0 0 24 24" className="w-5 h-5 transition-all duration-500" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path 
       d="M12 21L10.55 19.705C5.4 15.03 2 11.95 2 8.165C2 5.085 4.42 2.665 7.5 2.665C9.24 2.665 10.91 3.475 12 4.755C13.09 3.475 14.76 2.665 16.5 2.665C19.58 2.665 22 5.085 22 8.165C22 11.95 18.6 15.03 13.45 19.71L12 21Z" 
       stroke="currentColor" 
-      strokeWidth="1.5"
+      strokeWidth="2"
       fill={filled ? "currentColor" : "none"}
       className={filled ? "animate-pulse" : ""}
     />
-    <path 
-      d="M12 13L13.5 11.5M12 13L10.5 11.5M12 13V16" 
-      stroke="currentColor" 
-      strokeWidth="1.5" 
-      strokeLinecap="round" 
-      opacity={filled ? 1 : 0.4}
-    />
-    {filled && (
-      <circle cx="12" cy="8" r="1" fill="white" className="animate-ping" />
-    )}
   </svg>
 );
 
 const ShareIcon = () => (
-  <svg viewBox="0 0 24 24" className="w-4 h-4" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path 
       d="M20 4L3 11L10 14M20 4L13 21L10 14M20 4L10 14" 
       stroke="currentColor" 
-      strokeWidth="1.5" 
+      strokeWidth="2" 
       strokeLinecap="round" 
       strokeLinejoin="round" 
     />
-    <circle cx="20" cy="4" r="1.5" stroke="currentColor" strokeWidth="1" />
-    <path d="M6 18H8M12 18H14M18 18H20" stroke="currentColor" strokeWidth="1" strokeLinecap="round" opacity="0.3" />
   </svg>
 );
 
@@ -180,13 +168,13 @@ const ThoughtCard = forwardRef<HTMLElement, ThoughtCardProps>(({ thought, index 
         </div>
 
         {/* Actions */}
-        <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 translate-x-2 group-hover:translate-x-0 transition-all duration-500 ease-[var(--ease-out-expo)]">
+        <div className="flex items-center gap-2 opacity-40 sm:opacity-0 group-hover:opacity-100 translate-x-0 sm:translate-x-2 group-hover:translate-x-0 transition-all duration-500 ease-[var(--ease-out-expo)]">
           <button
             onClick={handleResonate}
             className={`
               p-2 rounded-full
               transition-all duration-500
-              ${resonated ? 'text-aurora-violet scale-125 bg-aurora-violet/10' : 'text-[var(--text-faint)] hover:text-aurora-violet hover:bg-white/5'}
+              ${resonated ? 'text-aurora-violet scale-125 bg-aurora-violet/10 opacity-100' : 'text-[var(--text-muted)] hover:text-aurora-violet hover:bg-white/5'}
             `}
             title="Resonate"
           >
@@ -196,7 +184,7 @@ const ThoughtCard = forwardRef<HTMLElement, ThoughtCardProps>(({ thought, index 
             onClick={handleShare}
             className="
               p-2 rounded-full
-              text-[var(--text-faint)] hover:text-[var(--text-primary)]
+              text-[var(--text-muted)] hover:text-[var(--text-primary)]
               hover:bg-white/5
               transition-all duration-300
             "
