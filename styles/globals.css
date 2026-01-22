@@ -342,6 +342,29 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* ============================================
+   MOOD AURAS
+   ============================================ */
+@keyframes aura-pulse {
+  0%, 100% { opacity: 0.1; transform: scale(1); }
+  50% { opacity: 0.25; transform: scale(1.1); }
+}
+
+.mood-aura {
+  position: absolute;
+  top: -20%;
+  right: -10%;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  filter: blur(40px);
+  pointer-events: none;
+  z-index: -1;
+  background: radial-gradient(circle, var(--aura-color), transparent 70%);
+  animation: aura-pulse 4s ease-in-out infinite;
+  mix-blend-mode: screen;
+}
+
+/* ============================================
    SCROLL PROGRESS - SHOOTING STAR
    ============================================ */
 .scroll-progress-container {

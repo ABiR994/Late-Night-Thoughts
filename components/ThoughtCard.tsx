@@ -88,10 +88,18 @@ const ThoughtCard: React.FC<ThoughtCardProps> = ({ thought, index = 0, onClick }
         bg-black/40 backdrop-blur-sm
         transition-all duration-500 ease-[var(--ease-out-expo)]
         hover:bg-black/60
-        rounded-2xl
+        rounded-2xl overflow-hidden
         ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}
       `}
     >
+      {/* Mood Aura */}
+      {moodColor && (
+        <div 
+          className="mood-aura" 
+          style={{ '--aura-color': moodColor } as React.CSSProperties} 
+        />
+      )}
+
       {/* Content */}
       <p className="
         text-[19px] sm:text-[22px] leading-[1.6]
