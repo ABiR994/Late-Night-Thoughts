@@ -7,7 +7,6 @@ type LayoutProps = {
 };
 
 const Layout = ({ children, blurBackground = false }: LayoutProps) => {
-  const [timeState, setTimeState] = useState<'dusk' | 'midnight' | 'dawn'>('midnight');
   const [scrollProgress, setScrollProgress] = useState(0);
   const { ripples, shootingStars, fallingStars, isMistActive } = useCursor();
 
@@ -24,15 +23,8 @@ const Layout = ({ children, blurBackground = false }: LayoutProps) => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  useEffect(() => {
-    const hour = new Date().getHours();
-    if (hour >= 18 && hour < 22) setTimeState('dusk');
-    else if (hour >= 4 && hour < 7) setTimeState('dawn');
-    else setTimeState('midnight');
-  }, []);
-
   return (
-    <div className={`relative min-h-screen overflow-hidden theme-${timeState}`}>
+    <div className={`relative min-h-screen overflow-hidden theme-midnight`}>
       
       {/* Mist Overlays */}
       <div className="mist-overlay mist-top" />
