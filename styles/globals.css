@@ -267,6 +267,27 @@ body {
   100% { mask-position: 0% 0; opacity: 1; transform: translateX(0); }
 }
 
+.dissolve-effect {
+  animation: dissolve-to-point 0.8s var(--ease-out-expo) forwards;
+}
+
+@keyframes dissolve-to-point {
+  0% { transform: scale(1); opacity: 1; filter: blur(0px); }
+  100% { transform: scale(0.1); opacity: 0; filter: blur(10px); }
+}
+
+.launching-star {
+  position: absolute; top: 50%; left: 50%; width: 4px; height: 4px;
+  background: white; border-radius: 50%; box-shadow: 0 0 10px white, 0 0 20px var(--aurora-violet);
+  z-index: 50; pointer-events: none;
+  animation: launch-up 1s var(--ease-out-expo) forwards;
+}
+
+@keyframes launch-up {
+  0% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+  100% { transform: translate(-50%, -500px) scale(0); opacity: 0; }
+}
+
 /* ============================================
    FEED TRANSITIONS
    ============================================ */

@@ -24,6 +24,7 @@ const PostForm: React.FC<PostFormProps> = ({ onSuccess }) => {
   const [isPublic, setIsPublic] = useState(false);
   const [mood, setMood] = useState('None');
   const [loading, setLoading] = useState(false);
+  const [isDissolving, setIsDissolving] = useState(false);
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
   const [showOptions, setShowOptions] = useState(false);
   const [particles, setParticles] = useState<{ id: number; x: number; y: number }[]>([]);
@@ -115,17 +116,22 @@ const PostForm: React.FC<PostFormProps> = ({ onSuccess }) => {
       });
 
       if (response.ok) {
-        triggerRipple();
-        triggerShootingStar();
-        setMessage({ type: 'success', text: 'Shared.' });
-        setContent('');
-        setMood('None');
-        setIsPublic(false);
-        localStorage.removeItem('thought-draft');
+        setIsDissolving(true);
+        setTimeout(() => {
+          triggerRipple();
+          triggerShootingStar();
+          setMessage({ type: 'success', text: 'Shared.' });
+          setContent('');
+          setMood('None');
+          setIsPublic(false);
+          setIsDissolving(false);
+          localStorage.removeItem('thought-draft');
+        }, 800);
+        
         setTimeout(() => {
           setMessage(null);
           onSuccess?.();
-        }, 1500);
+        }, 2000);
       } else {
         const error = await response.json();
         setMessage({ type: 'error', text: error.error || 'Failed.' });
@@ -156,8 +162,8 @@ const PostForm: React.FC<PostFormProps> = ({ onSuccess }) => {
           value={content}
           onChange={handleContentChange}
           placeholder="What's on your mind tonight?"
-          disabled={loading}
-          className="
+          disabled={loading || isDissolving}
+          className={`
             w-full min-h-[140px] p-8
             bg-transparent
             text-[18px] font-body leading-relaxed
@@ -165,12 +171,15 @@ const PostForm: React.FC<PostFormProps> = ({ onSuccess }) => {
             placeholder:text-[var(--text-muted)]
             focus:outline-none resize-none
             relative z-10
-            transition-opacity duration-300
-          "
+            transition-all duration-300
+            ${isDissolving ? 'dissolve-effect' : ''}
+          `}
           style={{ 
-            opacity: Math.max(0.3, 1 - (content.length / MAX_CHARS) * 0.7) 
+            opacity: isDissolving ? 0 : Math.max(0.3, 1 - (content.length / MAX_CHARS) * 0.7) 
           }}
         />
+
+        {isDissolving && <div className="launching-star" />}
 
         {/* Typing Particles */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
