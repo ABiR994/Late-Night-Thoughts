@@ -185,12 +185,12 @@ const PostForm: React.FC<PostFormProps> = ({ onSuccess }) => {
         `}>
           <div className="h-px bg-gradient-to-r from-transparent via-[var(--border-subtle)] to-transparent mb-6" />
           
-          <div className="flex items-center justify-between gap-10">
-            {/* Redesigned Controls: High Separation via Justify-Between and Max-Width */}
-            <div className="flex-1 flex items-center justify-between max-w-[420px] text-[11px] font-mono uppercase tracking-wider">
+          <div className="flex items-center justify-between gap-4">
+            {/* Redesigned Controls: Fixed-width containers for forced separation */}
+            <div className="flex items-center text-[11px] font-mono uppercase tracking-wider">
               
-              {/* Mood selector */}
-              <div className="flex items-center gap-2 group/select relative">
+              {/* Mood block - Fixed Width */}
+              <div className="w-32 flex items-center gap-2 group/select relative">
                 <span className="text-[var(--text-muted)]">mood</span>
                 <div className="relative">
                   <select
@@ -220,40 +220,44 @@ const PostForm: React.FC<PostFormProps> = ({ onSuccess }) => {
               </div>
 
               {/* Centered Divider 1 */}
-              <div className="w-px h-3 bg-[var(--border-subtle)] opacity-40" />
+              <div className="w-px h-3 bg-[var(--border-subtle)] opacity-30" />
 
-              {/* Public toggle */}
-              <label className="flex items-center gap-2 cursor-pointer group/toggle">
-                <div className="relative flex items-center">
-                  <input
-                    type="checkbox"
-                    checked={isPublic}
-                    onChange={(e) => setIsPublic(e.target.checked)}
-                    disabled={loading}
-                    className="
-                      w-3 h-3 rounded-sm
-                      border border-[var(--border-strong)]
-                      bg-transparent
-                      checked:bg-aurora-violet checked:border-aurora-violet
-                      focus:ring-0 focus:ring-offset-0
-                      cursor-pointer transition-all
-                    "
-                  />
-                </div>
-                <span className="text-[var(--text-muted)] group-hover/toggle:text-[var(--text-secondary)] transition-colors">public</span>
-              </label>
+              {/* Public block - Fixed Width + Centered */}
+              <div className="w-32 flex items-center justify-center">
+                <label className="flex items-center gap-2 cursor-pointer group/toggle">
+                  <div className="relative flex items-center">
+                    <input
+                      type="checkbox"
+                      checked={isPublic}
+                      onChange={(e) => setIsPublic(e.target.checked)}
+                      disabled={loading}
+                      className="
+                        w-3 h-3 rounded-sm
+                        border border-[var(--border-strong)]
+                        bg-transparent
+                        checked:bg-aurora-violet checked:border-aurora-violet
+                        focus:ring-0 focus:ring-offset-0
+                        cursor-pointer transition-all
+                      "
+                    />
+                  </div>
+                  <span className="text-[var(--text-muted)] group-hover/toggle:text-[var(--text-secondary)] transition-colors">public</span>
+                </label>
+              </div>
 
               {/* Centered Divider 2 */}
-              <div className="w-px h-3 bg-[var(--border-subtle)] opacity-40" />
+              <div className="w-px h-3 bg-[var(--border-subtle)] opacity-30" />
 
-              {/* Char count */}
-              <span className={`
-                text-[10px] tabular-nums
-                ${content.length > 900 ? 'text-amber-400' : 'text-[var(--text-faint)]'}
-                ${content.length > 950 ? 'text-red-400' : ''}
-              `}>
-                CHAR: {content.length}/{MAX_CHARS}
-              </span>
+              {/* Char block - Fixed Width + Aligned Right */}
+              <div className="w-32 flex items-center justify-end">
+                <span className={`
+                  text-[10px] tabular-nums
+                  ${content.length > 900 ? 'text-amber-400' : 'text-[var(--text-faint)]'}
+                  ${content.length > 950 ? 'text-red-400' : ''}
+                `}>
+                  CHAR: {content.length}/{MAX_CHARS}
+                </span>
+              </div>
             </div>
 
             {/* Submit */}
