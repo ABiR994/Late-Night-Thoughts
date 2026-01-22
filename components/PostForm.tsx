@@ -27,7 +27,7 @@ const PostForm: React.FC<PostFormProps> = ({ onSuccess }) => {
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
   const [showOptions, setShowOptions] = useState(false);
   const [particles, setParticles] = useState<{ id: number; x: number; y: number }[]>([]);
-  const { setMood: setGlobalMood, triggerRipple } = useCursor();
+  const { triggerRipple } = useCursor();
   
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -46,14 +46,6 @@ const PostForm: React.FC<PostFormProps> = ({ onSuccess }) => {
       }, 800);
     }
   };
-
-  useEffect(() => {
-    if (mood !== 'None') {
-      setGlobalMood(mood);
-    } else {
-      setGlobalMood(null);
-    }
-  }, [mood, setGlobalMood]);
 
   // Load draft
   useEffect(() => {

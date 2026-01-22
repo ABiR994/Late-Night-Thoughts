@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import CustomCursor from './CustomCursor';
 import { useCursor } from '../context/CursorContext';
 
 type LayoutProps = {
@@ -33,7 +32,6 @@ const Layout = ({ children, blurBackground = false }: LayoutProps) => {
 
   return (
     <div className={`relative min-h-screen overflow-hidden theme-${timeState}`}>
-      <CustomCursor />
       
       {/* Ripple of Silence */}
       <div className="ripple-container">
@@ -57,11 +55,6 @@ const Layout = ({ children, blurBackground = false }: LayoutProps) => {
         className={`ambient-container transition-all duration-1000 ${blurBackground ? 'blur-xl scale-110 opacity-50' : 'blur-0 scale-100 opacity-100'}`} 
         aria-hidden="true"
       >
-        <div className="aurora-container">
-          <div className="aurora-ribbon aurora-1" />
-          <div className="aurora-ribbon aurora-2" />
-          <div className="aurora-ribbon aurora-3" />
-        </div>
         <div className="orb orb-1" />
         <div className="orb orb-2" />
         <div className="orb orb-3" />

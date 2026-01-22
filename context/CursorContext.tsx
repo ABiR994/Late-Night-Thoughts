@@ -1,10 +1,6 @@
 import React, { createContext, useContext, useState } from 'react';
 
-type Mood = string | null;
-
 interface CursorContextType {
-  mood: Mood;
-  setMood: (mood: Mood) => void;
   triggerRipple: () => void;
   ripples: number[];
 }
@@ -12,7 +8,6 @@ interface CursorContextType {
 const CursorContext = createContext<CursorContextType | undefined>(undefined);
 
 export const CursorProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [mood, setMood] = useState<Mood>(null);
   const [ripples, setRipples] = useState<number[]>([]);
 
   const triggerRipple = () => {
@@ -24,7 +19,7 @@ export const CursorProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   };
 
   return (
-    <CursorContext.Provider value={{ mood, setMood, triggerRipple, ripples }}>
+    <CursorContext.Provider value={{ triggerRipple, ripples }}>
       {children}
     </CursorContext.Provider>
   );

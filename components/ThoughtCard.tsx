@@ -44,7 +44,6 @@ const formatTime = (dateString: string): string => {
 const ThoughtCard = forwardRef<HTMLElement, ThoughtCardProps>(({ thought, index = 0, onClick }, ref) => {
   const [isVisible, setIsVisible] = useState(false);
   const internalRef = useRef<HTMLElement>(null);
-  const { setMood } = useCursor();
 
   useImperativeHandle(ref, () => internalRef.current!);
 
@@ -86,8 +85,6 @@ const ThoughtCard = forwardRef<HTMLElement, ThoughtCardProps>(({ thought, index 
     <article
       ref={internalRef}
       onClick={onClick}
-      onMouseEnter={() => thought.mood && setMood(thought.mood)}
-      onMouseLeave={() => setMood(null)}
       className={`
         group cursor-pointer relative
         py-8 px-6 -mx-4 mb-2
@@ -98,14 +95,6 @@ const ThoughtCard = forwardRef<HTMLElement, ThoughtCardProps>(({ thought, index 
         ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}
       `}
     >
-      {/* Mood Aura */}
-      {moodColor && (
-        <div 
-          className="mood-aura" 
-          style={{ '--aura-color': moodColor } as React.CSSProperties} 
-        />
-      )}
-
       {/* Content */}
       <p className="
         text-[19px] sm:text-[22px] leading-[1.6]
