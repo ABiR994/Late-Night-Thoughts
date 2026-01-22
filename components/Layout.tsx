@@ -9,7 +9,7 @@ type LayoutProps = {
 const Layout = ({ children, blurBackground = false }: LayoutProps) => {
   const [timeState, setTimeState] = useState<'dusk' | 'midnight' | 'dawn'>('midnight');
   const [scrollProgress, setScrollProgress] = useState(0);
-  const { ripples } = useCursor();
+  const { ripples, shootingStars } = useCursor();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -39,6 +39,11 @@ const Layout = ({ children, blurBackground = false }: LayoutProps) => {
           <div key={id} className="ripple-wave" />
         ))}
       </div>
+
+      {/* Shooting Star Success */}
+      {shootingStars.map(id => (
+        <div key={id} className="shooting-star-success" />
+      ))}
 
       {/* Scroll Progress Shooting Star */}
       <div className="scroll-progress-container">

@@ -312,6 +312,39 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* ============================================
+   SHOOTING STAR SUCCESS EVENT
+   ============================================ */
+@keyframes shooting-star-path {
+  0% { transform: translate(-100vw, -100vh) rotate(45deg); opacity: 1; }
+  100% { transform: translate(100vw, 100vh) rotate(45deg); opacity: 0; }
+}
+
+.shooting-star-success {
+  position: fixed;
+  top: 20%;
+  left: 50%;
+  width: 150px;
+  height: 2px;
+  background: linear-gradient(90deg, white, transparent);
+  z-index: 1;
+  pointer-events: none;
+  animation: shooting-star-path 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.shooting-star-success::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 4px;
+  background: white;
+  border-radius: 50%;
+  box-shadow: 0 0 15px white, 0 0 30px var(--aurora-violet);
+}
+
+/* ============================================
    LIQUID TRANSITIONS
    ============================================ */
 

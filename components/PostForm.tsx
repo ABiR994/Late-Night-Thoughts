@@ -27,7 +27,7 @@ const PostForm: React.FC<PostFormProps> = ({ onSuccess }) => {
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
   const [showOptions, setShowOptions] = useState(false);
   const [particles, setParticles] = useState<{ id: number; x: number; y: number }[]>([]);
-  const { triggerRipple } = useCursor();
+  const { triggerRipple, triggerShootingStar } = useCursor();
   
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -111,6 +111,7 @@ const PostForm: React.FC<PostFormProps> = ({ onSuccess }) => {
 
       if (response.ok) {
         triggerRipple();
+        triggerShootingStar();
         setMessage({ type: 'success', text: 'Shared.' });
         setContent('');
         setMood('None');
