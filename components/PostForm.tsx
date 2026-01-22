@@ -179,18 +179,18 @@ const PostForm: React.FC<PostFormProps> = ({ onSuccess }) => {
 
         {/* Options - Show when typing */}
         <div className={`
-          px-6 pb-6 pt-0
+          px-8 pb-6 pt-0
           transition-all duration-500 ease-[var(--ease-out-expo)]
           ${showOptions ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2 pointer-events-none'}
         `}>
           <div className="h-px bg-gradient-to-r from-transparent via-[var(--border-subtle)] to-transparent mb-6" />
           
-          <div className="flex flex-wrap items-center justify-between gap-6">
-            {/* Options Row: Clean, Centered Dividers, Wide Spacing */}
-            <div className="flex items-center gap-8 text-[11px] font-mono uppercase tracking-wider">
+          <div className="flex items-center justify-between gap-6">
+            {/* Options Row: Redesigned for Maximum Breathability */}
+            <div className="flex items-center gap-12 text-[11px] font-mono uppercase tracking-wider">
               
               {/* Mood selector */}
-              <div className="flex items-center gap-2 group/select relative">
+              <div className="flex items-center gap-3 group/select relative">
                 <span className="text-[var(--text-muted)]">mood</span>
                 <div className="relative">
                   <select
@@ -220,10 +220,10 @@ const PostForm: React.FC<PostFormProps> = ({ onSuccess }) => {
               </div>
 
               {/* Centered Divider 1 */}
-              <div className="w-px h-3 bg-[var(--border-subtle)] opacity-50" />
+              <div className="w-px h-4 bg-[var(--border-subtle)]" />
 
               {/* Public toggle */}
-              <label className="flex items-center gap-2 cursor-pointer group/toggle">
+              <label className="flex items-center gap-3 cursor-pointer group/toggle">
                 <div className="relative flex items-center">
                   <input
                     type="checkbox"
@@ -244,7 +244,7 @@ const PostForm: React.FC<PostFormProps> = ({ onSuccess }) => {
               </label>
 
               {/* Centered Divider 2 */}
-              <div className="w-px h-3 bg-[var(--border-subtle)] opacity-50" />
+              <div className="w-px h-4 bg-[var(--border-subtle)]" />
 
               {/* Char count */}
               <span className={`
