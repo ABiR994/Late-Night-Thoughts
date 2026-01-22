@@ -6,16 +6,8 @@ type LayoutProps = {
 };
 
 const Layout = ({ children, blurBackground = false }: LayoutProps) => {
-  const [timeState, setTimeState] = useState<'dusk' | 'midnight' | 'dawn'>('midnight');
   const [isMuted, setIsMuted] = useState(true);
   const audioRef = useRef<HTMLAudioElement>(null);
-
-  useEffect(() => {
-    const hour = new Date().getHours();
-    if (hour >= 18 && hour < 22) setTimeState('dusk');
-    else if (hour >= 4 && hour < 7) setTimeState('dawn');
-    else setTimeState('midnight');
-  }, []);
 
   const toggleAudio = () => {
     if (audioRef.current) {
@@ -29,7 +21,7 @@ const Layout = ({ children, blurBackground = false }: LayoutProps) => {
   };
 
   return (
-    <div className={`relative min-h-screen overflow-hidden theme-${timeState}`}>
+    <div className="relative min-h-screen overflow-hidden">
       {/* Ambient Background */}
       <div 
         className={`ambient-container transition-all duration-1000 ${blurBackground ? 'blur-xl scale-110 opacity-50' : 'blur-0 scale-100 opacity-100'}`} 

@@ -288,58 +288,11 @@ h1, h2, h3, h4, h5, h6 {
   100% { background-position: 200% 50%; }
 }
 
-@keyframes starlight-pulse {
-  0%, 100% { opacity: 0.3; transform: scale(1); }
-  50% { opacity: 0.7; transform: scale(1.05); }
-}
-
-.skeleton-starlight {
-  background: linear-gradient(
-    90deg,
-    rgba(255, 255, 255, 0.03) 25%,
-    rgba(255, 255, 255, 0.08) 50%,
-    rgba(255, 255, 255, 0.03) 75%
-  );
-  background-size: 200% 100%;
-  animation: shimmer 2s infinite linear;
-}
-
-.starlight-particle {
-  position: absolute;
-  width: 2px;
-  height: 2px;
-  background: white;
-  border-radius: 50%;
-  animation: starlight-pulse 2s infinite ease-in-out;
-}
-
 .animate-fade-in { animation: fadeIn 0.8s var(--ease-out-expo) forwards; }
 .animate-fade-in-up { animation: fadeInUp 1s var(--ease-out-expo) forwards; }
 
 .delay-1 { animation-delay: 0.2s; }
 .delay-2 { animation-delay: 0.4s; }
-
-/* ============================================
-   TIME-AWARE THEMES
-   ============================================ */
-.theme-dusk {
-  --aurora-violet: #7c3aed;
-  --aurora-blue: #2563eb;
-  --aurora-pink: #db2777;
-}
-
-.theme-dawn {
-  --aurora-violet: #a78bfa;
-  --aurora-blue: #60a5fa;
-  --aurora-pink: #f472b6;
-  --bg-base: #05070f;
-}
-
-.theme-midnight {
-  --aurora-violet: #8b5cf6;
-  --aurora-blue: #3b82f6;
-  --aurora-pink: #ec4899;
-}
 
 /* ============================================
    SCROLLBAR

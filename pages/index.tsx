@@ -187,18 +187,14 @@ export default function Home({ initialThoughts }: HomeProps) {
         <section className="px-6 pb-20">
           <div className="max-w-xl mx-auto">
             {loading && (
-              <div className="space-y-6">
+              <div className="space-y-4">
                 {[1, 2, 3].map((i) => (
-                  <div key={i} className="py-10 px-6 bg-white/[0.02] rounded-2xl relative overflow-hidden">
-                    <div className="skeleton-starlight h-4 w-full rounded mb-4" />
-                    <div className="skeleton-starlight h-4 w-3/4 rounded mb-8" />
-                    <div className="flex justify-between items-center">
-                      <div className="skeleton-starlight h-3 w-20 rounded" />
-                      <div className="skeleton-starlight h-8 w-8 rounded-full" />
+                  <div key={i} className="py-6 border-b border-[var(--border-subtle)]">
+                    <div className="animate-pulse space-y-3">
+                      <div className="h-4 bg-[var(--border-subtle)] rounded w-full" />
+                      <div className="h-4 bg-[var(--border-subtle)] rounded w-3/4" />
+                      <div className="h-3 bg-[var(--border-subtle)] rounded w-20 mt-4" />
                     </div>
-                    {/* Tiny decorative stars in skeleton */}
-                    <div className="starlight-particle top-4 right-8" style={{ animationDelay: '0.2s' }} />
-                    <div className="starlight-particle bottom-6 left-1/4" style={{ animationDelay: '0.5s' }} />
                   </div>
                 ))}
               </div>
