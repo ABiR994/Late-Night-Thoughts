@@ -6,6 +6,19 @@ type LayoutProps = {
 
 const Layout = ({ children }: LayoutProps) => {
   const [timeState, setTimeState] = useState<'dusk' | 'midnight' | 'dawn'>('midnight');
+  const [scrollProgress, setScrollProgress] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
+      if (totalScroll > 0) {
+        setScrollProgress((window.scrollY / totalScroll) * 100);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   useEffect(() => {
     const hour = new Date().getHours();
@@ -16,6 +29,16 @@ const Layout = ({ children }: LayoutProps) => {
 
   return (
     <div className={`relative min-h-screen overflow-hidden theme-${timeState}`}>
+      {/* Scroll Progress Shooting Star */}
+      <div className="scroll-progress-container">
+        <div 
+          className="scroll-progress-bar" 
+          style={{ width: `${scrollProgress}%` }}
+        >
+          <div className="shooting-star-head" />
+        </div>
+      </div>
+
       {/* Ambient Background */}
       <div className="ambient-container" aria-hidden="true">
         <div className="orb orb-1" />
