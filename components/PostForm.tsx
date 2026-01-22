@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { supabase } from '../utils/db';
+import { useCursor } from '../context/CursorContext';
 
 interface PostFormProps {
   onSuccess?: () => void;
@@ -26,6 +27,7 @@ const PostForm: React.FC<PostFormProps> = ({ onSuccess }) => {
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
   const [showOptions, setShowOptions] = useState(false);
   const [particles, setParticles] = useState<{ id: number; x: number; y: number }[]>([]);
+  const { setMood: setGlobalMood } = useCursor();
   
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -44,6 +46,14 @@ const PostForm: React.FC<PostFormProps> = ({ onSuccess }) => {
       }, 800);
     }
   };
+
+  useEffect(() => {
+    if (mood !== 'None') {
+      setGlobalMood(mood);
+    } else {
+      setGlobalMood(null);
+    }
+  }, [mood, setGlobalMood]);
 
   // Load draft
   useEffect(() => {

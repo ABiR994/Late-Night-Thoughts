@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import CustomCursor from './CustomCursor';
 
 type LayoutProps = {
   children: React.ReactNode;
@@ -30,6 +31,7 @@ const Layout = ({ children, blurBackground = false }: LayoutProps) => {
 
   return (
     <div className={`relative min-h-screen overflow-hidden theme-${timeState}`}>
+      <CustomCursor />
       {/* Scroll Progress Shooting Star */}
       <div className="scroll-progress-container">
         <div 

@@ -2,6 +2,7 @@ import '../styles/globals.css';
 import type { AppProps } from 'next/app';
 import { useEffect } from 'react';
 import { supabase } from '../utils/db';
+import { CursorProvider } from '../context/CursorContext';
 
 function MyApp({ Component, pageProps }: AppProps) {
   useEffect(() => {
@@ -18,7 +19,11 @@ function MyApp({ Component, pageProps }: AppProps) {
     initAuth();
   }, []);
 
-  return <Component {...pageProps} />;
+  return (
+    <CursorProvider>
+      <Component {...pageProps} />
+    </CursorProvider>
+  );
 }
 
 export default MyApp;

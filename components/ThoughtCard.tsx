@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useCursor } from '../context/CursorContext';
 
 interface Thought {
   id: string;
@@ -43,6 +44,7 @@ const formatTime = (dateString: string): string => {
 const ThoughtCard: React.FC<ThoughtCardProps> = ({ thought, index = 0, onClick }) => {
   const [isVisible, setIsVisible] = useState(false);
   const cardRef = useRef<HTMLElement>(null);
+  const { setMood } = useCursor();
 
   const moodColor = thought.mood ? moodColors[thought.mood] : null;
 
@@ -82,6 +84,8 @@ const ThoughtCard: React.FC<ThoughtCardProps> = ({ thought, index = 0, onClick }
     <article
       ref={cardRef}
       onClick={onClick}
+      onMouseEnter={() => thought.mood && setMood(thought.mood)}
+      onMouseLeave={() => setMood(null)}
       className={`
         group cursor-pointer relative
         py-8 px-6 -mx-4 mb-2
