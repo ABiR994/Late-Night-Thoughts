@@ -266,11 +266,11 @@ const PostForm: React.FC<PostFormProps> = ({ onSuccess }) => {
                 type="submit"
                 disabled={loading || !content.trim()}
                 className="
-                  w-full sm:w-auto px-20 py-4 sm:py-3
+                  px-12 py-3 sm:py-2.5
                   text-[11px] font-mono uppercase tracking-[0.2em]
                   bg-[var(--text-primary)] text-[var(--bg-base)]
                   rounded-full
-                  hover:scale-[1.01] sm:hover:scale-105 active:scale-95
+                  hover:scale-[1.02] sm:hover:scale-105 active:scale-95
                   disabled:opacity-20 disabled:scale-100 disabled:cursor-not-allowed
                   transition-all duration-300
                 "
