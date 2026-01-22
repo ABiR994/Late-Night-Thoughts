@@ -100,7 +100,7 @@ export default function Home({ initialThoughts }: HomeProps) {
   };
 
   return (
-    <Layout>
+    <Layout blurBackground={!!selectedThought}>
       <Head>
         <title>Late Night Thoughts</title>
         <meta name="description" content="A quiet place for your midnight reflections." />

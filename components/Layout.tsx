@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react';
 
 type LayoutProps = {
   children: React.ReactNode;
+  blurBackground?: boolean;
 };
 
-const Layout = ({ children }: LayoutProps) => {
+const Layout = ({ children, blurBackground = false }: LayoutProps) => {
   const [timeState, setTimeState] = useState<'dusk' | 'midnight' | 'dawn'>('midnight');
 
   useEffect(() => {
@@ -17,7 +18,10 @@ const Layout = ({ children }: LayoutProps) => {
   return (
     <div className={`relative min-h-screen overflow-hidden theme-${timeState}`}>
       {/* Ambient Background */}
-      <div className="ambient-container" aria-hidden="true">
+      <div 
+        className={`ambient-container transition-all duration-1000 ${blurBackground ? 'blur-xl scale-110 opacity-50' : 'blur-0 scale-100 opacity-100'}`} 
+        aria-hidden="true"
+      >
         <div className="orb orb-1" />
         <div className="orb orb-2" />
         <div className="orb orb-3" />
