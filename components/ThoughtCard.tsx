@@ -110,14 +110,15 @@ const ThoughtCard = forwardRef<HTMLElement, ThoughtCardProps>(({ thought, index 
       <div className="ink-blot" />
 
       {/* Content */}
-      <p className="
+      <p className={`
         text-[19px] sm:text-[22px] leading-[1.6]
         text-[var(--text-secondary)] group-hover:text-[var(--text-primary)]
         font-display italic
         whitespace-pre-wrap
         mb-6
-        transition-colors duration-300
-      ">
+        transition-all duration-500
+        ink-flow-text ${isVisible ? 'ink-flow-active' : 'opacity-0'}
+      `}>
         {thought.content}
       </p>
 

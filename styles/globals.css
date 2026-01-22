@@ -276,6 +276,24 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* ============================================
+   INK FLOW ENTRANCE
+   ============================================ */
+@keyframes ink-flow {
+  0% { mask-position: 100% 0; opacity: 0; transform: translateX(-5px); }
+  100% { mask-position: 0% 0; opacity: 1; transform: translateX(0); }
+}
+
+.ink-flow-text {
+  mask-image: linear-gradient(to right, black 50%, transparent 100%);
+  mask-size: 300% 100%;
+  mask-repeat: no-repeat;
+}
+
+.ink-flow-active {
+  animation: ink-flow 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* ============================================
    CARD ARTIFACTS & GLOWS
    ============================================ */
 .card-glow {
