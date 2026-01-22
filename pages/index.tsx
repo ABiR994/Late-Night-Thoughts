@@ -179,7 +179,7 @@ export default function Home({ initialThoughts }: HomeProps) {
           </div>
 
           <h1 className="animate-fade-in relative">
-            <span className="block text-display-lg font-display text-gradient leading-[0.9] tracking-tight">
+            <span className="block text-display-lg font-display text-[var(--text-primary)] leading-[0.9] tracking-tight">
               Late Night
             </span>
             <span className="block text-display-lg font-display text-gradient leading-[0.9] mt-2 tracking-tight">
@@ -192,13 +192,13 @@ export default function Home({ initialThoughts }: HomeProps) {
           </p>
         </header>
 
-        <section className="px-6 pb-32">
+        <section className="px-6 pb-48">
           <div className="max-w-xl mx-auto">
             <PostForm onSuccess={handlePostSuccess} />
           </div>
         </section>
 
-        <div className="max-w-xl mx-auto px-6 pb-16">
+        <div className="max-w-xl mx-auto px-6 pb-24">
           <div className="h-px bg-[var(--border-subtle)]/50" />
         </div>
 
