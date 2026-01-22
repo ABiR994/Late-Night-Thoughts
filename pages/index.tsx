@@ -28,8 +28,18 @@ export default function Home({ initialThoughts }: HomeProps) {
   const [selectedThought, setSelectedThought] = useState<Thought | null>(null);
   const [selectedIndex, setSelectedIndex] = useState<number>(-1);
   const [scope, setScope] = useState<'all' | 'me'>('all');
+  const [isTransitioning, setIsTransitioning] = useState(false);
   
   const [isLive, setIsLive] = useState(false);
+
+  const handleScopeChange = (newScope: 'all' | 'me') => {
+    if (newScope === scope) return;
+    setIsTransitioning(true);
+    setTimeout(() => {
+      setScope(newScope);
+      setIsTransitioning(false);
+    }, 400);
+  };
 
   const fetchThoughts = useCallback(async (currentScope: string, currentMood: string) => {
     setLoading(true);
@@ -150,14 +160,14 @@ export default function Home({ initialThoughts }: HomeProps) {
             <div className="flex items-center gap-8">
               <div className="flex items-center gap-6">
                 <button
-                  onClick={() => setScope('all')}
+                  onClick={() => handleScopeChange('all')}
                   className={`relative text-[10px] font-mono uppercase tracking-[0.3em] transition-all duration-300 ${scope === 'all' ? 'text-aurora-violet' : 'text-[var(--text-faint)] hover:text-[var(--text-muted)]'}`}
                 >
                   public
                   {scope === 'all' && <span className="absolute -bottom-2 left-0 w-full h-px bg-aurora-violet shadow-[0_0_8px_rgba(139,92,246,0.6)]" />}
                 </button>
                 <button
-                  onClick={() => setScope('me')}
+                  onClick={() => handleScopeChange('me')}
                   className={`relative text-[10px] font-mono uppercase tracking-[0.3em] transition-all duration-300 ${scope === 'me' ? 'text-aurora-violet' : 'text-[var(--text-faint)] hover:text-[var(--text-muted)]'}`}
                 >
                   mine
@@ -185,7 +195,7 @@ export default function Home({ initialThoughts }: HomeProps) {
         </section>
 
         <section className="px-6 pb-20">
-          <div className="max-w-xl mx-auto">
+          <div className={`max-w-xl mx-auto transition-all duration-700 ${isTransitioning ? 'feed-exit' : 'feed-enter'}`}>
             {loading && (
               <div className="space-y-6">
                 {[1, 2, 3].map((i) => (
