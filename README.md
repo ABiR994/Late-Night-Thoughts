@@ -165,7 +165,9 @@ Distributed under the **MIT License**. See [`LICENSE`](./LICENSE) for the full t
 ---
 
 <div align="center">
+
   🌌*Made for the quiet moments when the world falls silent.*
+
 </div>
 
 ---
